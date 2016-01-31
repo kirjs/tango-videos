@@ -37,6 +37,11 @@ export class UserProfile {
         });
     }
 
+    logout(){
+        this.profileService.logout().subscribe((data) => {
+            this.authentificated = false;
+        });
+    }
     authenticate(){
         this.profileService.login(this.loginForm.value).subscribe((data)=>{
             this.authentificated = data.authentificated;

@@ -1,5 +1,8 @@
 <div>
-<div *ngIf = "authentificated">Logged in</div>
+<div *ngIf = "authentificated">
+    Logged in
+    <div (click) = "logout()">Log out</div>
+</div>
 <div *ngIf = "!authentificated">
     <form [ngFormModel]="loginForm" (ngSubmit)="authenticate()">
         <input type="text" [ngFormControl] = "username">

@@ -28,4 +28,8 @@ export class CurrentUserService {
 
         return this.http.post('api/login/', creds, {headers: headers}).map(res => res.json());
 	}
+
+    logout() {
+        return this.http.get('api/logout');
+    }
 }
