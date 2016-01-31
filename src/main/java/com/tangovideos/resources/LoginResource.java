@@ -1,6 +1,6 @@
 package com.tangovideos.resources;
 
-import com.tangovideos.services.neo4j.TangoVideosServiceFactory;
+import com.tangovideos.services.TangoVideosServiceFactory;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
  */
 @Path("/api/login")
 @Produces(MediaType.TEXT_HTML)
-public class Login {
+public class LoginResource {
     @GET
     public String goGet() {
         return "<form name=\"loginform\" action=\"\" method=\"POST\" accept-charset=\"UTF-8\" role=\"form\">\n" +

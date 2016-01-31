@@ -1,7 +1,7 @@
 package com.tangovideos.resources;
 
 import com.tangovideos.models.UserNotLoggedIn;
-import com.tangovideos.services.neo4j.TangoVideosServiceFactory;
+import com.tangovideos.services.TangoVideosServiceFactory;
 import org.apache.shiro.subject.Subject;
 import org.secnod.shiro.jaxrs.Auth;
 
@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response;
  */
 @Path("api/currentUser")
 @Produces(MediaType.APPLICATION_JSON)
-public class currentUser {
+public class CurrentUserResource {
 
     @GET
     public Response getCurrentUser(@Auth Subject subject) {

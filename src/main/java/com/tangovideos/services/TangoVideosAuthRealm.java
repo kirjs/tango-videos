@@ -1,12 +1,7 @@
 package com.tangovideos.services;
 
-import java.util.HashSet;
 import java.util.Set;
 
-import com.tangovideos.services.Interfaces.UserService;
-import com.tangovideos.services.neo4j.Neo4DB;
-import com.tangovideos.services.neo4j.Neo4JServiceFactory;
-import com.tangovideos.services.neo4j.TangoVideosServiceFactory;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.IncorrectCredentialsException;

@@ -17,7 +17,7 @@ public class Neo4JServiceFactory implements ServiceFactory {
     private Neo4jPermissionsService permissionService;
 
 
-    public Neo4JServiceFactory(){
+    public Neo4JServiceFactory() {
         fillDb();
     }
 
@@ -30,8 +30,14 @@ public class Neo4JServiceFactory implements ServiceFactory {
             final Node adminRole = this.getRoleService()
                     .addRole("admin", nodes);
 
-            this.getUserService().addUser("admin", "hashme", adminRole);
+            final Node admin = this.getUserService().addUser("admin", "hashme", adminRole);
 
+            this.getVideoService().addVideo(
+                    "https://www.youtube.com/watch?v=6D8uUFj8_4g",
+                    "Title",
+                    "https://i.ytimg.com/vi/6D8uUFj8_4g/default.jpg",
+                    admin
+            );
 
 
             tx.success();
@@ -62,7 +68,7 @@ public class Neo4JServiceFactory implements ServiceFactory {
         return videoService;
     }
 
-    public PermissionsService getPermissionService(){
+    public PermissionsService getPermissionService() {
         if (permissionService == null) {
             permissionService = new Neo4jPermissionsService(graphDb);
         }

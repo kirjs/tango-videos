@@ -12,8 +12,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("api/videos")
 @Produces(MediaType.APPLICATION_JSON)
-public class Video {
-
+public class VideoResource {
 
 
     @GET

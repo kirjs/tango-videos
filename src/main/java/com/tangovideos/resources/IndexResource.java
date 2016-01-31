@@ -1,7 +1,7 @@
 package com.tangovideos.resources;
 
 import com.tangovideos.services.Interfaces.UserService;
-import com.tangovideos.services.neo4j.TangoVideosServiceFactory;
+import com.tangovideos.services.TangoVideosServiceFactory;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("/")
 @Produces(MediaType.TEXT_HTML)
-public class Index {
+public class IndexResource {
     @GET
     public String getIndex() {
 
