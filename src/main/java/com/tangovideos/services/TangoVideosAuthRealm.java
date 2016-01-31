@@ -43,10 +43,6 @@ public class TangoVideosAuthRealm extends AuthorizingRealm {
             throw new AuthorizationException("Principal is null.");
         }
 
-
-
-
-
         final Set<Permission> permissions = TangoVideosServiceFactory.getUserService().getAllRoles("admin");
         permissions.add(new WildcardPermission("company:readOrders:whatever"));
         final SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();

@@ -4,6 +4,7 @@ import com.tangovideos.models.ErrorMessage;
 import com.tangovideos.models.UserNotLoggedIn;
 import com.tangovideos.models.UserProfile;
 import com.tangovideos.services.VideosService;
+import com.tangovideos.services.neo4j.TangoVideosServiceFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.secnod.shiro.jaxrs.Auth;
@@ -24,7 +25,9 @@ public class currentUser {
 
     @GET
     public Response getCurrentUser(@Auth Subject subject) {
-        Object data = subject.isAuthenticated() ? new UserProfile() : new UserNotLoggedIn();
+        Object data = subject.isAuthenticated() ?
+                TangoVideosServiceFactory.getUserService().getUserProfile(subject.getPrincipal().toString()) :
+                new UserNotLoggedIn();
 
         return Response.status(200).
                 entity(data).

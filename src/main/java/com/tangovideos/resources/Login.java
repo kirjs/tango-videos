@@ -1,6 +1,6 @@
 package com.tangovideos.resources;
 
-import com.tangovideos.models.UserProfile;
+import com.tangovideos.services.neo4j.TangoVideosServiceFactory;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
@@ -44,7 +44,7 @@ public class Login {
         }
 
         return Response.status(200).
-                entity(new UserProfile()).
+                entity(TangoVideosServiceFactory.getUserService().getUserProfile(username)).
                 type(MediaType.APPLICATION_JSON).
                 build();
     }

@@ -17,7 +17,7 @@ export class UserProfile {
     loginForm: ControlGroup;
     username: Control;
     password: Control;
-    authentificated:boolean = true;
+    authentificated:boolean = false;
 
 
 

@@ -4,14 +4,16 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.tangovideos.data.Labels;
 import com.tangovideos.data.Relationships;
+import com.tangovideos.models.UserProfile;
 import com.tangovideos.services.Interfaces.UserService;
 import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.permission.WildcardPermission;
 import org.neo4j.graphdb.*;
 import org.neo4j.helpers.collection.IteratorUtil;
 
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class Neo4jUserService implements UserService {
@@ -65,12 +67,10 @@ public class Neo4jUserService implements UserService {
 
     @Override
     public boolean verifyCredentials(String id, String password) {
-
         try (Transaction tx = this.graphDb.beginTx()) {
             final ResourceIterator<Node> nodes = graphDb.findNodes(Labels.USER.label, "id", id);
             if (nodes.hasNext()) {
                 final Node next = nodes.next();
-                final Map<String, Object> allProperties = next.getAllProperties();
                 final Object userPassword = next.getProperty("password");
                 if (userPassword.equals(password)) {
                     return true;
@@ -85,6 +85,18 @@ public class Neo4jUserService implements UserService {
     @Override
     public void list() {
 
+    }
+
+    @Override
+    public UserProfile getUserProfile(String id){
+        UserProfile profile = new UserProfile();
+        profile.setId(id);
+        final HashSet<String> permissions = this.getAllRoles(id).stream()
+                .map(Object::toString)
+                .collect(Collectors.toCollection(HashSet::new));
+
+        profile.setPermissions(permissions);
+        return profile;
     }
 
     @Override
