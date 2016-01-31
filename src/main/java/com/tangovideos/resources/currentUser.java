@@ -1,17 +1,12 @@
 package com.tangovideos.resources;
 
-import com.tangovideos.models.ErrorMessage;
 import com.tangovideos.models.UserNotLoggedIn;
-import com.tangovideos.models.UserProfile;
-import com.tangovideos.services.VideosService;
 import com.tangovideos.services.neo4j.TangoVideosServiceFactory;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.secnod.shiro.jaxrs.Auth;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;

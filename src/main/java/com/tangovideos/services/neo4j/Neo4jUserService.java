@@ -24,34 +24,7 @@ public class Neo4jUserService implements UserService {
 
     public Neo4jUserService(GraphDatabaseService graphDb) {
         this.graphDb = graphDb;
-
-
-        fillTheDb();
-
     }
-
-    private void fillTheDb() {
-        try (Transaction tx = this.graphDb.beginTx()) {
-            final Node admin = this.graphDb.createNode(Labels.USER.label);
-            admin.setProperty("password", "hashme");
-            admin.setProperty("id", "admin");
-
-            final Node adminRole = this.graphDb.createNode(Labels.ROLE.label);
-            adminRole.setProperty("label", "role");
-            admin.createRelationshipTo(adminRole, Relationships.IS);
-
-            final Node writeVideosPermission = this.graphDb.createNode(Labels.PERMISSION.label);
-            writeVideosPermission.setProperty("label", "videos:write");
-            adminRole.createRelationshipTo(writeVideosPermission, Relationships.CAN);
-
-            final Node readVideosPermission = this.graphDb.createNode(Labels.PERMISSION.label);
-            readVideosPermission.setProperty("label", "videos:read");
-            adminRole.createRelationshipTo(readVideosPermission, Relationships.CAN);
-
-            tx.success();
-        }
-    }
-
 
     @Override
     public boolean userExists(String id) {
@@ -112,5 +85,14 @@ public class Neo4jUserService implements UserService {
         }
 
         return result;
+    }
+
+    @Override
+    public Node addUser(String id, String password, Node role) {
+        final Node admin = this.graphDb.createNode(Labels.USER.label);
+        admin.createRelationshipTo(role, Relationships.IS);
+        admin.setProperty("password", password);
+        admin.setProperty("id", id);
+        return admin;
     }
 }
