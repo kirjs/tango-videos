@@ -14,14 +14,14 @@ import { FORM_DIRECTIVES, ControlGroup, Control, ControlGroup, Validators, FormB
 export class UserProfile {
     @Input() src:any;
     user:any;
-    loginForm: ControlGroup;
-    username: Control;
-    password: Control;
+    loginForm:ControlGroup;
+    username:Control;
+    password:Control;
     authentificated:boolean = false;
+    error:string;
 
 
-
-    constructor(private profileService:CurrentUserService, private builder: FormBuilder) {
+    constructor(private profileService:CurrentUserService, private builder:FormBuilder) {
         this.profileService = profileService;
         this.username = new Control("admin", Validators.required);
         this.password = new Control("hashme", Validators.required);
@@ -37,14 +37,20 @@ export class UserProfile {
         });
     }
 
-    logout(){
+    logout() {
         this.profileService.logout().subscribe((data) => {
             this.authentificated = false;
         });
     }
-    authenticate(){
-        this.profileService.login(this.loginForm.value).subscribe((data)=>{
-            this.authentificated = data.authentificated;
+
+    authenticate() {
+        this.profileService.login(this.loginForm.value).subscribe((user)=> {
+            this.error = "";
+            this.user = user;
+
+            this.authentificated = user.authentificated;
+        }, (data) => {
+            this.error = data.json().type;
         });
     }
 }
