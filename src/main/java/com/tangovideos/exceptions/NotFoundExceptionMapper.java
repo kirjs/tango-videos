@@ -1,5 +1,7 @@
 package com.tangovideos.exceptions;
 
+import com.tangovideos.models.ErrorMessage;
+
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;

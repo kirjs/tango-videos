@@ -1,10 +1,9 @@
-package com.tangovideos.exceptions;
+package com.tangovideos.models;
 
 
 import org.apache.commons.beanutils.BeanUtils;
 
 import javax.ws.rs.NotFoundException;
-import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.lang.reflect.InvocationTargetException;
@@ -55,8 +54,8 @@ public class ErrorMessage {
     }
 
     public ErrorMessage(NotFoundException ex){
-        this.status = 1;
-        this.message = "OPS";
+        this.status = 404;
+        this.message = "Page not found";
     }
 
     public ErrorMessage() {}

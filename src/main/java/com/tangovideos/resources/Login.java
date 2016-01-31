@@ -1,16 +1,18 @@
 package com.tangovideos.resources;
 
+import com.tangovideos.models.UserProfile;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * Root resource (exposed at "myresource" path)
  */
-@Path("/login")
+@Path("/api/login")
 @Produces(MediaType.TEXT_HTML)
 public class Login {
     @GET
@@ -24,9 +26,9 @@ public class Login {
     }
 
     @POST
-    public String doPost(@FormParam("username") String username,
-                         @FormParam("password") String password,
-                         @FormParam("rememberMe") @DefaultValue("false") Boolean rememberMe) {
+    public Response doPost(@FormParam("username") String username,
+                           @FormParam("password") String password,
+                           @FormParam("rememberMe") @DefaultValue("false") Boolean rememberMe) {
         Subject currentUser = SecurityUtils.getSubject();
 
         UsernamePasswordToken token =
@@ -34,18 +36,16 @@ public class Login {
         token.setRememberMe(rememberMe == null ? false : rememberMe);
         try {
             currentUser.login(token);
-        } catch (UnknownAccountException uae) {
-            return "Don't know such account";
-        } catch (IncorrectCredentialsException ice) {
-            return "Wrong password";
-        } catch (LockedAccountException lae) {
-            return "Account locked";
-        } catch (ExcessiveAttemptsException eae) {
-            return "Too many attempts";
-        } catch (AuthenticationException ae) {
-            return "Something is wrong";
+        } catch (Exception uae) {
+            return Response.status(401).
+                    entity(uae).
+                    type(MediaType.APPLICATION_JSON).
+                    build();
         }
 
-        return "You're logged in";
+        return Response.status(200).
+                entity(new UserProfile()).
+                type(MediaType.APPLICATION_JSON).
+                build();
     }
 }
