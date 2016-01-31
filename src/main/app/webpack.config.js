@@ -7,7 +7,7 @@ module.exports = {
     'vendor': './src/vendor.ts'
   },
   output: {
-    path: "./dist",
+    path:  __dirname + "/dist",
     filename: "bundle.js"
   },
   plugins: [
@@ -20,7 +20,7 @@ module.exports = {
 
   module: {
     loaders: [
-      { test: /\.ts$/, loader: 'ts-loader' },
+      { test: /\.ts$/, loader: 'ts-loader' }
     ],
     noParse: [ path.join(__dirname, 'node_modules', 'angular2', 'bundles') ]
   },
