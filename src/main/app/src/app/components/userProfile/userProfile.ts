@@ -50,6 +50,7 @@ export class UserProfile {
 
             this.authentificated = user.authentificated;
         }, (data) => {
+            //noinspection TypeScriptUnresolvedFunction
             this.error = data.json().type;
         });
     }

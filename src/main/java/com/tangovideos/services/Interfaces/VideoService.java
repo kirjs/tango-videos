@@ -10,5 +10,5 @@ public interface VideoService {
 
     void addVideo(String videoId, Node user);
 
-    List<Map<String, Object>> list();
+    List<Map<String, String>> list();
 }

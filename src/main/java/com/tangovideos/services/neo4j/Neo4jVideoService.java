@@ -14,6 +14,7 @@ import org.neo4j.graphdb.Transaction;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class Neo4jVideoService implements VideoService {
@@ -54,13 +55,16 @@ public class Neo4jVideoService implements VideoService {
     }
 
     @Override
-    public List<Map<String, Object>> list() {
-        List<Map<String, Object>> videos = Lists.newArrayList();
+    public List<Map<String, String>> list() {
+        List<Map<String, String>> videos = Lists.newArrayList();
         try (Transaction tx = this.graphDb.beginTx()) {
             final ResourceIterator<Node> nodes = this.graphDb.findNodes(Labels.VIDEO.label);
 
             while(nodes.hasNext()){
-                videos.add(nodes.next().getAllProperties());
+                final Map<String, String> allProperties = nodes.next().getAllProperties()
+                        .entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().toString()));
+
+                videos.add(allProperties);
             }
             tx.success();
         }

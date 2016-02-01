@@ -30,6 +30,7 @@ export class VideoPreview {
         this.youtube.getVideo(id).subscribe(data => {
             //noinspection TypeScriptUnresolvedVariable
             var snippet = data.items[0].snippet;
+
             this.videoInfo = new VideoInfo(id,
                 snippet.title,
                 snippet.thumbnails.default.url

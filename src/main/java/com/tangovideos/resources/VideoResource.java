@@ -34,7 +34,7 @@ public class VideoResource {
         videos.setList(TangoVideosServiceFactory.getVideoService().list());
 
         return Response.status(200)
-                .entity(videos)
+                .entity(videos.toJson())
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }
