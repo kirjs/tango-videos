@@ -1,5 +1,6 @@
 package com.tangovideos.services.neo4j;
 
+import com.google.api.client.util.Lists;
 import com.tangovideos.data.Labels;
 import com.tangovideos.data.Relationships;
 import com.tangovideos.models.Video;
@@ -8,7 +9,11 @@ import com.tangovideos.services.Interfaces.VideoService;
 import com.tangovideos.services.YoutubeService;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.ResourceIterator;
 import org.neo4j.graphdb.Transaction;
+
+import java.util.List;
+import java.util.Map;
 
 
 public class Neo4jVideoService implements VideoService {
@@ -20,15 +25,9 @@ public class Neo4jVideoService implements VideoService {
         this.graphDb = graphDb;
         this.userService = userService;
         this.youtubeService = youtubeService;
-        fillTheDb();
     }
 
 
-    private void fillTheDb() {
-        try (Transaction tx = this.graphDb.beginTx()) {
-            tx.success();
-        }
-    }
 
     @Override
     public boolean videoExistis(String videoId) {
@@ -52,5 +51,19 @@ public class Neo4jVideoService implements VideoService {
         node.setProperty("publishedAt", videoInfo.getPublishedAt());
         node.setProperty("id", videoInfo.getId());
         user.createRelationshipTo(node, Relationships.ADDED);
+    }
+
+    @Override
+    public List<Map<String, Object>> list() {
+        List<Map<String, Object>> videos = Lists.newArrayList();
+        try (Transaction tx = this.graphDb.beginTx()) {
+            final ResourceIterator<Node> nodes = this.graphDb.findNodes(Labels.VIDEO.label);
+
+            while(nodes.hasNext()){
+                videos.add(nodes.next().getAllProperties());
+            }
+            tx.success();
+        }
+        return videos;
     }
 }
