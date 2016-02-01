@@ -4,4 +4,22 @@
 
 .video {
     padding: 20px;
+    width: 1024px;
+}
+
+.thumb {
+    width: 480px;
+}
+
+.data {
+    width: 500px;
+}
+.thumb, .data {
+    display: inline-block;
+    vertical-align: top;
+}
+
+h2, h3 {
+    margin: 0;
+    padding: 0;
 }

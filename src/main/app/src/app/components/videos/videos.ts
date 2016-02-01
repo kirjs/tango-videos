@@ -18,6 +18,16 @@ export class Videos {
     constructor(private videoService:VideoService) {
         videoService.list().subscribe((videos)=> {
             this.videos = videos;
+            this.videos[0].performers = [
+                {
+                    name: 'Mariano Chicho Frumboli',
+                    id: 'chicho'
+                },
+                {
+                    name: 'Juana Sepulveda',
+                    id: 'juana'
+                },
+            ];
         });
 
     }
