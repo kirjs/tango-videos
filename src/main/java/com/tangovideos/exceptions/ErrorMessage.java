@@ -1,4 +1,4 @@
-package com.tangovideos.models;
+package com.tangovideos.exceptions;
 
 
 import org.apache.commons.beanutils.BeanUtils;

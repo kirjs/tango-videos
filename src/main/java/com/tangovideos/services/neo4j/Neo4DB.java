@@ -8,7 +8,7 @@ import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import java.io.File;
 
 public class Neo4DB {
-    private static final String DB_PATH = "neo4jDb6";
+    private static final String DB_PATH = "neo4jDb8";
     public final GraphDatabaseService graphDb;
 
     public Neo4DB() {

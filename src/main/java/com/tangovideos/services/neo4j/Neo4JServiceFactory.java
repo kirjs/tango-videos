@@ -2,6 +2,7 @@ package com.tangovideos.services.neo4j;
 
 import com.google.common.collect.ImmutableSet;
 import com.tangovideos.services.Interfaces.*;
+import com.tangovideos.services.YoutubeService;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
@@ -15,6 +16,7 @@ public class Neo4JServiceFactory implements ServiceFactory {
     private VideoService videoService;
     private Neo4JRoleService roleService;
     private Neo4jPermissionsService permissionService;
+    private YoutubeService youtubeService;
 
 
     public Neo4JServiceFactory() {
@@ -24,26 +26,20 @@ public class Neo4JServiceFactory implements ServiceFactory {
 
     private void fillDb() {
         try (Transaction tx = this.graphDb.beginTx()) {
-            final HashSet<Node> nodes = this.getPermissionService()
-                    .addPermissions(ImmutableSet.of("video:read", "video:write"));
+            if(!this.getUserService().userExists("admin")) {
+                final HashSet<Node> nodes = this.getPermissionService()
+                        .addPermissions(ImmutableSet.of("video:read", "video:write"));
 
-            final Node adminRole = this.getRoleService()
-                    .addRole("admin", nodes);
+                final Node adminRole = this.getRoleService()
+                        .addRole("admin", nodes);
 
-            final Node admin = this.getUserService().addUser("admin", "hashme", adminRole);
+                final Node admin = this.getUserService().addUser("admin", "hashme", adminRole);
 
-            this.getVideoService().addVideo(
-                    "https://www.youtube.com/watch?v=6D8uUFj8_4g",
-                    "Title",
-                    "https://i.ytimg.com/vi/6D8uUFj8_4g/default.jpg",
-                    admin
-            );
-
-
+                this.getVideoService().addVideo("6D8uUFj8_4g",admin);
+                this.getVideoService().addVideo("jMUK-IHyBIU",admin);
+            }
             tx.success();
         }
-
-
     }
 
     public UserService getUserService() {
@@ -63,7 +59,7 @@ public class Neo4JServiceFactory implements ServiceFactory {
 
     public VideoService getVideoService() {
         if (videoService == null) {
-            videoService = new Neo4jVideoService(graphDb, this.getUserService());
+            videoService = new Neo4jVideoService(graphDb, this.getUserService(), this.getYoutubeService());
         }
         return videoService;
     }
@@ -74,4 +70,13 @@ public class Neo4JServiceFactory implements ServiceFactory {
         }
         return permissionService;
     }
+
+    public YoutubeService getYoutubeService() {
+        if (youtubeService == null) {
+            youtubeService = new YoutubeService();
+        }
+
+        return youtubeService;
+    }
+
 }

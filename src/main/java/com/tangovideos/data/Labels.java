@@ -6,6 +6,7 @@ import org.neo4j.graphdb.Label;
 public enum Labels {
     USER(DynamicLabel.label("User")),
     ROLE(DynamicLabel.label("Role")),
+    VIDEO(DynamicLabel.label("Video")),
     PERMISSION(DynamicLabel.label("Permission"));
     public final Label label;
 
