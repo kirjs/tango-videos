@@ -66,6 +66,14 @@ public class Neo4jVideoService implements VideoService {
         return video;
     }
 
+    public static VideoResponse videoResponseFromNode(Node node){
+        VideoResponse video = new VideoResponse();
+        video.setId((String) node.getProperty("id"));
+        video.setPublishedAt((String) node.getProperty("publishedAt"));
+        video.setTitle((String) node.getProperty("title"));
+        return video;
+    }
+
     @Override
     public List<VideoResponse> list() {
         List<VideoResponse> videos = Lists.newArrayList();
@@ -78,12 +86,10 @@ public class Neo4jVideoService implements VideoService {
 
             while (result.hasNext()) {
                 final Map<String, Object> next = result.next();
-                VideoResponse video = new VideoResponse();
-                video.setDancers(Sets.newHashSet((Iterable<String>) next.get("dancers")));
+
                 final Node videoNode = (Node) next.get("v");
-                video.setId((String) videoNode.getProperty("id"));
-                video.setPublishedAt((String) videoNode.getProperty("publishedAt"));
-                video.setTitle((String) videoNode.getProperty("title"));
+                final VideoResponse video = videoResponseFromNode(videoNode);
+                video.setDancers(Sets.newHashSet((Iterable<String>) next.get("dancers")));
                 videos.add(video);
             }
             tx.success();
@@ -105,6 +111,7 @@ public class Neo4jVideoService implements VideoService {
             if (!this.graphDb.execute(query, params).hasNext()) {
                 performer.createRelationshipTo(video, Relationships.DANCES);
             }
+
 
             tx.success();
         }

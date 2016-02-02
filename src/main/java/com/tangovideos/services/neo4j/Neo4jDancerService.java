@@ -5,14 +5,18 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.tangovideos.data.Labels;
 import com.tangovideos.models.Dancer;
+import com.tangovideos.models.VideoResponse;
 import com.tangovideos.services.Interfaces.DancerService;
 import org.neo4j.graphdb.*;
 import org.neo4j.helpers.collection.IteratorUtil;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class Neo4jDancerService implements DancerService {
@@ -33,13 +37,26 @@ public class Neo4jDancerService implements DancerService {
 
     @Override
     public List<Dancer> list() {
-        final List<Dancer> nodes;
+        final List<Dancer> nodes = Lists.newArrayList();
+
         try (Transaction tx = this.graphDb.beginTx()) {
-            nodes = IteratorUtil
-                    .asList(this.graphDb.findNodes(label))
-                    .stream()
-                    .map(this::mapNode)
-                    .collect(Collectors.toList());
+            final String query = "MATCH (d:Dancer)-[:DANCES]->(v:Video) " +
+                    "RETURN d, collect(v) as videos";
+
+            final Result result = graphDb.execute(query);
+            while(result.hasNext()){
+                final Map<String, Object> next = result.next();
+                final Dancer dancer = this.mapNode((Node) next.get("d"));
+
+                final Iterable<Node> video = (Iterable<Node>) next.get("videos");
+                final List<VideoResponse> videos = IteratorUtil.asList(video).stream()
+                        .map(Neo4jVideoService::videoResponseFromNode)
+                        .collect(Collectors.toList());
+
+                dancer.setVideos(videos);
+
+                nodes.add(dancer);
+            }
 
             tx.success();
         }
