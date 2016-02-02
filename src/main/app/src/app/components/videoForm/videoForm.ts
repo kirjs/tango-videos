@@ -12,7 +12,7 @@ import {VideoPreview} from '../videoPreview/videoPreview';
 })
 export class VideoForm {
     fetchVideoData() {
-        debugger
+
     }
 
     constructor(http:Http) {

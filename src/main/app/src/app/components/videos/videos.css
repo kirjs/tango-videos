@@ -11,10 +11,10 @@
     width: 480px;
 }
 
-.data {
+video-info {
     width: 500px;
 }
-.thumb, .data {
+.thumb, .data, video-info {
     display: inline-block;
     vertical-align: top;
 }

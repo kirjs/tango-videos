@@ -1,35 +1,26 @@
 import {Component} from 'angular2/core';
 import {VideoService} from "../../services/VideoService";
+import {VideoInfo} from "../videoInfo/videoInfo";
 
 @Component({
     selector: 'videos',
     templateUrl: 'app/components/videos/videos.html',
     styleUrls: ['app/components/videos/videos.css'],
     providers: [],
-    directives: [],
+    directives: [ VideoInfo],
     pipes: []
 })
 export class Videos {
-    videos:Array = [];
-    getThumbnail(id: String){
+    videos:Array<any> = [];
+
+    getThumbnail(id:string) {
         return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
     }
 
     constructor(private videoService:VideoService) {
         videoService.list().subscribe((videos)=> {
             this.videos = videos;
-            this.videos[0].performers = [
-                {
-                    name: 'Mariano Chicho Frumboli',
-                    id: 'chicho'
-                },
-                {
-                    name: 'Juana Sepulveda',
-                    id: 'juana'
-                },
-            ];
         });
-
     }
 
 

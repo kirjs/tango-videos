@@ -2,7 +2,7 @@ import {Component} from 'angular2/core';
 import {Http} from 'angular2/http';
 import {Input} from "angular2/core";
 import {CurrentUserService} from "../../services/ProfileService";
-import { FORM_DIRECTIVES, ControlGroup, Control, ControlGroup, Validators, FormBuilder } from 'angular2/common';
+import { FORM_DIRECTIVES, ControlGroup, Control,  Validators, FormBuilder } from 'angular2/common';
 
 @Component({
     selector: 'user-profile',

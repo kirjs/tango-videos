@@ -17,6 +17,7 @@ public class Neo4JServiceFactory implements ServiceFactory {
     private Neo4JRoleService roleService;
     private Neo4jPermissionsService permissionService;
     private YoutubeService youtubeService;
+    private DancerService dancerService;
 
 
     public Neo4JServiceFactory() {
@@ -59,7 +60,7 @@ public class Neo4JServiceFactory implements ServiceFactory {
 
     public VideoService getVideoService() {
         if (videoService == null) {
-            videoService = new Neo4jVideoService(graphDb, this.getUserService(), this.getYoutubeService());
+            videoService = new Neo4jVideoService(graphDb, this.getUserService(), this.getYoutubeService(), this.getDancerService());
         }
         return videoService;
     }
@@ -77,6 +78,13 @@ public class Neo4JServiceFactory implements ServiceFactory {
         }
 
         return youtubeService;
+    }
+    public DancerService getDancerService() {
+        if (dancerService == null) {
+            dancerService = new Neo4jDancerService(graphDb);
+        }
+
+        return dancerService;
     }
 
 }

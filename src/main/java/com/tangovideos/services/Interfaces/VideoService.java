@@ -1,14 +1,19 @@
 package com.tangovideos.services.Interfaces;
 
+import com.tangovideos.models.VideoResponse;
 import org.neo4j.graphdb.Node;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public interface VideoService {
     boolean videoExistis(String videoId);
 
     void addVideo(String videoId, Node user);
+    Node get(String videoId);
 
-    List<Map<String, String>> list();
+    List<VideoResponse> list();
+
+    Set<String> addDancer(String id, String performer);
+
 }

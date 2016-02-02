@@ -11,6 +11,7 @@ public class TangoVideosServiceFactory {
     public static UserService getUserService(){
         return serviceFactory.getUserService();
     }
+
     public static VideoService getVideoService(){
         return serviceFactory.getVideoService();
     }

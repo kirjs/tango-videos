@@ -1,0 +1,21 @@
+<div class="data">
+    <h2>{{video.title}}</h2>
+    <div>{{video.publishedAt}}</div>
+
+    <h3>Dancers:</h3>
+    <dancers [dancers]="video.dancers" (addCallback)="addDancer($event)"></dancers>
+    <h3>Songs:</h3>
+    <div *ngFor="#song of video.songs" class="video">
+        <img [src]="getThumbnail(video.id)">
+    </div>
+
+    <h3>Event:</h3>
+    <div *ngFor="#event of video.event" class="video">
+        <img [src]="getThumbnail(video.id)">
+    </div>
+
+    <h3>Location:</h3>
+    <div *ngFor="#performer of video.location" class="video">
+        <img [src]="getThumbnail(video.id)">
+    </div>
+</div>
