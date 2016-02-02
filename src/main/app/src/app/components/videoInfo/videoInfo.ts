@@ -1,5 +1,5 @@
 import {Component, Input} from 'angular2/core';
-import {Dancers} from "../dancers/dancers";
+import {DancerTile} from "../dancer-tile/dancer-tile";
 import {VideoService} from "../../services/VideoService";
 
 @Component({
@@ -7,7 +7,7 @@ import {VideoService} from "../../services/VideoService";
     templateUrl: 'app/components/videoInfo/videoInfo.html',
     styleUrls: ['app/components/videoInfo/videoInfo.css'],
     providers: [],
-    directives: [Dancers],
+    directives: [DancerTile],
     pipes: []
 })
 export class VideoInfo {

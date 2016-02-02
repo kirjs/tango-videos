@@ -3,7 +3,7 @@
     <div>{{video.publishedAt}}</div>
 
     <h3>Dancers:</h3>
-    <dancers [dancers]="video.dancers" (addCallback)="addDancer($event)"></dancers>
+    <dancer-tile [dancers]="video.dancers" (addCallback)="addDancer($event)"></dancer-tile>
     <h3>Songs:</h3>
     <div *ngFor="#song of video.songs" class="video">
         <img [src]="getThumbnail(video.id)">

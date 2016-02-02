@@ -1,12 +1,12 @@
 package com.tangovideos.resources;
 
-import com.tangovideos.services.Interfaces.UserService;
-import com.tangovideos.services.TangoVideosServiceFactory;
-
+import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import java.io.File;
 
 /**
  * Root resource (exposed at "myresource" path)
@@ -15,10 +15,10 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.TEXT_HTML)
 public class IndexResource {
     @GET
-    public String getIndex() {
+    public File getIndex(@Context ServletContext context) {
+        final String path = context.getRealPath("static/index.html");
 
-        final UserService userService = TangoVideosServiceFactory.getUserService();
-        userService.list();
-        return "<a href = /videos>videos</a>";
+
+        return new File(path).getAbsoluteFile();
     }
 }

@@ -1,0 +1,26 @@
+.dancer-tile {
+    margin-bottom: 5px;
+}
+
+.dancer-tile:hover {
+    background: #eee;
+    cursor: pointer;
+    border-radius: 16px;
+}
+
+.dancer-tile .name {
+    margin-left: 10px;
+}
+
+.dancer-tile .image {
+    width: 32px;
+    height: 32px;
+    background-color: #f90;
+    border: 2px #000 solid;
+    border-radius: 50%;
+
+}
+.dancer-tile .image, .dancer-tile .name {
+    display: inline-block;
+    vertical-align: middle;
+}

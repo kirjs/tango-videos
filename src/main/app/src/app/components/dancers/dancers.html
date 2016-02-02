@@ -1,14 +1,1 @@
-<div *ngIf="saving">
-    Please wait, saving your changes.
-</div>
-<div *ngIf="!saving">
-    <div *ngFor="#dancer of dancers" class="dancer">
-        <div *ngIf="dancer == ''">
-            <input #f type="text"><input type="submit" value="Add dancer" (click)="save(f.value)">
-        </div>
-        <div *ngIf="dancer != ''">
-            {{dancer}}
-        </div>
-    </div>
-    <div (click)="add()">Add dancer</div>
-</div>
+empty?
