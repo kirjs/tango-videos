@@ -2,12 +2,8 @@ package com.tangovideos.services.neo4j;
 
 import com.tangovideos.data.Labels;
 import com.tangovideos.models.Dancer;
-import com.tangovideos.models.Video;
 import com.tangovideos.services.Interfaces.UserService;
-import com.tangovideos.services.YoutubeService;
-import org.easymock.EasyMock;
 import org.easymock.EasyMockSupport;
-import org.easymock.Mock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +15,6 @@ import org.neo4j.test.TestGraphDatabaseFactory;
 
 import java.util.List;
 
-import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.*;
 
 public class Neo4jDancerServiceTest extends EasyMockSupport {
@@ -68,42 +63,49 @@ public class Neo4jDancerServiceTest extends EasyMockSupport {
 
     @Test
     public void testGetForVideo() throws Exception {
+        final String id = "one";
+        TestHelpers.addVideoAndDancer(graphDb, neo4jDancerService, id);
 
+        try(Transaction tx = graphDb.beginTx()){
+            final Dancer dancer = this.neo4jDancerService.get(id);
+            assertEquals(dancer.getName(), id);
+            assertEquals(dancer.getVideos().size(), 1);
+            tx.success();
+        }
     }
 
     @Test
     public void testGet() {
+
         try(Transaction tx = graphDb.beginTx()){
             this.neo4jDancerService.insertOrGetNode("one");
-
             final Dancer dancer = this.neo4jDancerService.get("one");
             assertEquals(dancer.getName(), "one");
+            assertEquals(dancer.getVideos().size(), 0);
+            tx.success();
+        }
+    }
+
+    @Test
+    public void testGetWithVideos() {
+
+        final String id = "123";
+        TestHelpers.addVideoAndDancer(graphDb, neo4jDancerService, id);
+        try(Transaction tx = graphDb.beginTx()){
+            final Dancer dancer = this.neo4jDancerService.get(id);
+            assertEquals(dancer.getName(), id);
+            assertEquals(dancer.getVideos().size(), 1);
+            tx.success();
         }
     }
 
     @Test
     public void testList() throws Exception {
-        userService = new Neo4jUserService(graphDb);
+        TestHelpers.addVideoAndDancer(graphDb, neo4jDancerService, "123");
+        try (Transaction tx = graphDb.beginTx()) {
 
-        YoutubeService youtubeService = mock(YoutubeService.class);
 
-        TestHelpers.setUpAdminNode(graphDb);
-
-        final Neo4jVideoService neo4jVideoService = new Neo4jVideoService(
-                graphDb,
-                userService,
-                youtubeService,
-                neo4jDancerService
-        );
-
-        try (Transaction tx = this.graphDb.beginTx()) {
-            expect(youtubeService.getVideoInfo("123")).andReturn(new Video("123", "title", "date"));
-            replayAll();
-
-            neo4jVideoService.addVideo("123", TestHelpers.setUpAdminNode(graphDb));
-            neo4jVideoService.addDancer("123", "one");
-
-            final List<Dancer> list = this.neo4jDancerService.list();
+            final List<Dancer> list = neo4jDancerService.list();
             assertEquals(1, list.size());
             assertEquals(1, list.get(0).getVideos().size());
 
@@ -111,4 +113,6 @@ public class Neo4jDancerServiceTest extends EasyMockSupport {
         }
 
     }
+
+
 }

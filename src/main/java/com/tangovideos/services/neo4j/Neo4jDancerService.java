@@ -45,22 +45,26 @@ public class Neo4jDancerService implements DancerService {
 
             final Result result = graphDb.execute(query);
             while(result.hasNext()){
-                final Map<String, Object> next = result.next();
-                final Dancer dancer = this.mapNode((Node) next.get("d"));
-
-                final Iterable<Node> video = (Iterable<Node>) next.get("videos");
-                final List<VideoResponse> videos = IteratorUtil.asList(video).stream()
-                        .map(Neo4jVideoService::videoResponseFromNode)
-                        .collect(Collectors.toList());
-
-                dancer.setVideos(videos);
-
+                final Dancer dancer = resultToDancer(result);
                 nodes.add(dancer);
             }
 
             tx.success();
         }
         return nodes;
+    }
+
+    private Dancer resultToDancer(Result result) {
+        final Map<String, Object> next = result.next();
+        final Dancer dancer = this.mapNode((Node) next.get("d"));
+
+        final Iterable<Node> video = (Iterable<Node>) next.get("videos");
+        final List<VideoResponse> videos = IteratorUtil.asList(video).stream()
+                .map(Neo4jVideoService::videoResponseFromNode)
+                .collect(Collectors.toList());
+
+        dancer.setVideos(videos);
+        return dancer;
     }
 
     @Override
@@ -106,7 +110,15 @@ public class Neo4jDancerService implements DancerService {
     public Dancer get(String id) {
         Dancer dancer;
         try(final Transaction tx = this.graphDb.beginTx()){
-            dancer = this.mapNode(this.graphDb.findNode(this.label, "id", id));
+
+            final String query = "MATCH (d:Dancer {id: {id}})" +
+                    "OPTIONAL MATCH (d)-[:DANCES]->(v:Video) " +
+                    "RETURN d, collect(v) as videos";
+
+            final ImmutableMap<String, Object> params = ImmutableMap.of("id", id);
+            final Result result = graphDb.execute(query, params);
+            dancer = resultToDancer(result);
+
             tx.success();
         }
         return dancer;

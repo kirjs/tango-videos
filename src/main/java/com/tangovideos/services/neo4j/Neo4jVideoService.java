@@ -33,32 +33,35 @@ public class Neo4jVideoService implements VideoService {
 
 
     @Override
-    public boolean videoExistis(String videoId) {
+    public boolean videoExists(String videoId) {
         return this.graphDb.findNodes(Labels.VIDEO.label, "id", videoId).hasNext();
     }
 
     @Override
     public void addVideo(String videoId, Node user) {
-        if (videoExistis(videoId)) {
-            throw new RuntimeException("VideoExists");
+        try (Transaction transaction = graphDb.beginTx()) {
+            if (videoExists(videoId)) {
+                throw new RuntimeException("VideoExists");
+            }
+
+            final Video videoInfo = youtubeService.getVideoInfo(videoId);
+
+            if (videoInfo == null) {
+                throw new RuntimeException("VideoDoesNotExistOnYoutube");
+            }
+
+            final Node node = graphDb.createNode(Labels.VIDEO.label);
+            node.setProperty("title", videoInfo.getTitle());
+            node.setProperty("publishedAt", videoInfo.getPublishedAt());
+            node.setProperty("id", videoInfo.getId());
+            user.createRelationshipTo(node, Relationships.ADDED);
+            transaction.success();
         }
-
-        final Video videoInfo = youtubeService.getVideoInfo(videoId);
-
-        if (videoInfo == null) {
-            throw new RuntimeException("VideoDoesNotExistOnYoutube");
-        }
-
-        final Node node = graphDb.createNode(Labels.VIDEO.label);
-        node.setProperty("title", videoInfo.getTitle());
-        node.setProperty("publishedAt", videoInfo.getPublishedAt());
-        node.setProperty("id", videoInfo.getId());
-        user.createRelationshipTo(node, Relationships.ADDED);
     }
 
     @Override
     public Node get(String videoId) {
-        Node video = null;
+        Node video;
         try (Transaction tx = this.graphDb.beginTx()) {
             video = this.graphDb.findNode(Labels.VIDEO.label, "id", videoId);
             tx.success();
