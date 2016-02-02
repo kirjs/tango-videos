@@ -93,7 +93,7 @@ public class Neo4jVideoService implements VideoService {
 
     @Override
     public Set<String> addDancer(String videoId, String dancerId) {
-        final Node performer = this.dancerService.getNode(dancerId);
+        final Node performer = this.dancerService.insertOrGet(dancerId);
         final Node video = this.get(videoId);
         try (Transaction tx = this.graphDb.beginTx()) {
 

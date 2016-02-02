@@ -21,7 +21,7 @@ public class Neo4jDancerService implements DancerService {
     }
 
     @Override
-    public Node getNode(String dancerId) {
+    public Node insertOrGet(String dancerId) {
         Node dancer = null;
 
         try (Transaction tx = this.graphDb.beginTx()) {
