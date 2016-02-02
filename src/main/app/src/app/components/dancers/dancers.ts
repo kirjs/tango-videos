@@ -11,7 +11,6 @@ import {Component, Input, ViewChildren, Output, EventEmitter} from 'angular2/cor
 export class Dancers {
     @Input() dancers:any = [];
     @Output() addCallback = new EventEmitter();
-    saving: boolean = false;
 
     constructor() {
     }
