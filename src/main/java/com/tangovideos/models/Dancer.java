@@ -1,11 +1,18 @@
 package com.tangovideos.models;
 
-import java.util.ArrayList;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 public class Dancer {
+    @XmlElement
     String name;
-    String avatar;
-    String bio;
-    ArrayList<Dancer> teachers;
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

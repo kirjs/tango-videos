@@ -1,6 +1,7 @@
 package com.tangovideos.services;
 
 import com.tangovideos.models.Video;
+import com.tangovideos.services.Interfaces.DancerService;
 import com.tangovideos.services.Interfaces.ServiceFactory;
 import com.tangovideos.services.Interfaces.UserService;
 import com.tangovideos.services.Interfaces.VideoService;
@@ -14,5 +15,9 @@ public class TangoVideosServiceFactory {
 
     public static VideoService getVideoService(){
         return serviceFactory.getVideoService();
+    }
+
+    public static DancerService getDancerService() {
+        return serviceFactory.getDancerService();
     }
 }

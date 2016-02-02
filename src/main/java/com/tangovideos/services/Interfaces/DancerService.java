@@ -1,11 +1,17 @@
 package com.tangovideos.services.Interfaces;
 
+import com.tangovideos.models.Dancer;
 import org.neo4j.graphdb.Node;
 
+import java.util.List;
 import java.util.Set;
 
 public interface DancerService {
-    Node insertOrGet(String dancerId);
+    List<Dancer> list();
+
+    Node insertOrGetNode(String dancerId);
 
     Set<String> getForVideo(String videoId);
+
+    Dancer get(String id);
 }
