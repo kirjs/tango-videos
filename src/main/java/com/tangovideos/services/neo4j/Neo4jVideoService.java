@@ -20,13 +20,11 @@ import java.util.Set;
 
 public class Neo4jVideoService implements VideoService {
     private final GraphDatabaseService graphDb;
-    private final UserService userService;
     private final YoutubeService youtubeService;
     private DancerService dancerService;
 
-    public Neo4jVideoService(GraphDatabaseService graphDb, UserService userService, YoutubeService youtubeService, DancerService dancerService) {
+    public Neo4jVideoService(GraphDatabaseService graphDb, YoutubeService youtubeService, DancerService dancerService) {
         this.graphDb = graphDb;
-        this.userService = userService;
         this.youtubeService = youtubeService;
         this.dancerService = dancerService;
     }

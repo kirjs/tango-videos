@@ -7,7 +7,7 @@
             <input #f type="text"><input type="submit" value="Add dancer" (click)="save(f.value)">
         </div>
 
-        <div *ngIf="dancer != ''" class = "dancer" [routerLink]="['Dancers', {id: 'dancer'}]">
+        <div *ngIf="dancer != ''" class = "dancer" [routerLink]="['Dancers', {id: dancer}]">
             <div class="image"></div>
             <div class="name">{{dancer}}</div>
         </div>

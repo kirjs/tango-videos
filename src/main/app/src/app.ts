@@ -5,11 +5,13 @@ import {CurrentUserService} from './app/services/ProfileService';
 import {VideoService} from './app/services/VideoService';
 
 import {TangoVideos} from './app/tango-videos';
+import {DancerService} from "./app/services/DancerService";
 
 bootstrap(TangoVideos, [
     HTTP_PROVIDERS,
     ROUTER_PROVIDERS,
     CurrentUserService,
-    VideoService
+    VideoService,
+    DancerService
 ])
     .catch(err => console.error(err));
