@@ -13,14 +13,9 @@ import javax.ws.rs.core.Response;
 @Path("api/dancers")
 @Produces(MediaType.APPLICATION_JSON)
 public class DancerResource {
-
-
-
     @GET
     @Path("list")
     public Response list() {
-
-
         return Response.status(200)
                 .entity(new JSONArray(TangoVideosServiceFactory.getDancerService().list()).toString())
                 .type(MediaType.APPLICATION_JSON).build();
@@ -29,7 +24,6 @@ public class DancerResource {
     @GET
     @Path("{id}")
     public Response getVideo(@PathParam("id") String id) {
-
         return Response.status(200)
                 .entity(TangoVideosServiceFactory.getDancerService().get(id))
                 .type(MediaType.APPLICATION_JSON).build();

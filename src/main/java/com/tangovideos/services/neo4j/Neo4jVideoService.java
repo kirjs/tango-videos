@@ -1,6 +1,7 @@
 package com.tangovideos.services.neo4j;
 
 import com.google.api.client.util.Lists;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.tangovideos.data.Labels;
 import com.tangovideos.models.Video;
@@ -65,25 +66,33 @@ public class Neo4jVideoService implements VideoService {
 
     @Override
     public List<VideoResponse> list() {
-        return getMultipleVideos();
+        final String query =
+                "MATCH (v:Video) " +
+                        "OPTIONAL MATCH (v)<-[:DANCES]-(d:Dancer) " +
+                        "RETURN v, collect(d.id) as dancers";
+
+        return getMultipleVideos(query, ImmutableMap.of());
     }
 
-    private List<VideoResponse> getMultipleVideos() {
-        return getMultipleVideos("");
+    @Override
+    public List<VideoResponse> listByDancer(String dancerId) {
+        final String query =
+                "MATCH (v:Video) " +
+                        "MATCH (v)<-[:DANCES]-(d:Dancer) " +
+                        "WHERE d.id = {dancerId} " +
+                        "RETURN v, collect(d.id) as dancers";
+
+        return getMultipleVideos(query, ImmutableMap.of("dancerId", dancerId));
     }
 
-    private List<VideoResponse> getMultipleVideos(String conditions) {
+
+    private List<VideoResponse> getMultipleVideos(String query, Map<String, Object> params) {
         List<VideoResponse> videos = Lists.newArrayList();
         try (Transaction tx = this.graphDb.beginTx()) {
-            String query = "MATCH (v:Video) " +
-                    "OPTIONAL MATCH (v)<-[:DANCES]-(d:Dancer) " +
-                    "RETURN v, collect(d.id) as dancers";
-
-            final Result result = this.graphDb.execute(query);
+            final Result result = this.graphDb.execute(query, params);
 
             while (result.hasNext()) {
                 final Map<String, Object> next = result.next();
-
                 final Node videoNode = (Node) next.get("v");
                 final VideoResponse video = videoResponseFromNode(videoNode);
                 video.setDancers(Sets.newHashSet((Iterable<String>) next.get("dancers")));

@@ -21,11 +21,17 @@ public class Neo4JServiceFactory implements ServiceFactory {
 
 
     public Neo4JServiceFactory() {
-        fillDb();
+
+    }
+
+    public Neo4JServiceFactory(boolean b) {
+        if(b){
+            fillDb();
+        }
     }
 
 
-    private void fillDb() {
+    public  void fillDb() {
         try (Transaction tx = this.graphDb.beginTx()) {
             if (!this.getUserService().userExists("admin")) {
                 final HashSet<Node> nodes = this.getPermissionService()

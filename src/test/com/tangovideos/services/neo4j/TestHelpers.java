@@ -23,20 +23,17 @@ public class TestHelpers {
         return node;
     }
 
+    public static Node addVideo(GraphDatabaseService graphDb, String videoId){
+        return new Neo4jVideoService(graphDb).addVideo(new Video(videoId, "Title", "Date"));
+    }
+
     public static void addVideoAndDancer(GraphDatabaseService graphDb, String videoId, String dancerId) {
         final Neo4jDancerService neo4jDancerService = new Neo4jDancerService(graphDb);
-        final Node video = new Neo4jVideoService(graphDb).addVideo(new Video(videoId, "Title", "Date"));
-
+        final Node video = addVideo(graphDb, videoId);
 
         neo4jDancerService.addToVideo(
                 neo4jDancerService.insertOrGetNode(dancerId),
                 video
         );
     }
-
-    public static void addDancer() {
-
-    }
-
-
 }

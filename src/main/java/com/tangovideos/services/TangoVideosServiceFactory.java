@@ -8,7 +8,7 @@ import com.tangovideos.services.Interfaces.VideoService;
 import com.tangovideos.services.neo4j.Neo4JServiceFactory;
 
 public class TangoVideosServiceFactory {
-    public static ServiceFactory serviceFactory = new Neo4JServiceFactory();
+    public static ServiceFactory serviceFactory = new Neo4JServiceFactory(true);
     public static UserService getUserService(){
         return serviceFactory.getUserService();
     }
