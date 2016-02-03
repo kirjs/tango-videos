@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component, Input} from 'angular2/core';
 import {VideoService} from "../../services/VideoService";
 import {VideoInfo} from "../videoInfo/videoInfo";
 
@@ -11,17 +11,9 @@ import {VideoInfo} from "../videoInfo/videoInfo";
     pipes: []
 })
 export class Videos {
-    videos:Array<any> = [];
+    @Input() videos:Array<any> = [];
 
     getThumbnail(id:string) {
         return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
     }
-
-    constructor(private videoService:VideoService) {
-        videoService.list().subscribe((videos)=> {
-            this.videos = videos;
-        });
-    }
-
-
 }

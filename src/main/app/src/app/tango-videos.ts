@@ -6,6 +6,7 @@ import {Videos} from './components/videos/videos';
 import {VideoForm} from './components/videoForm/videoForm';
 import {UserProfile} from './components/userProfile/userProfile';
 import {Dancer} from "./components/dancer/dancer";
+import {Explore} from "./components/explore/explore";
 
 
 
@@ -17,7 +18,7 @@ import {Dancer} from "./components/dancer/dancer";
     pipes: []
 })
 @RouteConfig([
-    new Route({path: '/videos', component: Videos, name: 'Videos', useAsDefault: true}),
+    new Route({path: '/videos', component: Explore, name: 'Videos', useAsDefault: true}),
     new Route({path: '/dancers/:id', component: Dancer, name: 'Dancers'}),
     new Route({path: '/home', component: Home, name: 'Home'}),
     new Route({path: '/new/video', component: VideoForm, name: 'AddVideo'}),
