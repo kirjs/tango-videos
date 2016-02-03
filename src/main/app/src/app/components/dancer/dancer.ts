@@ -1,13 +1,14 @@
 import {Component, Input} from 'angular2/core';
 import {DancerService} from "../../services/DancerService";
 import {RouteParams} from 'angular2/router';
+import {Videos} from "../videos/videos";
 
 @Component({
     selector: 'dancer',
     templateUrl: 'app/components/dancer/dancer.html',
     styleUrls: ['app/components/dancer/dancer.css'],
     providers: [],
-    directives: [],
+    directives: [Videos],
     pipes: []
 })
 export class Dancer {

@@ -80,6 +80,8 @@ public class Neo4jVideoService implements VideoService {
                 "MATCH (v:Video) " +
                         "MATCH (v)<-[:DANCES]-(d:Dancer) " +
                         "WHERE d.id = {dancerId} " +
+                        "WITH v as v " +
+                        "MATCH (d:Dancer)-[:DANCES]->(v)" +
                         "RETURN v, collect(d.id) as dancers";
 
         return getMultipleVideos(query, ImmutableMap.of("dancerId", dancerId));

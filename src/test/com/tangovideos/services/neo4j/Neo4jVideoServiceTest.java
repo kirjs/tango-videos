@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class Neo4jVideoServiceTest  extends EasyMockSupport {
+public class Neo4jVideoServiceTest extends EasyMockSupport {
 
     private GraphDatabaseService graphDb;
     private Neo4jVideoService neo4jVideoService;
@@ -69,12 +69,27 @@ public class Neo4jVideoServiceTest  extends EasyMockSupport {
     public void testListByDancer() throws Exception {
         final String videoId = "videoId";
         final String dancerId = "dancerId";
+        final String otherDancer = "otherDancer";
+        final String thirdDancerId = "thirdDancer";
+
+        // Add a two videos with two dancers
         TestHelpers.addVideoAndDancer(graphDb, videoId, dancerId);
-        TestHelpers.addVideoAndDancer(graphDb, "otherVideo", "otherDancer");
+        TestHelpers.addVideoAndDancer(graphDb, "otherVideo", otherDancer);
+
+        // Add another dancer to the first video
+        final Neo4jDancerService neo4jDancerService = new Neo4jDancerService(graphDb);
+
+        neo4jDancerService.addToVideo(
+                neo4jDancerService.insertOrGetNode(thirdDancerId),
+                videoService.get(videoId)
+        );
+
+
         final List<VideoResponse> list = videoService.listByDancer(dancerId);
         assertEquals(list.size(), 1);
         final VideoResponse video = list.get(0);
         assertEquals(video.getId(), videoId);
+        assertEquals(video.getDancers().size(), 2);
         assertEquals(video.getDancers().iterator().next(), dancerId);
     }
 

@@ -66,7 +66,7 @@ public class Neo4jDancerServiceTest extends EasyMockSupport {
         final String videoID = "videoID";
         TestHelpers.addVideoAndDancer(graphDb, videoID, dancerId);
 
-        try(Transaction tx = graphDb.beginTx()){
+        try (Transaction tx = graphDb.beginTx()) {
             final Dancer dancer = this.neo4jDancerService.get(dancerId);
             assertEquals(dancer.getName(), dancerId);
             tx.success();
@@ -75,7 +75,7 @@ public class Neo4jDancerServiceTest extends EasyMockSupport {
 
     @Test
     public void testGet() {
-        try(Transaction tx = graphDb.beginTx()){
+        try (Transaction tx = graphDb.beginTx()) {
             this.neo4jDancerService.insertOrGetNode("one");
             final Dancer dancer = this.neo4jDancerService.get("one");
             assertEquals(dancer.getName(), "one");
@@ -99,4 +99,26 @@ public class Neo4jDancerServiceTest extends EasyMockSupport {
     }
 
 
+    @Test
+    public void testRemoveFromVideo() throws Exception {
+        final String dancerId = "DancerId";
+        final String videoId = "videoID";
+
+
+        try (Transaction tx = graphDb.beginTx()) {
+            final Node video = TestHelpers.addVideo(graphDb, videoId);
+            final Node dancer = neo4jDancerService.insertOrGetNode(dancerId);
+            neo4jDancerService.addToVideo(dancer,video);
+
+
+            assertEquals(1,  neo4jDancerService.getForVideo(videoId).size());
+            neo4jDancerService.removeFromVideo(dancer, video);
+            assertEquals(0,  neo4jDancerService.getForVideo(videoId).size());
+
+
+            tx.success();
+        }
+
+
+    }
 }

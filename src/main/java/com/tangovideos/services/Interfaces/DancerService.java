@@ -10,6 +10,7 @@ public interface DancerService {
     List<Dancer> list();
 
     void addToVideo(Node dancer, Node video);
+    void removeFromVideo(Node dancer, Node video);
 
     Node insertOrGetNode(String dancerId);
 

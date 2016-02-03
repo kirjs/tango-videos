@@ -61,6 +61,15 @@ public class Neo4jDancerService implements DancerService {
     }
 
     @Override
+    public void removeFromVideo(Node dancer, Node video) {
+        for (Relationship relationship : video.getRelationships(Relationships.DANCES, Direction.INCOMING)) {
+            if (relationship.getOtherNode(video).equals(dancer)) {
+                relationship.delete();
+            }
+        }
+    }
+
+    @Override
     public Node insertOrGetNode(String dancerId) {
         Node dancer;
 
