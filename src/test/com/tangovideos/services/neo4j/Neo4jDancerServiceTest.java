@@ -69,14 +69,12 @@ public class Neo4jDancerServiceTest extends EasyMockSupport {
         try(Transaction tx = graphDb.beginTx()){
             final Dancer dancer = this.neo4jDancerService.get(dancerId);
             assertEquals(dancer.getName(), dancerId);
-            assertEquals(dancer.getVideos().size(), 1);
             tx.success();
         }
     }
 
     @Test
     public void testGet() {
-
         try(Transaction tx = graphDb.beginTx()){
             this.neo4jDancerService.insertOrGetNode("one");
             final Dancer dancer = this.neo4jDancerService.get("one");
@@ -88,13 +86,12 @@ public class Neo4jDancerServiceTest extends EasyMockSupport {
 
     @Test
     public void testList() throws Exception {
-        TestHelpers.addVideoAndDancer(graphDb, "videoId", "dancerId");
+        final String dancerId = "dancerId";
+        TestHelpers.addVideoAndDancer(graphDb, "videoId", dancerId);
         try (Transaction tx = graphDb.beginTx()) {
-
-
             final List<Dancer> list = neo4jDancerService.list();
             assertEquals(1, list.size());
-            assertEquals(1, list.get(0).getVideos().size());
+            assertEquals(dancerId, list.get(0).getName());
 
             tx.success();
         }

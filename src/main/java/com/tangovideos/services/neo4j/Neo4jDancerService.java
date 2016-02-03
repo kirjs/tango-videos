@@ -6,14 +6,12 @@ import com.google.common.collect.Lists;
 import com.tangovideos.data.Labels;
 import com.tangovideos.data.Relationships;
 import com.tangovideos.models.Dancer;
-import com.tangovideos.models.VideoResponse;
 import com.tangovideos.services.Interfaces.DancerService;
 import org.neo4j.graphdb.*;
 import org.neo4j.helpers.collection.IteratorUtil;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -36,21 +34,14 @@ public class Neo4jDancerService implements DancerService {
 
     @Override
     public List<Dancer> list() {
-        final List<Dancer> nodes = Lists.newArrayList();
+        List<Dancer> dancers = Lists.newArrayList();
 
         try (Transaction tx = this.graphDb.beginTx()) {
-            final String query = "MATCH (d:Dancer)-[:DANCES]->(v:Video) " +
-                    "RETURN d, collect(v) as videos";
-
-            final Result result = graphDb.execute(query);
-            while (result.hasNext()) {
-                final Dancer dancer = resultToDancer(result);
-                nodes.add(dancer);
-            }
-
+            final ResourceIterator<Node> result = this.graphDb.findNodes(label);
+            dancers = IteratorUtil.asList(result).stream().map(this::mapNode).collect(Collectors.toList());
             tx.success();
         }
-        return nodes;
+        return dancers;
     }
 
     @Override
@@ -67,19 +58,6 @@ public class Neo4jDancerService implements DancerService {
 
             tx.success();
         }
-    }
-
-    private Dancer resultToDancer(Result result) {
-        final Map<String, Object> next = result.next();
-        final Dancer dancer = this.mapNode((Node) next.get("d"));
-
-        final Iterable<Node> video = (Iterable<Node>) next.get("videos");
-        final List<VideoResponse> videos = IteratorUtil.asList(video).stream()
-                .map(Neo4jVideoService::videoResponseFromNode)
-                .collect(Collectors.toList());
-
-        dancer.setVideos(videos);
-        return dancer;
     }
 
     @Override
@@ -125,15 +103,7 @@ public class Neo4jDancerService implements DancerService {
     public Dancer get(String id) {
         Dancer dancer;
         try (final Transaction tx = this.graphDb.beginTx()) {
-
-            final String query = "MATCH (d:Dancer {id: {id}})" +
-                    "OPTIONAL MATCH (d)-[:DANCES]->(v:Video) " +
-                    "RETURN d, collect(v) as videos";
-
-            final ImmutableMap<String, Object> params = ImmutableMap.of("id", id);
-            final Result result = graphDb.execute(query, params);
-            dancer = resultToDancer(result);
-
+            dancer = mapNode(graphDb.findNode(label, "id", id));
             tx.success();
         }
         return dancer;
