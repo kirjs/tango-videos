@@ -23,9 +23,7 @@ import {Dancer} from "./components/dancer/dancer";
     new Route({path: '/new/video', component: VideoForm, name: 'AddVideo'}),
 ])
 export class TangoVideos {
-
     constructor() {
 
     }
-
 }

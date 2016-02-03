@@ -2,15 +2,11 @@ package com.tangovideos.services.neo4j;
 
 import com.google.common.collect.ImmutableSet;
 import com.tangovideos.models.Video;
-import com.tangovideos.services.YoutubeService;
-import org.easymock.EasyMock;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
 
 import java.util.HashSet;
-
-import static org.easymock.EasyMock.expect;
 
 public class TestHelpers {
     public static Node setUpAdminNode(GraphDatabaseService graphDb) {
@@ -27,23 +23,19 @@ public class TestHelpers {
         return node;
     }
 
-    public static void addVideoAndDancer(GraphDatabaseService graphDb, Neo4jDancerService neo4jDancerService, String id) {
-        final Neo4jUserService userService  = new Neo4jUserService(graphDb);
-        final YoutubeService youtubeService = EasyMock.mock(YoutubeService.class);
+    public static void addVideoAndDancer(GraphDatabaseService graphDb, String videoId, String dancerId) {
+        final Neo4jDancerService neo4jDancerService = new Neo4jDancerService(graphDb);
+        final Node video = new Neo4jVideoService(graphDb).addVideo(new Video(videoId, "Title", "Date"));
 
 
-        TestHelpers.setUpAdminNode(graphDb);
-
-        final Neo4jVideoService neo4jVideoService = new Neo4jVideoService(
-                graphDb,
-                userService,
-                youtubeService,
-                neo4jDancerService
+        neo4jDancerService.addToVideo(
+                neo4jDancerService.insertOrGetNode(dancerId),
+                video
         );
-        expect(youtubeService.getVideoInfo("123")).andReturn(new Video("123", "title", "date"));
-        EasyMock.replay(youtubeService);
-        neo4jVideoService.addVideo("123", TestHelpers.setUpAdminNode(graphDb));
-        neo4jVideoService.addDancer("123", id);
+    }
+
+    public static void addDancer() {
+
     }
 
 

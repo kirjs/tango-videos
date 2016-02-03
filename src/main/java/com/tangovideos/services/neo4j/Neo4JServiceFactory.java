@@ -27,7 +27,7 @@ public class Neo4JServiceFactory implements ServiceFactory {
 
     private void fillDb() {
         try (Transaction tx = this.graphDb.beginTx()) {
-            if(!this.getUserService().userExists("admin")) {
+            if (!this.getUserService().userExists("admin")) {
                 final HashSet<Node> nodes = this.getPermissionService()
                         .addPermissions(ImmutableSet.of("video:read", "video:write"));
 
@@ -36,8 +36,9 @@ public class Neo4JServiceFactory implements ServiceFactory {
 
                 final Node admin = this.getUserService().addUser("admin", "hashme", adminRole);
 
-                this.getVideoService().addVideo("6D8uUFj8_4g",admin);
-                this.getVideoService().addVideo("jMUK-IHyBIU",admin);
+
+                this.getVideoService().addVideo(youtubeService.getVideoInfo("6D8uUFj8_4g"));
+                this.getVideoService().addVideo(youtubeService.getVideoInfo("jMUK-IHyBIU"));
             }
             tx.success();
         }
@@ -49,6 +50,7 @@ public class Neo4JServiceFactory implements ServiceFactory {
         }
         return userService;
     }
+
     public RoleService getRoleService() {
         if (roleService == null) {
             roleService = new Neo4JRoleService(graphDb);
@@ -60,7 +62,7 @@ public class Neo4JServiceFactory implements ServiceFactory {
 
     public VideoService getVideoService() {
         if (videoService == null) {
-            videoService = new Neo4jVideoService(graphDb, this.getUserService(), this.getYoutubeService(), this.getDancerService());
+            videoService = new Neo4jVideoService(graphDb);
         }
         return videoService;
     }
@@ -79,6 +81,7 @@ public class Neo4JServiceFactory implements ServiceFactory {
 
         return youtubeService;
     }
+
     public DancerService getDancerService() {
         if (dancerService == null) {
             dancerService = new Neo4jDancerService(graphDb);

@@ -1,34 +1,27 @@
 package com.tangovideos.services.neo4j;
 
 import com.google.api.client.util.Lists;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.tangovideos.data.Labels;
-import com.tangovideos.data.Relationships;
 import com.tangovideos.models.Video;
 import com.tangovideos.models.VideoResponse;
-import com.tangovideos.services.Interfaces.DancerService;
-import com.tangovideos.services.Interfaces.UserService;
 import com.tangovideos.services.Interfaces.VideoService;
-import com.tangovideos.services.YoutubeService;
-import org.neo4j.graphdb.*;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Result;
+import org.neo4j.graphdb.Transaction;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 
 public class Neo4jVideoService implements VideoService {
     private final GraphDatabaseService graphDb;
-    private final YoutubeService youtubeService;
-    private DancerService dancerService;
 
-    public Neo4jVideoService(GraphDatabaseService graphDb, YoutubeService youtubeService, DancerService dancerService) {
+    public Neo4jVideoService(GraphDatabaseService graphDb) {
         this.graphDb = graphDb;
-        this.youtubeService = youtubeService;
-        this.dancerService = dancerService;
     }
-
 
     @Override
     public boolean videoExists(String videoId) {
@@ -36,25 +29,20 @@ public class Neo4jVideoService implements VideoService {
     }
 
     @Override
-    public void addVideo(String videoId, Node user) {
+    public Node addVideo(@NotNull Video video) {
+        final Node node;
         try (Transaction transaction = graphDb.beginTx()) {
-            if (videoExists(videoId)) {
+            if (videoExists(video.getId())) {
                 throw new RuntimeException("VideoExists");
             }
 
-            final Video videoInfo = youtubeService.getVideoInfo(videoId);
-
-            if (videoInfo == null) {
-                throw new RuntimeException("VideoDoesNotExistOnYoutube");
-            }
-
-            final Node node = graphDb.createNode(Labels.VIDEO.label);
-            node.setProperty("title", videoInfo.getTitle());
-            node.setProperty("publishedAt", videoInfo.getPublishedAt());
-            node.setProperty("id", videoInfo.getId());
-            user.createRelationshipTo(node, Relationships.ADDED);
+            node = graphDb.createNode(Labels.VIDEO.label);
+            node.setProperty("title", video.getTitle());
+            node.setProperty("publishedAt", video.getPublishedAt());
+            node.setProperty("id", video.getId());
             transaction.success();
         }
+        return node;
     }
 
     @Override
@@ -67,7 +55,7 @@ public class Neo4jVideoService implements VideoService {
         return video;
     }
 
-    public static VideoResponse videoResponseFromNode(Node node){
+    public static VideoResponse videoResponseFromNode(Node node) {
         VideoResponse video = new VideoResponse();
         video.setId((String) node.getProperty("id"));
         video.setPublishedAt((String) node.getProperty("publishedAt"));
@@ -77,6 +65,14 @@ public class Neo4jVideoService implements VideoService {
 
     @Override
     public List<VideoResponse> list() {
+        return getMultipleVideos();
+    }
+
+    private List<VideoResponse> getMultipleVideos() {
+        return getMultipleVideos("");
+    }
+
+    private List<VideoResponse> getMultipleVideos(String conditions) {
         List<VideoResponse> videos = Lists.newArrayList();
         try (Transaction tx = this.graphDb.beginTx()) {
             String query = "MATCH (v:Video) " +
@@ -98,24 +94,5 @@ public class Neo4jVideoService implements VideoService {
         return videos;
     }
 
-    @Override
-    public Set<String> addDancer(String videoId, String dancerId) {
-        final Node performer = this.dancerService.insertOrGetNode(dancerId);
-        final Node video = this.get(videoId);
-        try (Transaction tx = this.graphDb.beginTx()) {
 
-            final ImmutableMap<String, Object> params = ImmutableMap.of("dancerId", dancerId, "videoId", videoId);
-            final String query = "MATCH (d:Dancer)-[:DANCES]->(v:Video) " +
-                    " WHERE d.id = {dancerId} AND v.id = {videoId}" +
-                    " RETURN v.id";
-
-            if (!this.graphDb.execute(query, params).hasNext()) {
-                performer.createRelationshipTo(video, Relationships.DANCES);
-            }
-
-
-            tx.success();
-        }
-        return this.dancerService.getForVideo(videoId);
-    }
 }

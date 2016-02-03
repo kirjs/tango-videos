@@ -9,6 +9,8 @@ import java.util.Set;
 public interface DancerService {
     List<Dancer> list();
 
+    void addToVideo(Node dancer, Node video);
+
     Node insertOrGetNode(String dancerId);
 
     Set<String> getForVideo(String videoId);

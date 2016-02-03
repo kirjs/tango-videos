@@ -2,7 +2,6 @@ package com.tangovideos.services.neo4j;
 
 import com.tangovideos.data.Labels;
 import com.tangovideos.models.Dancer;
-import com.tangovideos.services.Interfaces.UserService;
 import org.easymock.EasyMockSupport;
 import org.junit.After;
 import org.junit.Before;
@@ -15,13 +14,12 @@ import org.neo4j.test.TestGraphDatabaseFactory;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class Neo4jDancerServiceTest extends EasyMockSupport {
 
     private GraphDatabaseService graphDb;
     private Neo4jDancerService neo4jDancerService;
-    private UserService userService;
 
 
     @Before
@@ -63,12 +61,14 @@ public class Neo4jDancerServiceTest extends EasyMockSupport {
 
     @Test
     public void testGetForVideo() throws Exception {
-        final String id = "one";
-        TestHelpers.addVideoAndDancer(graphDb, neo4jDancerService, id);
+
+        final String dancerId = "DancerId";
+        final String videoID = "videoID";
+        TestHelpers.addVideoAndDancer(graphDb, videoID, dancerId);
 
         try(Transaction tx = graphDb.beginTx()){
-            final Dancer dancer = this.neo4jDancerService.get(id);
-            assertEquals(dancer.getName(), id);
+            final Dancer dancer = this.neo4jDancerService.get(dancerId);
+            assertEquals(dancer.getName(), dancerId);
             assertEquals(dancer.getVideos().size(), 1);
             tx.success();
         }
@@ -87,21 +87,8 @@ public class Neo4jDancerServiceTest extends EasyMockSupport {
     }
 
     @Test
-    public void testGetWithVideos() {
-
-        final String id = "123";
-        TestHelpers.addVideoAndDancer(graphDb, neo4jDancerService, id);
-        try(Transaction tx = graphDb.beginTx()){
-            final Dancer dancer = this.neo4jDancerService.get(id);
-            assertEquals(dancer.getName(), id);
-            assertEquals(dancer.getVideos().size(), 1);
-            tx.success();
-        }
-    }
-
-    @Test
     public void testList() throws Exception {
-        TestHelpers.addVideoAndDancer(graphDb, neo4jDancerService, "123");
+        TestHelpers.addVideoAndDancer(graphDb, "videoId", "dancerId");
         try (Transaction tx = graphDb.beginTx()) {
 
 

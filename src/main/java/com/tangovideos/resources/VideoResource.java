@@ -1,9 +1,9 @@
 package com.tangovideos.resources;
 
-import com.tangovideos.responses.VideosResponse;
 import com.tangovideos.services.TangoVideosServiceFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.json.JSONArray;
+import org.neo4j.graphdb.Node;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -28,7 +28,7 @@ public class VideoResource {
     @GET
     @Path("list")
     public Response list() {
-        final VideosResponse videos = new VideosResponse();
+
         final String result = new JSONArray(TangoVideosServiceFactory.getVideoService().list()).toString();
 
         return Response.status(200)
@@ -45,8 +45,11 @@ public class VideoResource {
 
     @POST
     @Path("{id}/dancers/add")
-    public Response addVideo(@PathParam("id") String id, @FormParam("name") String dancer) {
-        final Set<String> entity = TangoVideosServiceFactory.getVideoService().addDancer(id, dancer);
+    public Response addVideo(@PathParam("id") String id, @FormParam("name") String dancerId) {
+        final Node dancer = TangoVideosServiceFactory.getDancerService().insertOrGetNode(dancerId);
+        final Node video = TangoVideosServiceFactory.getVideoService().get(id);
+        TangoVideosServiceFactory.getDancerService().addToVideo(video, dancer);
+        final Set<String> entity = TangoVideosServiceFactory.getDancerService().getForVideo(id);
         final String result = new JSONArray(entity).toString();
         return Response.status(200)
                 .entity(result)

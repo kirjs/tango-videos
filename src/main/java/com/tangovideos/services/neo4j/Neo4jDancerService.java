@@ -4,6 +4,7 @@ import com.google.api.client.util.Sets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.tangovideos.data.Labels;
+import com.tangovideos.data.Relationships;
 import com.tangovideos.models.Dancer;
 import com.tangovideos.models.VideoResponse;
 import com.tangovideos.services.Interfaces.DancerService;
@@ -14,9 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 public class Neo4jDancerService implements DancerService {
@@ -44,7 +43,7 @@ public class Neo4jDancerService implements DancerService {
                     "RETURN d, collect(v) as videos";
 
             final Result result = graphDb.execute(query);
-            while(result.hasNext()){
+            while (result.hasNext()) {
                 final Dancer dancer = resultToDancer(result);
                 nodes.add(dancer);
             }
@@ -52,6 +51,22 @@ public class Neo4jDancerService implements DancerService {
             tx.success();
         }
         return nodes;
+    }
+
+    @Override
+    public void addToVideo(Node dancer, Node video) {
+        try (Transaction tx = this.graphDb.beginTx()) {
+
+            for (Relationship relationship : video.getRelationships(Relationships.DANCES, Direction.INCOMING)) {
+                if (relationship.getOtherNode(video).equals(dancer)) {
+                    return;
+                }
+            }
+
+            dancer.createRelationshipTo(video, Relationships.DANCES);
+
+            tx.success();
+        }
     }
 
     private Dancer resultToDancer(Result result) {
@@ -109,7 +124,7 @@ public class Neo4jDancerService implements DancerService {
     @Override
     public Dancer get(String id) {
         Dancer dancer;
-        try(final Transaction tx = this.graphDb.beginTx()){
+        try (final Transaction tx = this.graphDb.beginTx()) {
 
             final String query = "MATCH (d:Dancer {id: {id}})" +
                     "OPTIONAL MATCH (d)-[:DANCES]->(v:Video) " +
