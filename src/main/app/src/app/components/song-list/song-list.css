@@ -1,0 +1,45 @@
+.dancer-tile {
+    margin-bottom: 5px;
+}
+
+.dancer-tile:hover {
+    background: #eee;
+    cursor: pointer;
+    border-radius: 16px;
+}
+
+.dancer-tile .name {
+    margin-left: 10px;
+}
+
+.dancer-tile:hover .remove {
+    display: inline-block;
+}
+.dancer-tile:hover .remove:hover {
+    background-color: #999;
+    color: white;
+}
+
+.dancer-tile .remove {
+    float: right;
+    height: 32px;
+    line-height: 32px;
+    background-color: #bbbbbb;
+    width: 32px;
+    text-align: center;
+    border-radius: 16px;
+    display: none;
+}
+
+.dancer-tile .image {
+    width: 32px;
+    height: 32px;
+    background-color: #f90;
+    border: 2px #000 solid;
+    border-radius: 50%;
+
+}
+.dancer-tile .image, .dancer-tile .name{
+    display: inline-block;
+    vertical-align: middle;
+}
