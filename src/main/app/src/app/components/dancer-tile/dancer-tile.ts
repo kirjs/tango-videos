@@ -18,6 +18,8 @@ export class DancerTile {
     }
 
     addDancer(dancer: String) {
+        // TODO: Proper escaping
+        dancer = dancer.replace('/', ' ');
         this.add.emit(dancer);
     }
 
