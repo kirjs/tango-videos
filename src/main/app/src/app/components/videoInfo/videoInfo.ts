@@ -19,6 +19,14 @@ export class VideoInfo {
             this.video.dancers = data;
         });
     }
+
+    removeDancer(name:string) {
+        this.videoService.removeDancer(this.video.id, name).subscribe((data)=>{
+            this.video.dancers = data;
+        });
+    }
+
+
     constructor(private videoService: VideoService) {
 
 

@@ -1,7 +1,7 @@
 package com.tangovideos.resources;
 
+import com.tangovideos.services.Interfaces.DancerService;
 import com.tangovideos.services.TangoVideosServiceFactory;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.json.JSONArray;
 import org.neo4j.graphdb.Node;
 
@@ -16,14 +16,7 @@ import java.util.Set;
 @Path("api/videos")
 @Produces(MediaType.APPLICATION_JSON)
 public class VideoResource {
-
-
-    @GET
-    @RequiresPermissions("videos:read")
-    public String getVideos() {
-        return "{\"a\": \"list\"}";
-    }
-
+    final DancerService dancerService = TangoVideosServiceFactory.getDancerService();
 
     @GET
     @Path("list")
@@ -37,19 +30,27 @@ public class VideoResource {
                 .build();
     }
 
-    @GET
-    @Path("{id}")
-    public String getVideo(@PathParam("id") String id) {
-        return "{\"a\": \"" + id + "\"}";
+    @POST
+    @Path("{id}/dancers/add")
+    public Response addDancer(@PathParam("id") String id, @FormParam("name") String dancerId) {
+        final Node dancer = dancerService.insertOrGetNode(dancerId);
+        final Node video = TangoVideosServiceFactory.getVideoService().get(id);
+        TangoVideosServiceFactory.getDancerService().addToVideo(dancer, video);
+        final Set<String> entity = TangoVideosServiceFactory.getDancerService().getForVideo(id);
+        final String result = new JSONArray(entity).toString();
+        return Response.status(200)
+                .entity(result)
+                .type(MediaType.APPLICATION_JSON)
+                .build();
     }
 
     @POST
-    @Path("{id}/dancers/add")
-    public Response addVideo(@PathParam("id") String id, @FormParam("name") String dancerId) {
-        final Node dancer = TangoVideosServiceFactory.getDancerService().insertOrGetNode(dancerId);
+    @Path("{id}/dancers/remove")
+    public Response removeDancer(@PathParam("id") String id, @FormParam("name") String dancerId) {
+        final Node dancer = dancerService.insertOrGetNode(dancerId);
         final Node video = TangoVideosServiceFactory.getVideoService().get(id);
-        TangoVideosServiceFactory.getDancerService().addToVideo(video, dancer);
-        final Set<String> entity = TangoVideosServiceFactory.getDancerService().getForVideo(id);
+        dancerService.removeFromVideo(dancer, video);
+        final Set<String> entity = dancerService.getForVideo(id);
         final String result = new JSONArray(entity).toString();
         return Response.status(200)
                 .entity(result)

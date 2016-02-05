@@ -11,16 +11,23 @@ import {ROUTER_DIRECTIVES} from 'angular2/router';
 })
 export class DancerTile {
     @Input() dancers:any = [];
-    @Output() addCallback = new EventEmitter();
+    @Output() add = new EventEmitter();
+    @Output() remove = new EventEmitter();
 
     constructor() {
     }
 
-    save(dancer: String) {
-        this.addCallback.emit(dancer);
+    addDancer(dancer: String) {
+        this.add.emit(dancer);
     }
 
-    add() {
+    removeDancer(event, dancer){
+        event.preventDefault();
+        event.stopPropagation();
+        this.remove.emit(dancer);
+
+    }
+    addNewInput() {
         this.dancers = this.dancers || [];
 
         if (this.dancers.filter(i => i == '').length == 0) {

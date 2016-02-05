@@ -17,11 +17,20 @@ export class VideoService {
         return this.makeRequest("/list")
 	}
 
-	addDancer(id:String|Number, dancer:String) {
+	addDancer(id:String, dancer:String) {
 		var headers = new Headers();
 		headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
 		return this.http.post(`api/videos/${id}/dancers/add`,
 			'name='+dancer, {headers: headers}).map(res => res.json());
 	}
+
+    removeDancer(id:String, dancer:String):any {
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+        return this.http.post(`api/videos/${id}/dancers/remove`,
+            'name='+dancer, {headers: headers}).map(res => res.json());
+
+    }
 }

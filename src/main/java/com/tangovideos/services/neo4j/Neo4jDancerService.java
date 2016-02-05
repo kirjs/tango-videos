@@ -62,11 +62,15 @@ public class Neo4jDancerService implements DancerService {
 
     @Override
     public void removeFromVideo(Node dancer, Node video) {
-        for (Relationship relationship : video.getRelationships(Relationships.DANCES, Direction.INCOMING)) {
-            if (relationship.getOtherNode(video).equals(dancer)) {
-                relationship.delete();
+        try(Transaction tx = graphDb.beginTx()) {
+            for (Relationship relationship : video.getRelationships(Relationships.DANCES, Direction.INCOMING)) {
+                if (relationship.getOtherNode(video).equals(dancer)) {
+                    relationship.delete();
+                }
             }
+            tx.success();
         }
+
     }
 
     @Override
@@ -92,7 +96,7 @@ public class Neo4jDancerService implements DancerService {
         HashSet<String> result = Sets.newHashSet();
 
         try (Transaction tx = this.graphDb.beginTx()) {
-            final String query = "MATCH (v:Video)<-[:DANCES]-(d:Dancer) " +
+            final String query = "MATCH (d:Dancer)-[:DANCES]->(v:Video) " +
                     "WHERE v.id = {id} " +
                     "RETURN d.id";
 

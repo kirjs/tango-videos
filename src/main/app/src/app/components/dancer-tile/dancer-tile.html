@@ -4,13 +4,14 @@
 <div *ngIf="!saving">
     <div *ngFor="#dancer of dancers" class="dancer-tile">
         <div *ngIf="dancer == ''">
-            <input #f type="text"><input type="submit" value="Add dancer" (click)="save(f.value)">
+            <input #f type="text"><input type="submit" value="Add dancer" (click)="addDancer(f.value)">
         </div>
 
         <div *ngIf="dancer != ''" class = "dancer" [routerLink]="['Dancers', {id: dancer}]">
             <div class="image"></div>
             <div class="name">{{dancer}}</div>
+            <div class="remove" (click) = "removeDancer($event, dancer)">&times;</div>
         </div>
     </div>
-    <div (click)="add()">Add dancer</div>
+    <div (click)="addNewInput()">Add dancer</div>
 </div>
