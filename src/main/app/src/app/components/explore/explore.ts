@@ -4,8 +4,8 @@ import {VideoService} from "../../services/VideoService";
 
 @Component({
     selector: 'explore',
-    templateUrl: 'app/components/explore/explore.html',
-    styleUrls: ['app/components/explore/explore.css'],
+    template: require('./explore.html'),
+    styles: [require('./explore.css')],
     providers: [],
     directives: [Videos],
     pipes: []

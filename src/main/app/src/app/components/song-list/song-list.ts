@@ -3,8 +3,8 @@ import {ROUTER_DIRECTIVES} from 'angular2/router';
 
 @Component({
     selector: 'song-list',
-    templateUrl: 'app/components/song-list/song-list.html',
-    styleUrls: ['app/components/song-list/song-list.css'],
+    template: require('./song-list.html'),
+    styles: [require('./song-list.css')],
     providers: [],
     directives: [ROUTER_DIRECTIVES],
     pipes: []

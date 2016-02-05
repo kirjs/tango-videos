@@ -4,8 +4,8 @@ import {VideoService} from "../../services/VideoService";
 
 @Component({
     selector: 'video-info',
-    templateUrl: 'app/components/videoInfo/videoInfo.html',
-    styleUrls: ['app/components/videoInfo/videoInfo.css'],
+    template: require('./videoInfo.html'),
+    styles: [require('./videoInfo.css')],
     providers: [],
     directives: [DancerTile],
     pipes: []

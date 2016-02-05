@@ -4,8 +4,8 @@ import {VideoPreview} from '../videoPreview/videoPreview';
 
 @Component({
     selector: 'video-form',
-    templateUrl: 'app/components/videoForm/videoForm.html',
-    styleUrls: ['app/components/videoForm/videoForm.css'],
+    template: require('./videoForm.html'),
+    styles: [require('./videoForm.css')],
     providers: [],
     directives: [VideoPreview],
     pipes: []

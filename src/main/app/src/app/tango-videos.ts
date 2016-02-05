@@ -13,7 +13,7 @@ import {Explore} from "./components/explore/explore";
 @Component({
     selector: 'tango-videos',
     providers: [],
-    templateUrl: 'app/tango-videos.html',
+    template: require('./tango-videos.html'),
     directives: [ROUTER_DIRECTIVES.concat(UserProfile)],
     pipes: []
 })

@@ -20,7 +20,9 @@ module.exports = {
 
   module: {
     loaders: [
-      { test: /\.ts$/, loader: 'ts-loader' }
+      { test: /\.ts$/, loader: 'ts-loader' },
+      { test: /\.css$/,   loader: 'raw-loader' },
+      { test: /\.html$/,  loader: 'raw-loader' }
     ],
     noParse: [ path.join(__dirname, 'node_modules', 'angular2', 'bundles') ]
   },

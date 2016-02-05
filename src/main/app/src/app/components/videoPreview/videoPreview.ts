@@ -12,8 +12,8 @@ class VideoInfo {
 
 @Component({
     selector: 'video-preview',
-    templateUrl: 'app/components/videoPreview/videoPreview.html',
-    styleUrls: ['app/components/videoPreview/videoPreview.css'],
+    template: require('./videoPreview.html'),
+    styles: [require('./videoPreview.css')],
     providers: [Youtube],
     directives: [],
 })

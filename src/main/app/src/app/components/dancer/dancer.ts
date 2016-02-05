@@ -5,8 +5,8 @@ import {Videos} from "../videos/videos";
 
 @Component({
     selector: 'dancer',
-    templateUrl: 'app/components/dancer/dancer.html',
-    styleUrls: ['app/components/dancer/dancer.css'],
+    template: require('./dancer.html'),
+    styles: [require('./dancer.css')],
     providers: [],
     directives: [Videos],
     pipes: []

@@ -3,8 +3,8 @@ import {ROUTER_DIRECTIVES} from 'angular2/router';
 
 @Component({
     selector: 'dancer-tile',
-    templateUrl: 'app/components/dancer-tile/dancer-tile.html',
-    styleUrls: ['app/components/dancer-tile/dancer-tile.css'],
+    template: require('./dancer-tile.html'),
+    styles: [require('./dancer-tile.css')],
     providers: [],
     directives: [ROUTER_DIRECTIVES],
     pipes: []

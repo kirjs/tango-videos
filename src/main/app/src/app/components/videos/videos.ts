@@ -4,8 +4,8 @@ import {VideoInfo} from "../videoInfo/videoInfo";
 
 @Component({
     selector: 'videos',
-    templateUrl: 'app/components/videos/videos.html',
-    styleUrls: ['app/components/videos/videos.css'],
+    template: require('./videos.html'),
+    styles: [require('./videos.css')],
     providers: [],
     directives: [ VideoInfo],
     pipes: []
