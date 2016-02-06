@@ -1,24 +1,18 @@
 {
-  "name": "angular2-seed",
+  "name": "tango-videos",
   "version": "1.0.0",
-  "description": "A simple starter Angular2 project",
+  "description": "Tango videos website.",
   "scripts": {
     "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/angular/angular2-seed.git"
+    "url": "git+https://github.com/kirjs/tango-videos.git"
   },
   "keywords": [
-    "Angular2",
-    "angular2-seed"
   ],
-  "author": "Rob Wormald <robwormald@gmail.com>",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/angular/angular2-seed/issues"
-  },
-  "homepage": "https://github.com/angular/angular2-seed#readme",
+  "author": "Kirill Cherkashin <kirill@kcherkashin.org>",
+  "license": "MIT",
   "devDependencies": {
     "raw-loader": "^0.5.1",
     "ts-loader": "^0.7.2",
