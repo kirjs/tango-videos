@@ -2,4 +2,4 @@ target
 node_modules
 .idea
 tango-videos.iml
-static
+webapp/static

@@ -5,6 +5,7 @@ var compiler = webpack(require('./webpack.config.js'));
 var server = new WebpackDevServer(compiler, {
     inline: true,
     colors: true,
+    https: true,
     progress: true,
     displayErrorDetails: true,
     displayCached: true,

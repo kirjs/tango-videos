@@ -8,12 +8,17 @@ import com.tangovideos.services.neo4j.Neo4JServiceFactory;
 
 public class TangoVideosServiceFactory {
     public static ServiceFactory serviceFactory = new Neo4JServiceFactory(true);
-    public static UserService getUserService(){
+
+    public static UserService getUserService() {
         return serviceFactory.getUserService();
     }
 
-    public static VideoService getVideoService(){
+    public static VideoService getVideoService() {
         return serviceFactory.getVideoService();
+    }
+
+    public static YoutubeService getYoutubeService() {
+        return serviceFactory.getYoutubeService();
     }
 
     public static DancerService getDancerService() {
