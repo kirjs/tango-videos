@@ -9,9 +9,9 @@ public class TangoVideosApplication extends ResourceConfig {
 
     public TangoVideosApplication() {
         register(new AuthorizationFilterFeature());
-            register(new SubjectFactory());
-            register(new AuthInjectionBinder());
-            packages("com.tangovideos");
-        }
+        register(new SubjectFactory());
+        register(new AuthInjectionBinder());
+        packages("com.tangovideos");
     }
+}
 

@@ -6,7 +6,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
@@ -21,8 +20,8 @@ public class IndexResource {
         return getResource("static/index.html");
     }
 
-    private FileInputStream getResource(String file) throws FileNotFoundException {
-        return new FileInputStream(getClass().getClassLoader().getResource(file).getPath());
+    private InputStream getResource(String file) throws FileNotFoundException {
+        return IndexResource.class.getResourceAsStream(file);
     }
 
     @GET
