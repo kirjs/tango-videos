@@ -34,11 +34,21 @@
 .dancer-tile .image {
     width: 32px;
     height: 32px;
-    background-color: #f90;
+    background-color: #777;
     border: 2px #000 solid;
     border-radius: 50%;
+}
+
+.dancer-tile.add  .image {
+    background-color: #eee;
+    border: #999;
+    text-align: center;
+    vertical-align: center;
+    font-size: 25px;
+    line-height: 32px;
 
 }
+
 .dancer-tile .image, .dancer-tile .name{
     display: inline-block;
     vertical-align: middle;
