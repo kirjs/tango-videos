@@ -1,0 +1,13 @@
+<div>
+    <div>
+        <editable-field (update)="handleUpdate('year', $event)" label="Unknown Genre" [value]="song.year"
+                        emptyValue="Unknown Year"></editable-field>
+    </div>
+    <div>
+        <editable-field (update)="handleUpdate('orchestra', $event)" emptyValue="Unknown Orchestra" label="orchestra"
+                        [value]="song.orchestra"></editable-field>
+        -
+        <editable-field (update)="handleUpdate('name', $event)" emptyValue="Unknown Song Name" label="name"
+                        [value]="song.name"></editable-field>
+    </div>
+</div>

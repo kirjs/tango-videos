@@ -2,17 +2,19 @@
     Please wait, saving your changes.
 </div>
 <div *ngIf="!saving">
-    <div *ngFor="#dancer of dancers" class="dancer-tile">
+    <div *ngFor="#dancer of dancers" class="dancer-list">
         <div *ngIf="dancer == ''">
             <input #f type="text"><input type="submit" value="Add dancer" (click)="addDancer(f.value)">
         </div>
 
-        <div *ngIf="dancer != ''" class = "dancer" [routerLink]="['Dancers', {id: dancer}]">
+        <div *ngIf="dancer != ''" class="tile" [routerLink]="['Dancers', {id: dancer}]">
             <div class="image"></div>
             <div class="name">{{dancer}}</div>
-            <div class="remove" (click) = "removeDancer($event, dancer)">&times;</div>
+            <div class="remove" (click)="removeDancer($event, dancer)">&times;</div>
         </div>
     </div>
-    <div (click)="addNewInput()" class = "dancer-tile add"><div class="image">+</div>
-        <div class="name">Add dancer</div></div>
+    <div (click)="addNewInput()" class="tile add">
+        <div class="image">+</div>
+        <div class="name">Add dancer</div>
+    </div>
 </div>

@@ -1,0 +1,12 @@
+<span *ngIf="editMode">
+        <input type="text" value="{{value}}" #f>
+        <input type="button" value="save" (click)="changeValue(f.value); editMode = false">
+        <input type="button" value="cancel" (click)="editMode = false">
+</span>
+<span *ngIf="!editMode" class="editable-field">
+        <span *ngIf="!value" class="empty-value">
+                {{emptyValue}}
+        </span>
+        <span *ngIf="value">{{value}}</span>
+        <span class="suggest-edit" (click)="editMode = true">Edit value</span>
+</span>

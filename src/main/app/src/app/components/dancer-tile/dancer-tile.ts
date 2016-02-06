@@ -4,7 +4,7 @@ import {ROUTER_DIRECTIVES} from 'angular2/router';
 @Component({
     selector: 'dancer-tile',
     template: require('./dancer-tile.html'),
-    styles: [require('./dancer-tile.css')],
+    styles: [require('./dancer-tile.css'), require('../common/list.css')],
     providers: [],
     directives: [ROUTER_DIRECTIVES],
     pipes: []

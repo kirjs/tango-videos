@@ -1,0 +1,58 @@
+.tile {
+    margin-bottom: 8px;
+    box-shadow: 1px 1px 1px #ddd;
+    border-radius: 16px;
+}
+
+.tile .name {
+    margin-left: 10px;
+}
+
+.tile:hover {
+    cursor: pointer;
+    box-shadow: 2px 2px 2px #ddd;
+}
+
+
+
+.tile:hover .remove {
+    display: inline-block;
+}
+.tile:hover .remove:hover {
+    box-shadow: 2px 2px 2px #ddd;
+    background-color: #ddd;
+}
+
+.tile .remove {
+    float: right;
+    height: 32px;
+    line-height: 32px;
+    background-color: #bbbbbb;
+    width: 32px;
+    text-align: center;
+    border-radius: 16px;
+    display: none;
+}
+
+.tile .image {
+    width: 32px;
+    height: 32px;
+    background-color: #777;
+    border: 2px #000 solid;
+    border-radius: 50%;
+}
+
+
+.tile .image, .tile .name{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.tile.add  .image {
+    background-color: #eee;
+    border: 2px #999 solid;
+    text-align: center;
+    vertical-align: center;
+    font-size: 25px;
+    line-height: 32px;
+}
