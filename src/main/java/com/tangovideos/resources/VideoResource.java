@@ -32,8 +32,8 @@ public class VideoResource {
     }
 
     @GET
-    @Path("exist")
-    public Response exist(@FormParam("ids") String ids) {
+    @Path("exist/{ids}")
+    public Response exist(@PathParam("ids") String ids) {
         final ImmutableSet<String> idSet = ImmutableSet.copyOf(ids.split(","));
         final String result = new JSONArray(TangoVideosServiceFactory.getVideoService().exist(idSet)).toString();
 
