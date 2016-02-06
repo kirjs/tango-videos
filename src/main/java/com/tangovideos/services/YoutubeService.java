@@ -11,11 +11,6 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 
 public class YoutubeService {
-    public static void main(String[] args) {
-        new YoutubeService().getVideoInfo("6D8uUFj8_4g");
-
-    }
-
     final String BASE_URL = "https://www.googleapis.com/youtube/v3/";
     final String API_TOKEN = "AIzaSyCW22iBpph-9DMs3rpHa3iXZDpTV0qsLCU";
 
