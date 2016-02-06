@@ -1,6 +1,5 @@
 package com.tangovideos.services;
 
-import com.tangovideos.models.Video;
 import com.tangovideos.services.Interfaces.DancerService;
 import com.tangovideos.services.Interfaces.ServiceFactory;
 import com.tangovideos.services.Interfaces.UserService;
