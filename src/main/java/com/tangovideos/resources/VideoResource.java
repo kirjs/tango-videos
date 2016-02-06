@@ -1,5 +1,6 @@
 package com.tangovideos.resources;
 
+import com.google.common.collect.ImmutableSet;
 import com.tangovideos.services.Interfaces.DancerService;
 import com.tangovideos.services.TangoVideosServiceFactory;
 import org.json.JSONArray;
@@ -30,6 +31,18 @@ public class VideoResource {
                 .build();
     }
 
+    @GET
+    @Path("exist")
+    public Response exist(@FormParam("ids") String ids) {
+        final ImmutableSet<String> idSet = ImmutableSet.copyOf(ids.split(","));
+        final String result = new JSONArray(TangoVideosServiceFactory.getVideoService().exist(idSet)).toString();
+
+        return Response.status(200)
+                .entity(result)
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+    }
+
     @POST
     @Path("{id}/dancers/add")
     public Response addDancer(@PathParam("id") String id, @FormParam("name") String dancerId) {
@@ -40,6 +53,20 @@ public class VideoResource {
         final String result = new JSONArray(entity).toString();
         return Response.status(200)
                 .entity(result)
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+    }
+
+    @POST
+    @Path("{id}/songs/update")
+    public Response updateSong(@PathParam("index") String index, @FormParam("field") String field, @FormParam("data") String data) {
+//        final Node dancer = dancerService.insertOrGetNode(dancerId);
+//        final Node video = TangoVideosServiceFactory.getVideoService().get(id);
+//        TangoVideosServiceFactory.getDancerService().addToVideo(dancer, video);
+//        final Set<String> entity = TangoVideosServiceFactory.getDancerService().getForVideo(id);
+//        final String result = new JSONArray(entity).toString();
+        return Response.status(200)
+                .entity("TODO")
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }

@@ -1,6 +1,7 @@
 package com.tangovideos.services.neo4j;
 
 import com.google.api.client.util.Lists;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.tangovideos.data.Labels;
@@ -11,10 +12,12 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
+import org.neo4j.helpers.collection.IteratorUtil;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 public class Neo4jVideoService implements VideoService {
@@ -85,6 +88,16 @@ public class Neo4jVideoService implements VideoService {
                         "RETURN v, collect(d.id) as dancers";
 
         return getMultipleVideos(query, ImmutableMap.of("dancerId", dancerId));
+    }
+
+    @Override
+    public Set<String> exist(Set<String> ids) {
+
+
+        final ImmutableMap<String, Object> params = ImmutableMap.of("ids", ImmutableList.copyOf(ids));
+        final String query = "MATCH (v:Video) WHERE v.id IN {ids} RETURN v.id as id";
+        final Result result = graphDb.execute(query, params);
+        return IteratorUtil.asSet(result.columnAs("id"));
     }
 
 

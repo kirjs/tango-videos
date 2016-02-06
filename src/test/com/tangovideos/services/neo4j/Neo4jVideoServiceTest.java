@@ -1,5 +1,6 @@
 package com.tangovideos.services.neo4j;
 
+import com.google.common.collect.ImmutableSet;
 import com.tangovideos.models.VideoResponse;
 import com.tangovideos.services.Interfaces.VideoService;
 import org.easymock.EasyMockSupport;
@@ -96,6 +97,18 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
 
     @Test
     public void testAddDancer() throws Exception {
+
+    }
+
+    @Test
+    public void testExist() throws Exception {
+        TestHelpers.addVideo(graphDb, "one");
+        TestHelpers.addVideo(graphDb, "three");
+        TestHelpers.addVideo(graphDb, "five");
+
+        assertEquals(ImmutableSet.of("one", "three"),
+                videoService.exist(ImmutableSet.of("one", "two", "three", "four"))
+        );
 
     }
 }
