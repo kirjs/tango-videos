@@ -18,7 +18,6 @@ public class BasicNameParser {
         if (matcher.find()) {
             final String group = matcher.group(0);
             String dancer1Name = matcher.group(1);
-            String dancerNickname = matcher.group(3);
             String dancer1LastName = matcher.group(4);
             String dancer2Name = matcher.group(6);
             String dancer2LastName = matcher.group(7);
