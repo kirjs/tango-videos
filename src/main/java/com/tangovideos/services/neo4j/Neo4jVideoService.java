@@ -15,6 +15,7 @@ import org.neo4j.graphdb.Transaction;
 import org.neo4j.helpers.collection.IteratorUtil;
 
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -42,8 +43,10 @@ public class Neo4jVideoService implements VideoService {
 
             node = graphDb.createNode(Labels.VIDEO.label);
             node.setProperty("title", video.getTitle());
+            node.setProperty("description", video.getDescription());
             node.setProperty("publishedAt", video.getPublishedAt());
             node.setProperty("id", video.getId());
+            node.setProperty("addedAt", Instant.now().getEpochSecond());
             transaction.success();
         }
         return node;
@@ -85,7 +88,8 @@ public class Neo4jVideoService implements VideoService {
                         "WHERE d.id = {dancerId} " +
                         "WITH v as v " +
                         "MATCH (d:Dancer)-[:DANCES]->(v)" +
-                        "RETURN v, collect(d.id) as dancers";
+                        "RETURN v, collect(d.id) as dancers" +
+                        "SORTBY v.addedAt";
 
         return getMultipleVideos(query, ImmutableMap.of("dancerId", dancerId));
     }

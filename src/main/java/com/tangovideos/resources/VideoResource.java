@@ -37,7 +37,10 @@ public class VideoResource {
     @Path("add")
     public Response add(@FormParam("id") String id) {
         final Video videoInfo = TangoVideosServiceFactory.getYoutubeService().getVideoInfo(id);
-        videoService.addVideo(videoInfo);
+        final Node video = videoService.addVideo(videoInfo);
+        videoInfo.getDancers().stream()
+                .map(dancerService::insertOrGetNode)
+                .forEach(d -> dancerService.addToVideo(d, video));
 
         return Response.status(200)
                 .entity(id)

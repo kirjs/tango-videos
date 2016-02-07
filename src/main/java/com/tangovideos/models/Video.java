@@ -1,8 +1,11 @@
 package com.tangovideos.models;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class Video {
+    private String description;
+
     public String getTitle() {
         return title;
     }
@@ -19,11 +22,11 @@ public class Video {
         return publishedAt;
     }
 
-    public ArrayList<Dancer> getDancers() {
+    public Set<String> getDancers() {
         return dancers;
     }
 
-    public void setDancers(ArrayList<Dancer> dancers) {
+    public void setDancers(Set<String> dancers) {
         this.dancers = dancers;
     }
 
@@ -54,7 +57,7 @@ public class Video {
     private final String id;
     String title;
     private final Object publishedAt;
-    ArrayList<Dancer> dancers;
+    Set<String> dancers;
     ArrayList<Song> songs;
     String date;
     String url;
@@ -63,5 +66,13 @@ public class Video {
         this.id = id;
         this.title = title;
         this.publishedAt = publishedAt;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

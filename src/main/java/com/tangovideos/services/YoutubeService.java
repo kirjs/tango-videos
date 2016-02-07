@@ -27,11 +27,16 @@ public class YoutubeService {
             JSONObject video = (JSONObject) items.get(0);
             JSONObject snippet = (JSONObject) video.get("snippet");
 
-            return new Video(
+            final Video result = new Video(
                     id,
                     snippet.get("title").toString(),
                     snippet.get("publishedAt").toString()
             );
+            result.setDescription(snippet.get("description").toString());
+            result.setDancers(BasicNameParser.extractNames(result.getTitle(), result.getDescription()));
+            return result;
+
+
 
         } catch (JSONException e) {
             e.printStackTrace();
