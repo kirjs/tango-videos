@@ -77,7 +77,7 @@ public class Neo4jVideoService implements VideoService {
                 "MATCH (v:Video) " +
                         "OPTIONAL MATCH (v)<-[:DANCES]-(d:Dancer) " +
                         "RETURN v, collect(d.id) as dancers " +
-                        "ORDER BY v.addedAt";
+                        "ORDER BY v.addedAt DESC";
 
         return getMultipleVideos(query, ImmutableMap.of());
     }
