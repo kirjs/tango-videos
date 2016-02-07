@@ -20,6 +20,9 @@ public class VideoResponse {
     @XmlElement
     public String publishedAt;
 
+    @XmlElement
+    private String addedAt;
+
     public String getPublishedAt() {
         return publishedAt;
     }
@@ -53,4 +56,11 @@ public class VideoResponse {
     }
 
 
+    public void setAddedAt(String addedAt) {
+        this.addedAt = addedAt;
+    }
+
+    public String getAddedAt() {
+        return addedAt;
+    }
 }

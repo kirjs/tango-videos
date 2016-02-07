@@ -67,6 +67,7 @@ public class Neo4jVideoService implements VideoService {
         video.setId((String) node.getProperty("id"));
         video.setPublishedAt((String) node.getProperty("publishedAt"));
         video.setTitle((String) node.getProperty("title"));
+        video.setAddedAt((String) node.getProperty("title"));
         return video;
     }
 
@@ -75,7 +76,8 @@ public class Neo4jVideoService implements VideoService {
         final String query =
                 "MATCH (v:Video) " +
                         "OPTIONAL MATCH (v)<-[:DANCES]-(d:Dancer) " +
-                        "RETURN v, collect(d.id) as dancers";
+                        "RETURN v, collect(d.id) as dancers " +
+                        "ORDER BY v.addedAt";
 
         return getMultipleVideos(query, ImmutableMap.of());
     }
@@ -88,8 +90,8 @@ public class Neo4jVideoService implements VideoService {
                         "WHERE d.id = {dancerId} " +
                         "WITH v as v " +
                         "MATCH (d:Dancer)-[:DANCES]->(v)" +
-                        "RETURN v, collect(d.id) as dancers" +
-                        "SORTBY v.addedAt";
+                        "RETURN v, collect(d.id) as dancers";
+
 
         return getMultipleVideos(query, ImmutableMap.of("dancerId", dancerId));
     }

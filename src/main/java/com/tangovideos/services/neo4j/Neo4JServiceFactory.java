@@ -40,11 +40,7 @@ public class Neo4JServiceFactory implements ServiceFactory {
                 final Node adminRole = this.getRoleService()
                         .addRole("admin", nodes);
 
-                final Node admin = this.getUserService().addUser("admin", "hashme", adminRole);
-
-
-                this.getVideoService().addVideo(youtubeService.getVideoInfo("6D8uUFj8_4g"));
-                this.getVideoService().addVideo(youtubeService.getVideoInfo("jMUK-IHyBIU"));
+                this.getUserService().addUser("admin", "hashme", adminRole);
             }
             tx.success();
         }

@@ -1,14 +1,12 @@
 package com.tangovideos.services.neo4j;
 
-import com.tangovideos.services.Interfaces.ServiceFactory;
-import com.tangovideos.services.Interfaces.UserService;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 
 import java.io.File;
 
 public class Neo4DB {
-    private static final String DB_PATH = "neo4jDb8";
+    private static final String DB_PATH = "neo4jDb12";
     public final GraphDatabaseService graphDb;
 
     public Neo4DB() {
