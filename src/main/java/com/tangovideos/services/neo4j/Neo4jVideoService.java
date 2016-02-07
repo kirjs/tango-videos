@@ -28,7 +28,7 @@ public class Neo4jVideoService implements VideoService {
     }
 
     @Override
-    public boolean videoExists(String videoId) {
+    public boolean exists(String videoId) {
         return this.graphDb.findNodes(Labels.VIDEO.label, "id", videoId).hasNext();
     }
 
@@ -36,7 +36,7 @@ public class Neo4jVideoService implements VideoService {
     public Node addVideo(@NotNull Video video) {
         final Node node;
         try (Transaction transaction = graphDb.beginTx()) {
-            if (videoExists(video.getId())) {
+            if (exists(video.getId())) {
                 throw new RuntimeException("VideoExists");
             }
 
@@ -92,8 +92,6 @@ public class Neo4jVideoService implements VideoService {
 
     @Override
     public Set<String> exist(Set<String> ids) {
-
-
         final ImmutableMap<String, Object> params = ImmutableMap.of("ids", ImmutableList.copyOf(ids));
         final String query = "MATCH (v:Video) WHERE v.id IN {ids} RETURN v.id as id";
         final Result result = graphDb.execute(query, params);

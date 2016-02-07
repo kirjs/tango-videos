@@ -33,7 +33,7 @@ public class VideoResource {
                 .build();
     }
 
-    @GET
+    @POST
     @Path("add")
     public Response add(@FormParam("id") String id) {
         final Video videoInfo = TangoVideosServiceFactory.getYoutubeService().getVideoInfo(id);

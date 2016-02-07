@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface VideoService {
-    boolean videoExists(String videoId);
+    boolean exists(String videoId);
 
     Node addVideo(@NotNull Video video);
 
