@@ -15,6 +15,6 @@ export class Videos {
     @Input() videos:Array<any> = [];
 
     getThumbnail(id:string) {
-        return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+        return `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
     }
 }
