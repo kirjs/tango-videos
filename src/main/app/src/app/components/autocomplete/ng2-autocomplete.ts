@@ -1,4 +1,4 @@
-import {Component, Directive, SkipSelf, Host, Optional, EventEmitter, Output, ElementRef} from 'angular2/core';
+import {Component, Directive, SkipSelf, Host, Optional, EventEmitter, Output, ElementRef, Input} from 'angular2/core';
 import { Observable } from 'rxjs/Rx';
 
 enum Action {UP, DOWN, ESC, CHOOSE}
@@ -17,7 +17,7 @@ var keyToActionMapping = {
 
 })
 export class NgAutocompleteContainer {
-    allItems:Array<String> = ["One", "Two", "One111", "One112", "One113", "One114", "One115"];
+    @Input() source:Array<String> = [];
     items:Array<String> = [];
     selectedIndex:number = 0;
 
@@ -50,7 +50,6 @@ export class NgAutocompleteContainer {
                 this.closeDropdown();
                 break;
         }
-
     };
 
     updateSelectedIndex(selectedIndex:number) {
@@ -65,7 +64,7 @@ export class NgAutocompleteContainer {
         let selectedItem = this.items[this.selectedIndex];
         search = search.toLowerCase();
 
-        this.items = this.allItems.filter(function (item) {
+        this.items = this.source.filter(function (item) {
             return item.toLowerCase().indexOf(search) > -1;
         });
 
