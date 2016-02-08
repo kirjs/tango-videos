@@ -4,7 +4,10 @@
 <div *ngIf="!saving">
     <div *ngFor="#dancer of dancers" class="dancer-list">
         <div *ngIf="dancer == ''">
-            <input #f type="text"><input type="submit" value="Add dancer" (click)="addDancer(f.value)">
+            <ng2-autocomplete [source]="dancersSource">
+                <input #f type="text">
+            </ng2-autocomplete>
+            <input type="submit" value="Add dancer" (click)="addDancer(f.value)">
         </div>
 
         <div *ngIf="dancer != ''" class="tile" [routerLink]="['Dancers', {id: dancer}]">

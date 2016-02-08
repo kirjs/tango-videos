@@ -1,5 +1,5 @@
 <span *ngIf="editMode">
-        <ng2-autocomplete [source] = "['123', '1123']">
+        <ng2-autocomplete [source] = "autocompleteSource">
             <input type="text" value="{{value}}" #f>
         </ng2-autocomplete>
         <input type="button" value="save" (click)="changeValue(f.value); editMode = false">

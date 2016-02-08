@@ -15,7 +15,7 @@ export class Explore {
 
     constructor(private videoService:VideoService) {
         videoService.list().subscribe((videos)=> {
-            this.videos = videos;
+            this.videos = [videos[0]];
         });
     }
 }

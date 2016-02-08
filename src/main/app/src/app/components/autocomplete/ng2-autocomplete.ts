@@ -1,4 +1,4 @@
-import {Component, Directive, SkipSelf, Host, Optional, EventEmitter, Output, ElementRef, Input} from 'angular2/core';
+import {Component, Directive, SkipSelf, Host, Optional, EventEmitter, Output, ElementRef, Input, Attribute} from 'angular2/core';
 import { Observable } from 'rxjs/Rx';
 
 enum Action {UP, DOWN, ESC, CHOOSE}
@@ -17,22 +17,24 @@ var keyToActionMapping = {
 
 })
 export class NgAutocompleteContainer {
-    @Input() source:Array<String> = [];
+    @Input() source:Observable<Array<String>>;
     items:Array<String> = [];
     selectedIndex:number = 0;
+    private dropdownOpen:boolean = false;
+    sourceData:Array<String> = [];
+    input:NgAutocompleteInput;
+    value:string = '';
 
-    private dropdownOpen: boolean = false;
-
-    openDropdown(){
+    openDropdown() {
         this.dropdownOpen = true;
     }
-    closeDropdown(){
+
+    closeDropdown() {
         this.dropdownOpen = false;
     }
 
-
-    handleKeydown(action:Action){
-        switch(action){
+    handleKeydown(action:Action) {
+        switch (action) {
             case Action.UP:
                 this.openDropdown();
                 this.updateSelectedIndex(this.selectedIndex - 1);
@@ -54,17 +56,17 @@ export class NgAutocompleteContainer {
 
     updateSelectedIndex(selectedIndex:number) {
         selectedIndex = Math.max(selectedIndex, 0);
-        selectedIndex = Math.min(selectedIndex, this.items.length-1);
+        selectedIndex = Math.min(selectedIndex, this.items.length - 1);
         this.selectedIndex = selectedIndex;
     }
 
-    input:NgAutocompleteInput;
 
     filterValues(search:string) {
         let selectedItem = this.items[this.selectedIndex];
         search = search.toLowerCase();
+        this.value = search;
 
-        this.items = this.source.filter(function (item) {
+        this.items = this.sourceData.filter(function (item) {
             return item.toLowerCase().indexOf(search) > -1;
         });
 
@@ -75,6 +77,13 @@ export class NgAutocompleteContainer {
 
     constructor() {
 
+    }
+
+    ngOnInit() {
+        this.source.subscribe((data)=>{
+            this.sourceData = data;
+            this.filterValues(this.value);
+        });
     }
 
     addInput(input:NgAutocompleteInput) {
@@ -103,10 +112,14 @@ export class NgAutocompleteInput {
     value:String;
     onUpdate:EventEmitter<any>;
     onKeydown:Observable<any>;
-    private nativeElement: any;
+    private nativeElement:any;
 
-    setValue(value:String){
+    setValue(value:String) {
         this.nativeElement.value = value;
+    }
+
+    updateSource() {
+
     }
 
     updateValue(event) {
@@ -117,7 +130,7 @@ export class NgAutocompleteInput {
     constructor(@Optional() @SkipSelf() @Host() container:NgAutocompleteContainer, el:ElementRef) {
         if (container) {
             this.onUpdate = new EventEmitter();
-            this.onKeydown=Observable.fromEvent(el.nativeElement, 'keydown');
+            this.onKeydown = Observable.fromEvent(el.nativeElement, 'keydown');
             this.nativeElement = el.nativeElement;
             container.addInput(this);
         }

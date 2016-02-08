@@ -14,7 +14,9 @@ import {NgAutocompleteInput} from "../autocomplete/ng2-autocomplete";
 export class EditableField {
     @Input() value:String = '';
     @Input() emptyValue:String = '';
+    @Input() autocompleteSource:Array<String> = [];
     @Output() update = new EventEmitter();
+
 
     editMode:boolean = false;
 
