@@ -48,7 +48,7 @@
     vertical-align: middle;
 }
 
-.tile.add  .image {
+.tile.add .image {
     background-color: #eee;
     border: 2px #999 solid;
     text-align: center;
