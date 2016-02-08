@@ -5,7 +5,7 @@
     </div>
     <div>
         <editable-field (update)="handleUpdate('orchestra', $event)" emptyValue="Unknown Orchestra" label="orchestra"
-                        [value]="song.orchestra"></editable-field>
+                        updateValue  [value]="song.orchestra"></editable-field>
         -
         <editable-field (update)="handleUpdate('name', $event)" emptyValue="Unknown Song Name" label="name"
                         [value]="song.name"></editable-field>

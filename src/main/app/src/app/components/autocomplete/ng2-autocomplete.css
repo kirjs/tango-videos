@@ -1,0 +1,18 @@
+.wrapper {
+    position: relative;
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    box-shadow: 2px 2px 2px #ddd;
+    width: 100%;
+}
+
+.item {
+    background-color: #fff;
+}
+.item:hover, .item.selected {
+    background-color: #eee;
+}

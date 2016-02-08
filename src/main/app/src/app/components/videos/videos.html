@@ -1,4 +1,7 @@
-<div class="videos">
+<editable-field label="Unknown Genre" [value]="'11'" emptyValue="Unknown Year"></editable-field>
+<div class="videos" *ngIf="false">
+
+
     <div *ngFor="#video of videos" class="video">
         <div class="thumb">
             <img [src]="getThumbnail(video.id)">

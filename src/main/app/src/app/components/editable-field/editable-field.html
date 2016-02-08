@@ -1,5 +1,7 @@
 <span *ngIf="editMode">
-        <input type="text" value="{{value}}" #f>
+        <ng2-autocomplete>
+            <input type="text" value="{{value}}" #f>
+        </ng2-autocomplete>
         <input type="button" value="save" (click)="changeValue(f.value); editMode = false">
         <input type="button" value="cancel" (click)="editMode = false">
 </span>
