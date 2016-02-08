@@ -2,6 +2,9 @@
     margin-bottom: 8px;
     box-shadow: 1px 1px 1px #ddd;
     border-radius: 16px;
+    display: inline-block;
+    padding-right: 4px;
+    font-size: 12px;
 }
 
 .tile .name {
@@ -16,8 +19,9 @@
 
 
 .tile:hover .remove {
-    display: inline-block;
+    visibility: visible;
 }
+
 .tile:hover .remove:hover {
     box-shadow: 2px 2px 2px #ddd;
     background-color: #ddd;
@@ -25,13 +29,14 @@
 
 .tile .remove {
     float: right;
-    height: 32px;
-    line-height: 32px;
+    height: 24px;
+    line-height: 24px;
     background-color: #bbbbbb;
-    width: 32px;
+    width: 24px;
     text-align: center;
     border-radius: 16px;
-    display: none;
+    visibility: hidden;
+    margin-left: 10px;
 }
 
 .tile .image {
