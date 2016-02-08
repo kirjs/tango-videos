@@ -7,6 +7,7 @@ import {VideoForm} from './components/videoForm/videoForm';
 import {UserProfile} from './components/userProfile/userProfile';
 import {Dancer} from "./components/dancer/dancer";
 import {Explore} from "./components/explore/explore";
+import {NeedsReview} from "./components/needs-review/needs-review";
 
 
 
@@ -22,6 +23,7 @@ import {Explore} from "./components/explore/explore";
     new Route({path: '/dancers/:id', component: Dancer, name: 'Dancers'}),
     new Route({path: '/home', component: Home, name: 'Home'}),
     new Route({path: '/new/video', component: VideoForm, name: 'AddVideo'}),
+    new Route({path: '/needs-review', component: NeedsReview, name: 'NeedsReview'}),
 ])
 export class TangoVideos {
     constructor() {

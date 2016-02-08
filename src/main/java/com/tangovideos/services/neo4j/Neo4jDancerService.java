@@ -37,7 +37,8 @@ public class Neo4jDancerService implements DancerService {
         List<Dancer> dancers = Lists.newArrayList();
 
         try (Transaction tx = this.graphDb.beginTx()) {
-            final String query = "MATCH (d:Dancer)-[:DANCES]->(v:Video) RETURN DISTINCT d as dancer";
+            final String query = "MATCH (d:Dancer)-[:DANCES]->(v:Video) " +
+                    "RETURN DISTINCT d as dancer";
             final ResourceIterator<Node> result = this.graphDb.execute(query).columnAs("dancer");
             dancers = IteratorUtil.asList(result).stream().map(this::mapNode).collect(Collectors.toList());
             tx.success();
