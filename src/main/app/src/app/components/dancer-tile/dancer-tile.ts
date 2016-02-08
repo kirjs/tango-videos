@@ -4,6 +4,7 @@ import {DancerService} from "../../services/DancerService";
 import {Observable} from "rxjs";
 import {NgAutocompleteContainer} from "../autocomplete/ng2-autocomplete";
 import {NgAutocompleteInput} from "../autocomplete/ng2-autocomplete";
+import {Focus} from "../focus/focus";
 
 
 @Component({
@@ -11,7 +12,7 @@ import {NgAutocompleteInput} from "../autocomplete/ng2-autocomplete";
     template: require('./dancer-tile.html'),
     styles: [require('./dancer-tile.css'), require('../common/list.css')],
     providers: [],
-    directives: [ROUTER_DIRECTIVES, NgAutocompleteContainer, NgAutocompleteInput],
+    directives: [ROUTER_DIRECTIVES, NgAutocompleteContainer, NgAutocompleteInput, Focus],
     pipes: []
 })
 export class DancerTile {

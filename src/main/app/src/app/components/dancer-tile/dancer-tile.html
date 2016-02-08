@@ -5,7 +5,7 @@
     <div *ngFor="#dancer of dancers" class="dancer-item">
         <div *ngIf="dancer == ''">
             <ng2-autocomplete [source]="dancersSource">
-                <input #f type="text">
+                <input focus="true" #f type="text">
             </ng2-autocomplete>
             <input type="submit" value="Add dancer" (click)="addDancer(f.value)">
         </div>
