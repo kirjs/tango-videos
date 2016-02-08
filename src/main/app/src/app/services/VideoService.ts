@@ -44,4 +44,7 @@ export class VideoService {
     }
 
 
+    needsReview():any {
+        return this.makeRequest("/needsreview");
+    }
 }

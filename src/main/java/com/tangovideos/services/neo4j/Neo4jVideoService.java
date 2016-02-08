@@ -104,6 +104,21 @@ public class Neo4jVideoService implements VideoService {
         return IteratorUtil.asSet(result.columnAs("id"));
     }
 
+    /**
+     * Find videos that don't have any dancers assigned.
+     *
+     * @return list of videos
+     */
+    @Override
+    public List<VideoResponse> needsReview() {
+        final String query = "MATCH (v:Video) " +
+                        "WHERE NOT (:Dancer)-[:DANCES]->(v) " +
+                        "RETURN v, [] as dancers";
+
+
+        return getMultipleVideos(query, ImmutableMap.of());
+    }
+
 
     private List<VideoResponse> getMultipleVideos(String query, Map<String, Object> params) {
         List<VideoResponse> videos = Lists.newArrayList();

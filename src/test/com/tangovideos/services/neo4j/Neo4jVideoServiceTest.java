@@ -109,6 +109,19 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
         assertEquals(ImmutableSet.of("one", "three"),
                 videoService.exist(ImmutableSet.of("one", "two", "three", "four"))
         );
+    }
 
+
+    @Test
+    public void testNeedsReview() throws Exception {
+        final String videoId = "videoId";
+        TestHelpers.addVideoAndDancer(graphDb, "someVideo", "dancerId");
+        TestHelpers.addVideo(graphDb, videoId);
+
+        final List<VideoResponse> list = videoService.needsReview();
+        assertEquals(list.size(), 1);
+        final VideoResponse video = list.get(0);
+        assertEquals(video.getId(), videoId);
+        assertEquals(video.getDancers().size(), 0);
     }
 }

@@ -20,4 +20,6 @@ public interface VideoService {
     List<VideoResponse> listByDancer(String dancerId);
 
     Set<String> exist(Set<String> ids);
+
+    List<VideoResponse> needsReview();
 }

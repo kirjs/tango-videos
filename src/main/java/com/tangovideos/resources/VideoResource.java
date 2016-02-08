@@ -33,6 +33,17 @@ public class VideoResource {
                 .build();
     }
 
+    @GET
+    @Path("needsreview")
+    public Response needsreview() {
+        final String result = new JSONArray(videoService.needsReview()).toString();
+
+        return Response.status(200)
+                .entity(result)
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+    }
+
     @POST
     @Path("add")
     public Response add(@FormParam("id") String id) {

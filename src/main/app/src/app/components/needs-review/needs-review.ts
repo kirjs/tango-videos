@@ -14,7 +14,7 @@ export class NeedsReview {
     videos:Array<any> = [];
 
     constructor(private videoService:VideoService) {
-        videoService.list().subscribe((videos)=> {
+        videoService.needsReview().subscribe((videos)=> {
             this.videos = videos;
         });
     }
