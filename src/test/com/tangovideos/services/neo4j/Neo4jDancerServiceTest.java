@@ -88,11 +88,13 @@ public class Neo4jDancerServiceTest extends EasyMockSupport {
     public void testList() throws Exception {
         final String dancerId = "dancerId";
         TestHelpers.addVideoAndDancer(graphDb, "videoId", dancerId);
+        // If a dancer have no videsh, they should not be in the list
+        neo4jDancerService.insertOrGetNode("A random dude with no videos");
         try (Transaction tx = graphDb.beginTx()) {
             final List<Dancer> list = neo4jDancerService.list();
+            
             assertEquals(1, list.size());
             assertEquals(dancerId, list.get(0).getName());
-
             tx.success();
         }
 

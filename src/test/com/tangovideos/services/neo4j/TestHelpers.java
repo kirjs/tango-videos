@@ -24,7 +24,9 @@ public class TestHelpers {
     }
 
     public static Node addVideo(GraphDatabaseService graphDb, String videoId){
-        return new Neo4jVideoService(graphDb).addVideo(new Video(videoId, "Title", "Date"));
+        final Video video = new Video(videoId, "Title", "Date");
+        video.setDescription("Description");
+        return new Neo4jVideoService(graphDb).addVideo(video);
     }
 
     public static void addVideoAndDancer(GraphDatabaseService graphDb, String videoId, String dancerId) {
