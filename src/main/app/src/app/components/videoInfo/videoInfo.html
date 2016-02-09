@@ -6,13 +6,4 @@
     <dancer-tile [dancers]="video.dancers" (add)="addDancer($event)" (remove)="removeDancer($event)" ></dancer-tile>
     <h3>Songs:</h3>
     <song-list [songs] = "video.songs" (update) = "updateSong($event)"></song-list>
-    <h3>Event:</h3>
-    <div *ngFor="#event of video.event" class="video">
-        <img [src]="getThumbnail(video.id)">
-    </div>
-
-    <h3>Location:</h3>
-    <div *ngFor="#performer of video.location" class="video">
-        <img [src]="getThumbnail(video.id)">
-    </div>
 </div>
