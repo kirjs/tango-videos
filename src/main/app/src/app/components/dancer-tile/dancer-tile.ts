@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {NgAutocompleteContainer} from "../autocomplete/ng2-autocomplete";
 import {NgAutocompleteInput} from "../autocomplete/ng2-autocomplete";
 import {Focus} from "../focus/focus";
+import {AddableFIeld} from "../addable-field/addable-field";
 
 
 @Component({
@@ -12,7 +13,7 @@ import {Focus} from "../focus/focus";
     template: require('./dancer-tile.html'),
     styles: [require('./dancer-tile.css'), require('../common/list.css')],
     providers: [],
-    directives: [ROUTER_DIRECTIVES, NgAutocompleteContainer, NgAutocompleteInput, Focus],
+    directives: [ROUTER_DIRECTIVES, NgAutocompleteContainer, NgAutocompleteInput, AddableFIeld],
     pipes: []
 })
 export class DancerTile {
@@ -20,7 +21,6 @@ export class DancerTile {
     @Output() add = new EventEmitter();
     @Output() remove = new EventEmitter();
     private dancersSource:Observable<String>;
-
 
     constructor(dancers:DancerService) {
         this.dancersSource = dancers.list().map(result=> {
@@ -39,13 +39,5 @@ export class DancerTile {
         event.stopPropagation();
         this.remove.emit(dancer);
 
-    }
-
-    addNewInput() {
-        this.dancers = this.dancers || [];
-
-        if (this.dancers.filter(i => i == '').length == 0) {
-            this.dancers.push('')
-        }
     }
 }
