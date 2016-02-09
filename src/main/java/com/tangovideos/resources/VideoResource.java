@@ -26,7 +26,6 @@ public class VideoResource {
     @Path("list")
     public Response list() {
         final String result = new JSONArray(videoService.list()).toString();
-
         return Response.status(200)
                 .entity(result)
                 .type(MediaType.APPLICATION_JSON)
@@ -34,9 +33,9 @@ public class VideoResource {
     }
 
     @GET
-    @Path("list/{page}")
-    public Response listPaged(@PathParam("page") String page) {
-        final String result = new JSONArray(videoService.list()).toString();
+    @Path("list/{skip}/{limit}")
+    public Response listPaged(@PathParam("skip") int skip, @PathParam("limit") int limit) {
+        final String result = new JSONArray(videoService.list(skip, limit)).toString();
 
         return Response.status(200)
                 .entity(result)

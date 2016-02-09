@@ -12,12 +12,16 @@ import {VideoService} from "../../services/VideoService";
 })
 export class Explore {
     videos:Array<any> = [];
+    limit:number = 2;
+    skip: number = 0;
 
-
-
-    constructor(private videoService:VideoService) {
-        videoService.list().subscribe((videos)=> {
-            this.videos = videos;
+    fetch(){
+        this.videoService.list(this.skip, this.limit).subscribe((videos)=> {
+            this.videos = this.videos.concat(videos);
+            this.skip = this.videos.length;
         });
+    }
+    constructor(private videoService:VideoService) {
+        this.fetch();
     }
 }

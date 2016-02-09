@@ -13,8 +13,8 @@ export class VideoService {
         return this.http.get(url).map((res) => res.json());
     }
 
-    list() {
-        return this.makeRequest("/list")
+    list(skip: number, limit: number) {
+        return this.makeRequest("/list/" + skip + "/" + limit);
     }
 
     addDancer(id:String, dancer:String) {
