@@ -96,6 +96,8 @@ export class NgAutocompleteContainer {
             .do(this.openDropdown.bind(this))
             .subscribe(this.filterValues.bind(this));
 
+        this.input.onBlur.subscribe(this.closeDropdown.bind(this));
+
         this.input.onKeydown
             .map(event => event.keyCode)
             .filter(keyToActionMapping.hasOwnProperty.bind(keyToActionMapping))
@@ -116,6 +118,7 @@ export class NgAutocompleteInput {
     value:String;
     onUpdate:EventEmitter<any>;
     onKeydown:Observable<any>;
+    onBlur:Observable<any>;
     private nativeElement:any;
 
     setValue(value:String) {
@@ -135,6 +138,7 @@ export class NgAutocompleteInput {
         if (container) {
             this.onUpdate = new EventEmitter();
             this.onKeydown = Observable.fromEvent(el.nativeElement, 'keydown');
+            this.onBlur = Observable.fromEvent(el.nativeElement, 'blur');
             this.nativeElement = el.nativeElement;
             container.addInput(this);
         }
