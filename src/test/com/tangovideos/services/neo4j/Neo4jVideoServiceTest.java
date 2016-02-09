@@ -24,6 +24,7 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
     public void setUp() throws Exception {
         graphDb = new TestGraphDatabaseFactory().newImpermanentDatabase();
         videoService = new Neo4jVideoService(graphDb);
+        TestHelpers.reset();
 
     }
 
@@ -123,5 +124,29 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
         final VideoResponse video = list.get(0);
         assertEquals(video.getId(), videoId);
         assertEquals(video.getDancers().size(), 0);
+    }
+
+    @Test
+    public void testListWithPages() throws Exception {
+        final String dancerId = "dancerId";
+        final String videoId0 = "videoId0";
+        final String videoId1 = "videoId1";
+        final String videoId2 = "videoId2";
+        final String videoId3 = "videoId3";
+        TestHelpers.addVideoAndDancer(graphDb, videoId0, dancerId);
+        TestHelpers.addVideoAndDancer(graphDb, videoId1, dancerId);
+        TestHelpers.addVideoAndDancer(graphDb, videoId2, dancerId);
+        TestHelpers.addVideoAndDancer(graphDb, videoId3, dancerId);
+
+        List<VideoResponse> list = videoService.list(0,1);
+        assertEquals(list.size(), 1);
+        assertEquals(list.get(0).getId(), videoId3);
+
+        list = videoService.list(2,2);
+        assertEquals(list.size(), 2);
+        assertEquals(list.get(0).getId(), videoId1);
+        assertEquals(list.get(0).getId(), videoId0);
+
+
     }
 }

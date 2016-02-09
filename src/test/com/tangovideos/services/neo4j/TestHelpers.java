@@ -9,6 +9,16 @@ import org.neo4j.graphdb.Transaction;
 import java.util.HashSet;
 
 public class TestHelpers {
+    public static int videoIndex = 0;
+    public static void reset(){
+        videoIndex = 0;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
     public static Node setUpAdminNode(GraphDatabaseService graphDb) {
         Node node;
         try (Transaction tx = graphDb.beginTx()) {
@@ -24,18 +34,28 @@ public class TestHelpers {
     }
 
     public static Node addVideo(GraphDatabaseService graphDb, String videoId){
-        final Video video = new Video(videoId, "Title", "Date");
-        video.setDescription("Description");
-        return new Neo4jVideoService(graphDb).addVideo(video);
+        return addVideo(graphDb, videoId, 0);
     }
 
     public static void addVideoAndDancer(GraphDatabaseService graphDb, String videoId, String dancerId) {
         final Neo4jDancerService neo4jDancerService = new Neo4jDancerService(graphDb);
-        final Node video = addVideo(graphDb, videoId);
+        final Node video = addVideo(graphDb, videoId, videoIndex++);
 
         neo4jDancerService.addToVideo(
                 neo4jDancerService.insertOrGetNode(dancerId),
                 video
         );
+    }
+
+    private static Node addVideo(GraphDatabaseService graphDb, String videoId, int i) {
+        final Video video = new Video(videoId, "Title", "Date");
+
+            video.setDescription("Description");
+        final Node videoNode = new Neo4jVideoService(graphDb).addVideo(video);
+        try(Transaction tx = graphDb.beginTx()){
+            videoNode.setProperty("addedAt", videoNode.getProperty("addedAt") + String.valueOf(i));
+            tx.success();
+        }
+        return videoNode;
     }
 }

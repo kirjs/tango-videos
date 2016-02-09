@@ -34,6 +34,17 @@ public class VideoResource {
     }
 
     @GET
+    @Path("list/{page}")
+    public Response listPaged(@PathParam("page") String page) {
+        final String result = new JSONArray(videoService.list()).toString();
+
+        return Response.status(200)
+                .entity(result)
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+    }
+
+    @GET
     @Path("needsreview")
     public Response needsreview() {
         final String result = new JSONArray(videoService.needsReview()).toString();

@@ -13,6 +13,8 @@ import {VideoService} from "../../services/VideoService";
 export class Explore {
     videos:Array<any> = [];
 
+
+
     constructor(private videoService:VideoService) {
         videoService.list().subscribe((videos)=> {
             this.videos = videos;

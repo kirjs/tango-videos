@@ -16,6 +16,7 @@ public interface VideoService {
     Node get(String videoId);
 
     List<VideoResponse> list();
+    List<VideoResponse> list(int skip, int limit);
 
     List<VideoResponse> listByDancer(String dancerId);
 

@@ -64,10 +64,10 @@ public class Neo4jVideoService implements VideoService {
 
     public static VideoResponse videoResponseFromNode(Node node) {
         VideoResponse video = new VideoResponse();
-        video.setId((String) node.getProperty("id"));
-        video.setPublishedAt((String) node.getProperty("publishedAt"));
-        video.setTitle((String) node.getProperty("title"));
-        video.setAddedAt((String) node.getProperty("title"));
+        video.setId(node.getProperty("id").toString());
+        video.setPublishedAt(node.getProperty("publishedAt").toString());
+        video.setTitle(node.getProperty("title").toString());
+        video.setAddedAt(node.getProperty("addedAt").toString());
         return video;
     }
 
@@ -80,6 +80,19 @@ public class Neo4jVideoService implements VideoService {
                         "ORDER BY v.addedAt DESC";
 
         return getMultipleVideos(query, ImmutableMap.of());
+    }
+
+    @Override
+    public List<VideoResponse> list(int skip, int limit) {
+        final String query =
+                "MATCH (v:Video) " +
+                        "OPTIONAL MATCH (v)<-[:DANCES]-(d:Dancer) " +
+                        "RETURN v, collect(d.id) as dancers " +
+                        "ORDER BY v.addedAt DESC " +
+                        "SKIP {skip} " +
+                        "LIMIT {limit}";
+
+        return getMultipleVideos(query, ImmutableMap.of("skip", skip, "limit", limit));
     }
 
     @Override
