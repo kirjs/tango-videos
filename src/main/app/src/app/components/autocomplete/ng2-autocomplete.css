@@ -12,7 +12,12 @@
 
 .item {
     background-color: #fff;
+    cursor: pointer;
+    padding: 2px 5px;
+    max-width: 400px;
+    white-space: nowrap;
 }
 .item:hover, .item.selected {
     background-color: #eee;
+    box-shadow: 2px 2px 2px #bbb;
 }

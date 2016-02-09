@@ -33,6 +33,11 @@ export class NgAutocompleteContainer {
         this.dropdownOpen = false;
     }
 
+    selectItem(index:number){
+        this.closeDropdown();
+        this.input.setValue(this.items[index]);
+    }
+
     handleKeydown(action:Action) {
         switch (action) {
             case Action.UP:
@@ -44,8 +49,7 @@ export class NgAutocompleteContainer {
                 this.updateSelectedIndex(this.selectedIndex + 1);
                 break;
             case Action.CHOOSE:
-                this.closeDropdown();
-                this.input.setValue(this.items[this.selectedIndex]);
+                this.selectItem(this.selectedIndex);
                 break;
             case Action.ESC:
                 this.selectedIndex = 0;
