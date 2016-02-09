@@ -1,8 +1,6 @@
 <div class="data">
     <h2>{{video.title}}</h2>
     <div>{{video.publishedAt}}</div>
-
-    <h3>Dancers:</h3>
     <dancer-tile [dancers]="video.dancers" (add)="addDancer($event)" (remove)="removeDancer($event)" ></dancer-tile>
     <h3>Songs:</h3>
     <song-list [songs] = "video.songs" (update) = "updateSong($event)"></song-list>

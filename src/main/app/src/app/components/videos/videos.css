@@ -5,6 +5,7 @@
 .video {
     padding: 20px;
     width: 1024px;
+    box-shadow: 1px 1px 5px #ddd;
 }
 
 .thumb {

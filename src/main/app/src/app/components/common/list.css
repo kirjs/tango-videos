@@ -1,15 +1,10 @@
 .tile {
-    margin-bottom: 8px;
-    box-shadow: 1px 1px 1px #ddd;
-    border-radius: 16px;
+    margin-bottom: 4px;
     display: inline-block;
-    padding-right: 4px;
     font-size: 12px;
 }
 
-.tile .name {
-    margin-left: 10px;
-}
+.tile .name {  }
 
 .tile:hover {
     cursor: pointer;
@@ -29,23 +24,10 @@
 
 .tile .remove {
     float: right;
-    height: 24px;
-    line-height: 24px;
-    background-color: #bbbbbb;
-    width: 24px;
-    text-align: center;
-    border-radius: 16px;
     visibility: hidden;
-    margin-left: 10px;
+    margin-left: 5px;
 }
 
-.tile .image {
-    width: 24px;
-    height: 24px;
-    background-color: #777;
-    border: 2px #000 solid;
-    border-radius: 50%;
-}
 
 
 .tile .image, .tile .name{
@@ -54,10 +36,5 @@
 }
 
 .tile.add .image {
-    background-color: #eee;
-    border: 2px #999 solid;
     text-align: center;
-    vertical-align: center;
-    font-size: 20px;
-    line-height: 24px;
 }

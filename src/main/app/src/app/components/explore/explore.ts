@@ -1,13 +1,14 @@
 import {Component} from 'angular2/core';
 import {Videos} from "../videos/videos";
 import {VideoService} from "../../services/VideoService";
+import {LoadMore} from "../load-more/load-more";
 
 @Component({
     selector: 'explore',
     template: require('./explore.html'),
     styles: [require('./explore.css')],
     providers: [],
-    directives: [Videos],
+    directives: [Videos, LoadMore],
     pipes: []
 })
 export class Explore {

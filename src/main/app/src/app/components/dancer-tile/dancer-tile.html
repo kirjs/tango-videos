@@ -11,7 +11,6 @@
         </div>
 
         <div *ngIf="dancer != ''" class="tile" [routerLink]="['Dancers', {id: dancer}]">
-            <div class="image"></div>
             <div class="name">{{dancer}}</div>
             <div class="remove" (click)="removeDancer($event, dancer)">&times;</div>
         </div>
