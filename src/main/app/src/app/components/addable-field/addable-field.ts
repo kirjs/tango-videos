@@ -20,9 +20,12 @@ export class AddableFIeld {
     switchToAddMode(){
         this.addMode = true;
     }
+    switchToNormalMode(){
+        this.addMode = false;
+    }
 
     add(value: String){
-        this.addMode = false;
+        this.switchToNormalMode();
         this.onAdd.emit(value);
     }
 
