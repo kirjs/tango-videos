@@ -14,28 +14,32 @@ import {SongList} from "../song-list/song-list";
 export class VideoInfo {
     @Input() video:any;
 
+    toDate(date:String){
+        return new Date(date);
+    }
+
 
     addDancer(name:string) {
-        this.videoService.addDancer(this.video.id, name).subscribe((data)=>{
+        this.videoService.addDancer(this.video.id, name).subscribe((data)=> {
             this.video.dancers = data;
         });
     }
 
-    updateSong(info){
-        this.videoService.updateSongInfo(this.video.id, info.index, info.field, info.data).subscribe((data)=>{
+    updateSong(info) {
+        this.videoService.updateSongInfo(this.video.id, info.index, info.field, info.data).subscribe((data)=> {
             this.video.dancers = data;
         });
 
     }
 
     removeDancer(name:string) {
-        this.videoService.removeDancer(this.video.id, name).subscribe((data)=>{
+        this.videoService.removeDancer(this.video.id, name).subscribe((data)=> {
             this.video.dancers = data;
         });
     }
 
 
-    constructor(private videoService: VideoService) {
+    constructor(private videoService:VideoService) {
 
 
     }

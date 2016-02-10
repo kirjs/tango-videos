@@ -8,6 +8,7 @@ import {UserProfile} from './components/userProfile/userProfile';
 import {Dancer} from "./components/dancer/dancer";
 import {Explore} from "./components/explore/explore";
 import {NeedsReview} from "./components/needs-review/needs-review";
+import {Header} from "./components/header/header";
 
 
 
@@ -15,7 +16,7 @@ import {NeedsReview} from "./components/needs-review/needs-review";
     selector: 'tango-videos',
     providers: [],
     template: require('./tango-videos.html'),
-    directives: [ROUTER_DIRECTIVES.concat(UserProfile)],
+    directives: [ROUTER_DIRECTIVES, UserProfile, Header],
     pipes: []
 })
 @RouteConfig([
