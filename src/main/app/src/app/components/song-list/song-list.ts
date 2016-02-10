@@ -12,6 +12,7 @@ import {SongItem} from "../song-item/song-item";
 })
 export class SongList {
     @Input() songs:any = [];
+    @Input() readonly: boolean = true;
     @Output() add = new EventEmitter();
     @Output() remove = new EventEmitter();
     @Output() update = new EventEmitter();

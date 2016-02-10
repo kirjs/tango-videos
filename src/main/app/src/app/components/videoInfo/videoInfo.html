@@ -1,7 +1,7 @@
 <div class="data">
     <h2>{{video.title}}</h2>
     <div>{{toDate(video.publishedAt)|date}}</div>
-    <dancer-tile [dancers]="video.dancers" (add)="addDancer($event)" (remove)="removeDancer($event)" ></dancer-tile>
+    <dancer-tile [readonly]="readonly" [dancers]="video.dancers" (add)="addDancer($event)" (remove)="removeDancer($event)" ></dancer-tile>
     <h3>Songs:</h3>
-    <song-list [songs] = "video.songs" (update) = "updateSong($event)"></song-list>
+    <song-list  [readonly]="readonly" [songs] = "video.songs" (update) = "updateSong($event)"></song-list>
 </div>

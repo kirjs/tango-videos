@@ -5,8 +5,8 @@
     <div *ngFor="#dancer of dancers" class="dancer-item">
         <div *ngIf="dancer != ''" class="tile" [routerLink]="['Dancers', {id: dancer}]">
             <div class="name">{{dancer}}</div>
-            <div class="remove" (click)="removeDancer($event, dancer)">&times;</div>
+            <div class="remove" (click)="removeDancer($event, dancer)" *ngIf = "!readonly">&times;</div>
         </div>
     </div>
-    <addable-field [autocompleteSource] = "dancersSource" (onAdd) = "addDancer($event)"></addable-field>
+    <addable-field *ngIf = "!readonly" [autocompleteSource] = "dancersSource" (onAdd) = "addDancer($event)"></addable-field>
 </div>

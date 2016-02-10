@@ -11,6 +11,7 @@ import {VideoInfo} from "../videoInfo/videoInfo";
 })
 export class VideoTile {
     @Input() video: any;
+    @Input() readonly: boolean = true;
     constructor() {
     }
 

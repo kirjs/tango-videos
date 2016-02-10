@@ -13,6 +13,7 @@ import {SongList} from "../song-list/song-list";
 })
 export class VideoInfo {
     @Input() video:any;
+    @Input() readonly:boolean = true;
 
     toDate(date:String){
         return new Date(date);

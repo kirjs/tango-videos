@@ -6,7 +6,7 @@
         <song-item (update)="handleUpdate(i, $event)" [item]= "item"></song-item>
     </div>
 
-    <div (click)="addNewInput()" class="tile add">
+    <div (click)="addNewInput()" class="tile add" *ngIf = "!readonly">
         <div class="image">+</div>
         <div class="name">Add song</div>
     </div>

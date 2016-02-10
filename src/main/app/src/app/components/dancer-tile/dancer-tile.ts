@@ -18,6 +18,7 @@ import {AddableFIeld} from "../addable-field/addable-field";
 })
 export class DancerTile {
     @Input() dancers:any = [];
+    @Input() readonly:boolean = true;
     @Output() add = new EventEmitter();
     @Output() remove = new EventEmitter();
     private dancersSource:Observable<String>;
