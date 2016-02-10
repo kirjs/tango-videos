@@ -1,6 +1,6 @@
 .header {
     padding: 0 20px;
-
+    box-shadow: 2px 0 10px #999;
 }
 
 .icon {
@@ -17,7 +17,7 @@
     font-weight: 300;
 }
 
-.icon, .title, .profile {
+.icon, .title, .profile, .menu {
     vertical-align: middle;
     display: inline-block;
 }

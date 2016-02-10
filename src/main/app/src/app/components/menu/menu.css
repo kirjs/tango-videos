@@ -1,0 +1,20 @@
+.menu {
+    padding: 0 20px;
+    font-size: 14px;
+}
+
+.menu a {
+     color: #444;
+     text-decoration: none;
+     padding: 4px 10px;
+}
+
+.menu a:hover {
+    background: #ddd;
+}
+
+.menu a.router-link-active {
+    background: #400;
+    color: #fff;
+
+}
