@@ -1,9 +1,10 @@
 <label>Paste video URL: </label>
 
 <div class="input-wrapper">
-    <input #url value = "https://www.youtube.com/watch?v=6D8uUFj8_4g" />
+    <input #url [value] = "value" (keydown)="updateValue(url.value)" />
 </div>
-<div>
-    <video-preview [src] = "url.value" ></video-preview>
+
+<div *ngIf = "video">
+    <video-preview [video] = "video" ></video-preview>
     <input type="submit">
 </div>

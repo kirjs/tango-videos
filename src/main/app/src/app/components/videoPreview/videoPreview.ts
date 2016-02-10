@@ -9,26 +9,9 @@ import {VideoTile} from "../video-tile/video-tile";
     selector: 'video-preview',
     template: require('./videoPreview.html'),
     styles: [require('./videoPreview.css')],
-    providers: [Youtube],
+    providers: [],
     directives: [VideoTile],
 })
 export class VideoPreview {
-    @Input() src:string;
-    videoInfo:any;
-
-
-    constructor(private youtube:Youtube) {
-    }
-
-    ngOnInit() {
-        let id = this.src.split('?v=')[1];
-        this.youtube.getVideo(id).subscribe(data => {
-            //noinspection TypeScriptUnresolvedVariable
-            this.videoInfo = data.items[0].snippet;
-            this.videoInfo.id = id;
-
-
-        });
-    }
-
+    @Input() video:string;
 }
