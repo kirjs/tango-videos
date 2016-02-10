@@ -1,0 +1,20 @@
+.video-tile {
+    padding: 20px;
+    box-shadow: 1px 1px 5px #ddd;
+    margin: 20px;
+}
+
+.thumb {
+    width: 320px;
+}
+
+.thumb, .data, video-info {
+    display: inline-block;
+    vertical-align: top;
+}
+
+
+h2, h3 {
+    margin: 0;
+    padding: 0;
+}

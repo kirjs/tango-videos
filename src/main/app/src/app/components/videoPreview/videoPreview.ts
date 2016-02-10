@@ -1,13 +1,8 @@
 import {Component, Input} from 'angular2/core';
 import {Http} from 'angular2/http';
 import {Youtube} from '../../services/youtube';
-
-class VideoInfo {
-    constructor(private url:string,
-                private title:string,
-                private thumb:string) {
-    }
-}
+import {VideoInfo} from "../videoInfo/videoInfo";
+import {VideoTile} from "../video-tile/video-tile";
 
 
 @Component({
@@ -15,11 +10,11 @@ class VideoInfo {
     template: require('./videoPreview.html'),
     styles: [require('./videoPreview.css')],
     providers: [Youtube],
-    directives: [],
+    directives: [VideoTile],
 })
 export class VideoPreview {
     @Input() src:string;
-    videoInfo:VideoInfo;
+    videoInfo:any;
 
 
     constructor(private youtube:Youtube) {
@@ -29,12 +24,10 @@ export class VideoPreview {
         let id = this.src.split('?v=')[1];
         this.youtube.getVideo(id).subscribe(data => {
             //noinspection TypeScriptUnresolvedVariable
-            var snippet = data.items[0].snippet;
+            this.videoInfo = data.items[0].snippet;
+            this.videoInfo.id = id;
 
-            this.videoInfo = new VideoInfo(id,
-                snippet.title,
-                snippet.thumbnails.default.url
-            )
+
         });
     }
 

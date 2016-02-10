@@ -1,4 +1,3 @@
 <div *ngIf = "videoInfo" class = "preview">
-    <h1>{{videoInfo.title}}</h1>
-    <img [src]="videoInfo.thumb" alt="">
+    <video-tile [video] = videoInfo></video-tile>
 </div>

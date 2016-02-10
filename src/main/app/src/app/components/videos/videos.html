@@ -1,8 +1,5 @@
 <div class="videos">
     <div *ngFor="#video of videos" class="video">
-        <div class="thumb">
-            <img [src]="getThumbnail(video.id)">
-        </div>
-        <video-info [video] = video></video-info>
+        <video-tile [video] = "video"></video-tile>
     </div>
 </div>
