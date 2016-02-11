@@ -15,7 +15,7 @@ export class VideoInfo {
     @Input() video:any;
     @Input() readonly:boolean = true;
 
-    toDate(date:String){
+    toDate(date:string){
         return new Date(date);
     }
 
