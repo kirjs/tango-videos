@@ -19,7 +19,7 @@ var server = new WebpackDevServer(compiler, {
 });
 
 var port = 8084;
-server.listen(port, "localhost", function () {
+server.listen(port, "0.0.0.0", function () {
     console.log("Running on " + port);
 });
 

@@ -13,6 +13,11 @@ input {
     box-shadow: 1px 1px 5px #ddd;
 }
 
+input[type=submit] {
+    background: #dddddd;
+    border: 0 solid;
+}
+
 label  {
     margin: 20px;
 }

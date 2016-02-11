@@ -30,7 +30,6 @@ export class VideoInfo {
         this.videoService.updateSongInfo(this.video.id, info.index, info.field, info.data).subscribe((data)=> {
             this.video.dancers = data;
         });
-
     }
 
     removeDancer(name:string) {

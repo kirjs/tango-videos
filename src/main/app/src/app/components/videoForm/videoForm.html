@@ -6,5 +6,11 @@
 
 <div *ngIf = "video">
     <video-preview [video] = "video" ></video-preview>
-    <input type="submit">
+</div>
+
+<div class="input-wrapper" *ngIf="!exists" (click) = "add(url.value)">
+    <input type="submit" value = "Add">
+</div>
+<div class="input-wrapper" *ngIf="exists">
+    This video exists
 </div>

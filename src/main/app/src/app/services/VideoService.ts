@@ -47,4 +47,19 @@ export class VideoService {
     needsReview():any {
         return this.makeRequest("/needsreview");
     }
+
+    exists(id:String) {
+        return this.makeRequest("/exist/" + id).map((result)=>{
+            return !!result.length;
+        });
+    }
+
+    add(id:String) {
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+        return this.http.post(`api/videos/insert`,
+            'id=' + id , {headers: headers}).map(res => res.json());
+
+    }
 }
