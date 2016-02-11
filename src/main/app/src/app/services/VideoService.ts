@@ -58,7 +58,7 @@ export class VideoService {
         var headers = new Headers();
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-        return this.http.post(`api/videos/insert`,
+        return this.http.post(`api/videos/add`,
             'id=' + id , {headers: headers}).map(res => res.json());
 
     }
