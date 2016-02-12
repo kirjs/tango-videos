@@ -31,7 +31,15 @@ export class VideoInfo {
             this.video.dancers = data;
         });
     }
+    recover(){
+        throw "not implemented";
+    }
 
+    hide(){
+        this.videoService.hide(this.video.id).subscribe(() => {
+            this.video.hidden = true;
+        })
+    }
     removeDancer(name:string) {
         this.videoService.removeDancer(this.video.id, name).subscribe((data)=> {
             this.video.dancers = data;

@@ -100,7 +100,7 @@ public class Neo4jVideoService implements VideoService {
     }
 
     @Override
-    public boolean hideVideo(String id) {
+    public boolean hide(String id) {
         final String query = "MATCH (v:Video {id: {id}}) " +
                 "SET v:VideoRemoved " +
                 "REMOVE v:Video " +

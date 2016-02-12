@@ -62,4 +62,13 @@ export class VideoService {
             'id=' + id , {headers: headers}).map(res => res.json());
 
     }
+
+    hide(id:string){
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+        return this.http.post(`api/videos/hide`,
+            'id=' + id , {headers: headers}).map(res => res.json());
+    }
+
 }

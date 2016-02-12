@@ -69,6 +69,17 @@ public class VideoResource {
                 .build();
     }
 
+    @POST
+    @Path("hide")
+    public Response hide(@FormParam("id") String id) {
+        videoService.hide(id);
+
+        return Response.status(200)
+                .entity("true")
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+    }
+
     @GET
     @Path("exist/{ids}")
     public Response exist(@PathParam("ids") String ids) {

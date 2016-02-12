@@ -17,7 +17,7 @@ public interface VideoService {
 
     List<VideoResponse> list();
     List<VideoResponse> list(int skip, int limit);
-    boolean hideVideo(String id);
+    boolean hide(String id);
 
     List<VideoResponse> listByDancer(String dancerId);
 
