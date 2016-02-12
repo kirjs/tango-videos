@@ -9,6 +9,7 @@ import {Dancer} from "./components/dancer/dancer";
 import {Explore} from "./components/explore/explore";
 import {NeedsReview} from "./components/needs-review/needs-review";
 import {Header} from "./components/header/header";
+import {Dancers} from "./components/dancers/dancers";
 
 
 
@@ -21,7 +22,8 @@ import {Header} from "./components/header/header";
 })
 @RouteConfig([
     new Route({path: '/videos', component: Explore, name: 'Videos', useAsDefault: true}),
-    new Route({path: '/dancers/:id', component: Dancer, name: 'Dancers'}),
+    new Route({path: '/dancers', component: Dancers, name: 'Dancers'}),
+    new Route({path: '/dancers/:id', component: Dancer, name: 'Dancer'}),
     new Route({path: '/home', component: Home, name: 'Home'}),
     new Route({path: '/new/video', component: VideoForm, name: 'AddVideo'}),
     new Route({path: '/needs-review', component: NeedsReview, name: 'NeedsReview'}),
