@@ -64,7 +64,7 @@ public class VideoResource {
                 .forEach(d -> dancerService.addToVideo(d, video));
 
         return Response.status(200)
-                .entity(id)
+                .entity("true")
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }

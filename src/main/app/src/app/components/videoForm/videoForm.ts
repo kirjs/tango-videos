@@ -13,8 +13,9 @@ import {VideoService} from "../../services/VideoService";
     pipes: []
 })
 export class VideoForm {
-    value:String = 'https://www.youtube.com/watch?v=6D8uUFj8_4g';
+    value:String = '';
     video:any;
+    loading: boolean = false;
     exists:boolean = true;
 
     updateValue(url) {
@@ -25,11 +26,16 @@ export class VideoForm {
     }
 
 
-    add(url:String){
-        let id = url.split('?v=')[1];
-        this.videoService.add(id);
+    add( input: HTMLInputElement){
+        this.loading = true;
+        let id = input.value.split('?v=')[1];
+        this.videoService.add(id).subscribe(()=>{
+            this.loading = false;
+            input.value = '';
+        });
     }
     fetch(url:String) {
+        console.log(url);
         let id = url.split('?v=')[1];
         this.youtube.getVideo(id)
             .filter(data => data.items.length)

@@ -1,16 +1,22 @@
 <label>Paste video URL: </label>
 
+
 <div class="input-wrapper">
-    <input #url [value] = "value" (keydown)="updateValue(url.value)" />
+    <input #url [value]="value" (keyup)="updateValue(url.value)"/>
+</div>
+<div *ngIf="loading">
+    loading...
 </div>
 
-<div *ngIf = "video">
-    <video-preview [video] = "video" ></video-preview>
-</div>
+<div *ngIf="!loading">
+    <div *ngIf="video">
+        <video-preview [video]="video"></video-preview>
+    </div>
 
-<div class="input-wrapper" *ngIf="!exists" (click) = "add(url.value)">
-    <input type="submit" value = "Add">
-</div>
-<div class="input-wrapper" *ngIf="exists">
-    This video exists
+    <div class="input-wrapper" *ngIf="!exists" (click)="add(url)">
+        <input type="submit" value="Add">
+    </div>
+    <div class="input-wrapper" *ngIf="exists">
+        This video exists
+    </div>
 </div>

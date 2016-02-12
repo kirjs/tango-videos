@@ -13,7 +13,7 @@ import {LoadMore} from "../load-more/load-more";
 })
 export class Explore {
     videos:Array<any> = [];
-    limit:number = 2;
+    limit:number = 20;
     skip: number = 0;
 
     fetch(){
