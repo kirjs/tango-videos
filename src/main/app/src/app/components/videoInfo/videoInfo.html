@@ -1,5 +1,5 @@
 <div class="data">
-    <h2>{{video.title}}</h2>
+    <h2><a class = "youtube-social-icon-red-24px" href="https://www.youtube.com/watch?v={{video.id}}"></a>{{video.title}}</h2>
     <div>{{toDate(video.publishedAt)|date}}</div>
     <dancer-tile [readonly]="readonly" [dancers]="video.dancers" (add)="addDancer($event)" (remove)="removeDancer($event)" ></dancer-tile>
     <h3>Songs:</h3>
