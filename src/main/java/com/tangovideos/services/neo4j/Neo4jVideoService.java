@@ -30,7 +30,11 @@ public class Neo4jVideoService implements VideoService {
 
     @Override
     public boolean exists(String videoId) {
-        return this.graphDb.findNodes(Labels.VIDEO.label, "id", videoId).hasNext();
+        try(Transaction tx = graphDb.beginTx()){
+            final boolean result = this.graphDb.findNodes(Labels.VIDEO.label, "id", videoId).hasNext();
+            tx.success();
+            return result;
+        }
     }
 
     @Override
@@ -93,6 +97,20 @@ public class Neo4jVideoService implements VideoService {
                         "LIMIT {limit}";
 
         return getMultipleVideos(query, ImmutableMap.of("skip", skip, "limit", limit));
+    }
+
+    @Override
+    public boolean hideVideo(String id) {
+        final String query = "MATCH (v:Video {id: {id}}) " +
+                "SET v:VideoRemoved " +
+                "REMOVE v:Video " +
+                "RETURN v ";
+
+        try(Transaction tx = graphDb.beginTx()){
+            graphDb.execute(query, ImmutableMap.of("id", id));
+            tx.success();
+            return true;
+        }
     }
 
     @Override

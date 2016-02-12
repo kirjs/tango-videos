@@ -145,7 +145,23 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
         list = videoService.list(2,2);
         assertEquals(list.size(), 2);
         assertEquals(list.get(0).getId(), videoId1);
-        assertEquals(list.get(0).getId(), videoId0);
+        assertEquals(list.get(1).getId(), videoId0);
+
+
+    }
+
+    @Test
+    public void testExists() throws Exception {
+
+    }
+
+    @Test
+    public void testHideVideo() throws Exception {
+        final String videoId = "videoId0";
+        TestHelpers.addVideo(graphDb, videoId);
+        assertEquals(true, videoService.exists(videoId));
+        videoService.hideVideo(videoId);
+        assertEquals(false, videoService.exists(videoId));
 
 
     }
