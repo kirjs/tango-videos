@@ -1,5 +1,5 @@
 <div class="dancers">
     <div *ngFor="#dancer of dancers">
-        <h2>{{dancer.name}}</h2>
+        <h2 ><a [routerLink]="['Dancers', {id: dancer.name}]">{{dancer.name}}</a> On {{dancer.videos.length}} videos</h2>
     </div>
 </div>
