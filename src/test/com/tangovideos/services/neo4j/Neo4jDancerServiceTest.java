@@ -124,4 +124,41 @@ public class Neo4jDancerServiceTest extends EasyMockSupport {
 
 
     }
+
+    @Test
+    public void testListWithParams() throws Exception {
+        final String dancerId = "DancerId";
+        final String videoId = "videoID";
+
+
+        try (Transaction tx = graphDb.beginTx()) {
+            TestHelpers.addVideoAndDancer(graphDb, "video-1", "dancer0");
+            TestHelpers.addVideoAndDancer(graphDb, "video-0", "dancer0");
+
+            TestHelpers.addVideoAndDancer(graphDb, "video", dancerId);
+            TestHelpers.addVideoAndDancer(graphDb, "video1", dancerId);
+            TestHelpers.addVideoAndDancer(graphDb, "video2", dancerId);
+            TestHelpers.addVideoAndDancer(graphDb, "video3", dancerId);
+            TestHelpers.addVideoAndDancer(graphDb, "video4", "dancer2");
+
+            final List<Dancer> list = neo4jDancerService.list(0, 100, Neo4jDancerService.SortBy.VIDEO_COUNT);
+
+
+            assertEquals(3,  list.size());
+            assertEquals(4, list.get(0).getVideos().size());
+
+
+            tx.success();
+        }
+    }
+
+    @Test
+    public void testAddToVideo() throws Exception {
+
+    }
+
+    @Test
+    public void testInsertOrGetNode() throws Exception {
+
+    }
 }

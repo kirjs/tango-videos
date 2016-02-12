@@ -4,6 +4,7 @@ import com.tangovideos.models.Dancer;
 import com.tangovideos.services.Interfaces.DancerService;
 import com.tangovideos.services.Interfaces.VideoService;
 import com.tangovideos.services.TangoVideosServiceFactory;
+import com.tangovideos.services.neo4j.Neo4jDancerService;
 import org.json.JSONArray;
 
 import javax.ws.rs.GET;
@@ -21,10 +22,17 @@ public class DancerResource {
     private VideoService videoService =TangoVideosServiceFactory.getVideoService();
 
     @GET
+    @Path("listNames")
+    public Response listNames() {
+        return Response.status(200)
+                .entity(new JSONArray(dancerService.list()).toString())
+                .type(MediaType.APPLICATION_JSON).build();
+    }
+   @GET
     @Path("list")
     public Response list() {
         return Response.status(200)
-                .entity(new JSONArray(dancerService.list()).toString())
+                .entity(new JSONArray(dancerService.list(0, 1000, Neo4jDancerService.SortBy.VIDEO_COUNT)).toString())
                 .type(MediaType.APPLICATION_JSON).build();
     }
 

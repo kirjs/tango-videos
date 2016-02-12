@@ -18,7 +18,12 @@ export class DancerService {
         return this.makeRequest(`/${id}`);
     }
 
+    listNames() {
+        return this.makeRequest(`/listNames`);
+    }
+
     list() {
         return this.makeRequest(`/list`);
     }
+
 }

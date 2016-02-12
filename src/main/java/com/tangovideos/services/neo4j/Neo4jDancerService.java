@@ -6,12 +6,14 @@ import com.google.common.collect.Lists;
 import com.tangovideos.data.Labels;
 import com.tangovideos.data.Relationships;
 import com.tangovideos.models.Dancer;
+import com.tangovideos.models.VideoResponse;
 import com.tangovideos.services.Interfaces.DancerService;
 import org.neo4j.graphdb.*;
 import org.neo4j.helpers.collection.IteratorUtil;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,7 +21,9 @@ import java.util.stream.Collectors;
 public class Neo4jDancerService implements DancerService {
     private final GraphDatabaseService graphDb;
     private Label label = Labels.DANCER.label;
-
+    public enum SortBy {
+        VIDEO_COUNT
+    }
     public Neo4jDancerService(GraphDatabaseService graphDb) {
         this.graphDb = graphDb;
 
@@ -31,6 +35,7 @@ public class Neo4jDancerService implements DancerService {
         dancer.setName(node.getProperty("id").toString());
         return dancer;
     }
+
 
     @Override
     public List<Dancer> list() {
@@ -46,6 +51,36 @@ public class Neo4jDancerService implements DancerService {
 
         return dancers;
     }
+
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Dancer> list(int skip, int limit, SortBy sortBy) {
+        List<Dancer> dancers = Lists.newArrayList();
+
+        try (Transaction tx = this.graphDb.beginTx()) {
+            final String query = "MATCH (d:Dancer)-[:DANCES]->(v:Video) " +
+                    "RETURN DISTINCT d as dancer, collect(v.id) as videos, count(v.id) as count " +
+                    "ORDER BY count DESC";
+            ImmutableMap.of("skip", skip, "limit", limit);
+            final Result result = this.graphDb.execute(query);
+
+
+            while(result.hasNext()){
+                final Map<String, Object> next = result.next();
+                final Dancer dancer = this.mapNode((Node) next.get("dancer"));
+                final List<String> videos = IteratorUtil.asList((Iterable<String>) next.get("videos"));
+                final List<VideoResponse> collect = videos.stream().map(v -> new VideoResponse()).collect(Collectors.toList());
+                dancer.setVideos(collect);
+                dancers.add(dancer);
+            }
+
+            tx.success();
+        }
+
+        return dancers;
+    }
+
 
     @Override
     public void addToVideo(Node dancer, Node video) {

@@ -24,7 +24,7 @@ export class DancerTile {
     private dancersSource:Observable<String>;
 
     constructor(dancers:DancerService) {
-        this.dancersSource = dancers.list().map(result=> {
+        this.dancersSource = dancers.listNames().map(result=> {
             return result.map((dancer)=> dancer.name);
         });
     }
