@@ -2,6 +2,7 @@ import {Component, Input, Output, EventEmitter} from 'angular2/core';
 import {EditableField} from "../editable-field/editable-field";
 import {DancerService} from "../../services/DancerService";
 import {Observable} from 'rxjs';
+import {SongService} from "../../services/SongService";
 
 @Component({
     selector: 'song-item',
@@ -24,10 +25,10 @@ export class SongItem {
         this.update.emit({field, data});
     }
 
-    constructor() {
+    constructor(songService: SongService) {
         this.yearSource = Observable.from([["1900", "1934"]]);
-        this.orquestraSource = Observable.from([["Francisco Canaro"]]);
-        this.songSource = Observable.fromArray([["Poema"]]);
+        this.orquestraSource = songService.listOrquestras();
+        this.songSource =  songService.listNames();
     }
 
 
