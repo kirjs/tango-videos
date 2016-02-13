@@ -1,5 +1,6 @@
 package com.tangovideos.services.neo4j;
 
+import com.google.api.client.util.Lists;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.tangovideos.models.Song;
@@ -9,6 +10,7 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -42,7 +44,7 @@ public class Neo4jSongService implements SongService {
             song = mapNode((Node) result.next().get("song"));
             result.close();
             tx.success();
-        } catch( Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
@@ -70,6 +72,32 @@ public class Neo4jSongService implements SongService {
         }
         return song;
 
+    }
+
+    @Override
+    public List<String> listNames() {
+        return listByField("name");
+    }
+
+    @Override
+    public List<String> listOrquestras() {
+        return listByField("orquestra");
+    }
+
+    private List<String> listByField(String field) {
+        List<String> names;
+        final String query = String.format(
+                "MATCH (s:Song) " +
+                        "WHERE exists(s.%s) " +
+                        "RETURN DISTINCT s.%s as result", field, field);
+        try (
+                final Transaction tx = graphDb.beginTx();
+                final Result result = graphDb.execute(query)
+        ) {
+            names = Lists.newArrayList(result.<String>columnAs("result"));
+            tx.success();
+        }
+        return names;
     }
 
     public static Song mapNode(Node songNode) {

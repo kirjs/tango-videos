@@ -1,6 +1,7 @@
 package com.tangovideos.services.neo4j;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.tangovideos.models.Song;
 import org.junit.After;
 import org.junit.Before;
@@ -93,5 +94,45 @@ public class Neo4jSongServiceTest {
             assertEquals(year, node.get("year"));
             tx.success();
         }
+    }
+
+    @Test
+    public void testUpdateField() throws Exception {
+
+    }
+
+    @Test
+    public void testGetSong() throws Exception {
+
+    }
+
+
+
+    @Test
+    public void testListOrquestras() throws Exception {
+        final String videoId = "test";
+        TestHelpers.addVideo(graphDb, videoId);
+        final String orquestra1 = "Francisco Canaro";
+        neo4jSongService.updateField(videoId, 0, "orquestra", orquestra1);
+        final String orquestra2  = "Juan D'Arienzo";
+        neo4jSongService.updateField(videoId, 1, "orquestra", orquestra2 );
+        final String videoId2 = "test2";
+        TestHelpers.addVideo(graphDb, videoId2);
+        final String orquestra3 = "Hedgehog";
+        neo4jSongService.updateField(videoId2, 0, "orquestra", orquestra3);
+        neo4jSongService.updateField(videoId2, 1, "name", "some name");
+        final ImmutableSet<String> result = ImmutableSet.copyOf(neo4jSongService.listOrquestras());
+        assertEquals(ImmutableSet.of(orquestra1, orquestra2, orquestra3), result);
+    }
+
+    @Test
+    public void testListNames() throws Exception {
+        final String videoId = "test";
+        TestHelpers.addVideo(graphDb, videoId);
+        final String song1 = "Poema";
+
+        neo4jSongService.updateField(videoId, 1, "name", song1);
+        final ImmutableSet<String> result = ImmutableSet.copyOf(neo4jSongService.listNames());
+        assertEquals(ImmutableSet.of(song1), result);
     }
 }
