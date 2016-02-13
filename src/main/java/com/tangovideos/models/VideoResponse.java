@@ -1,9 +1,11 @@
 package com.tangovideos.models;
 
 
+import com.google.api.client.util.Lists;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import java.util.List;
 import java.util.Set;
 
 @XmlRootElement
@@ -22,6 +24,9 @@ public class VideoResponse {
 
     @XmlElement
     private String addedAt;
+
+    @XmlElement
+    private List<Song> songs = Lists.newArrayList();
 
     public String getPublishedAt() {
         return publishedAt;
@@ -62,5 +67,13 @@ public class VideoResponse {
 
     public String getAddedAt() {
         return addedAt;
+    }
+
+    public List<Song> getSongs() {
+        return songs;
+    }
+
+    public void setSongs(List<Song> songs) {
+        this.songs = songs;
     }
 }

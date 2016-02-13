@@ -1,6 +1,7 @@
 package com.tangovideos.services.neo4j;
 
 import com.google.common.collect.ImmutableSet;
+import com.tangovideos.models.Song;
 import com.tangovideos.models.Video;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -10,6 +11,8 @@ import java.util.HashSet;
 
 public class TestHelpers {
     public static int videoIndex = 0;
+    private static Neo4jSongService neo4jSongService;
+
     public static void reset(){
         videoIndex = 0;
     }
@@ -37,6 +40,12 @@ public class TestHelpers {
         return addVideo(graphDb, videoId, 0);
     }
 
+    public static void addSongToVideo(GraphDatabaseService graphDb, String videoId, Song song) {
+        neo4jSongService = new Neo4jSongService(graphDb);
+        neo4jSongService.updateField(videoId, 0, "name", song.getName());
+        neo4jSongService.updateField(videoId, 0, "year", song.getYear());
+    }
+
     public static void addVideoAndDancer(GraphDatabaseService graphDb, String videoId, String dancerId) {
         final Neo4jDancerService neo4jDancerService = new Neo4jDancerService(graphDb);
         final Node video = addVideo(graphDb, videoId, videoIndex++);
@@ -46,6 +55,8 @@ public class TestHelpers {
                 video
         );
     }
+
+
 
     private static Node addVideo(GraphDatabaseService graphDb, String videoId, int i) {
         final Video video = new Video(videoId, "Title", "Date");

@@ -14,7 +14,7 @@ export class VideoService {
     }
 
     list(skip: number, limit: number) {
-        return this.makeRequest("/list/" + skip + "/" + limit);
+        return this.makeRequest("/list/" + skip + "/" + limit).do(result => {debugger});
     }
 
     addDancer(id:String, dancer:String) {

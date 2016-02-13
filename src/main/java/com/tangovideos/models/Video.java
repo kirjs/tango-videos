@@ -1,5 +1,7 @@
 package com.tangovideos.models;
 
+import com.google.api.client.util.Lists;
+
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -58,7 +60,7 @@ public class Video {
     String title;
     private final Object publishedAt;
     Set<String> dancers;
-    ArrayList<Song> songs;
+    ArrayList<Song> songs = Lists.newArrayList();
     String date;
     String url;
 

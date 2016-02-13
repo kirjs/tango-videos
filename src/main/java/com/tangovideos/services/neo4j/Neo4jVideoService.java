@@ -19,6 +19,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class Neo4jVideoService implements VideoService {
@@ -80,7 +81,8 @@ public class Neo4jVideoService implements VideoService {
         final String query =
                 "MATCH (v:Video) " +
                         "OPTIONAL MATCH (v)<-[:DANCES]-(d:Dancer) " +
-                        "RETURN v, collect(d.id) as dancers " +
+                        "OPTIONAL MATCH (v)<-[:PLAYS_IN]-(s:Song) " +
+                        "RETURN v, collect(d.id) as dancers, collect(s) as songs " +
                         "ORDER BY v.addedAt DESC";
 
         return getMultipleVideos(query, ImmutableMap.of());
@@ -91,7 +93,8 @@ public class Neo4jVideoService implements VideoService {
         final String query =
                 "MATCH (v:Video) " +
                         "OPTIONAL MATCH (v)<-[:DANCES]-(d:Dancer) " +
-                        "RETURN v, collect(d.id) as dancers " +
+                        "OPTIONAL MATCH (v)<-[:PLAYS_IN]-(s:Song) " +
+                        "RETURN v, collect(d.id) as dancers, collect(s) as songs " +
                         "ORDER BY v.addedAt DESC " +
                         "SKIP {skip} " +
                         "LIMIT {limit}";
@@ -120,8 +123,9 @@ public class Neo4jVideoService implements VideoService {
                         "MATCH (v)<-[:DANCES]-(d:Dancer) " +
                         "WHERE d.id = {dancerId} " +
                         "WITH v as v " +
-                        "MATCH (d:Dancer)-[:DANCES]->(v)" +
-                        "RETURN v, collect(d.id) as dancers";
+                        "MATCH (d:Dancer)-[:DANCES]->(v) " +
+                        "OPTIONAL MATCH (v)<-[:PLAYS_IN]-(s:Song) " +
+                        "RETURN v, collect(d.id) as dancers, collect(s) as songs";
 
 
         return getMultipleVideos(query, ImmutableMap.of("dancerId", dancerId));
@@ -144,7 +148,7 @@ public class Neo4jVideoService implements VideoService {
     public List<VideoResponse> needsReview() {
         final String query = "MATCH (v:Video) " +
                         "WHERE NOT (:Dancer)-[:DANCES]->(v) " +
-                        "RETURN v, [] as dancers";
+                        "RETURN v, [] as dancers, [] as songs";
 
 
         return getMultipleVideos(query, ImmutableMap.of());
@@ -161,6 +165,11 @@ public class Neo4jVideoService implements VideoService {
                 final Node videoNode = (Node) next.get("v");
                 final VideoResponse video = videoResponseFromNode(videoNode);
                 video.setDancers(Sets.newHashSet((Iterable<String>) next.get("dancers")));
+                video.setSongs(Sets.newHashSet((Iterable<Node>) next.get("songs"))
+                        .stream()
+                        .map(Neo4jSongService::mapNode)
+                        .collect(Collectors.toList())
+                );
                 videos.add(video);
             }
             tx.success();

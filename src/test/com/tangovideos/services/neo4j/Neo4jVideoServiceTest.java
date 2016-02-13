@@ -1,6 +1,7 @@
 package com.tangovideos.services.neo4j;
 
 import com.google.common.collect.ImmutableSet;
+import com.tangovideos.models.Song;
 import com.tangovideos.models.VideoResponse;
 import com.tangovideos.services.Interfaces.VideoService;
 import org.easymock.EasyMockSupport;
@@ -58,11 +59,18 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
     public void testList() throws Exception {
         final String videoId = "videoId";
         final String dancerId = "dancerId";
+        final Song song = new Song();
+        String year = "1991";
+        song.setYear(year);
+        song.setName("name");
+
         TestHelpers.addVideoAndDancer(graphDb, videoId, dancerId);
+        TestHelpers.addSongToVideo(graphDb, videoId, song);
         final List<VideoResponse> list = videoService.list();
         assertEquals(list.size(), 1);
         final VideoResponse video = list.get(0);
         assertEquals(video.getId(), videoId);
+        assertEquals(video.getSongs().get(0).getYear(), year);
         assertEquals(video.getDancers().iterator().next(), dancerId);
     }
 
@@ -138,11 +146,11 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
         TestHelpers.addVideoAndDancer(graphDb, videoId2, dancerId);
         TestHelpers.addVideoAndDancer(graphDb, videoId3, dancerId);
 
-        List<VideoResponse> list = videoService.list(0,1);
+        List<VideoResponse> list = videoService.list(0, 1);
         assertEquals(list.size(), 1);
         assertEquals(list.get(0).getId(), videoId3);
 
-        list = videoService.list(2,2);
+        list = videoService.list(2, 2);
         assertEquals(list.size(), 2);
         assertEquals(list.get(0).getId(), videoId1);
         assertEquals(list.get(1).getId(), videoId0);

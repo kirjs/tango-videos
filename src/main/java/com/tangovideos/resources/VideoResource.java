@@ -117,6 +117,7 @@ public class VideoResource {
             @FormParam("data") String data
     ) {
         final Song song = TangoVideosServiceFactory.getSongService().updateField(id, index, field, data);
+
         return Response.status(200)
                 .entity(new JSONObject(song).toString())
                 .type(MediaType.APPLICATION_JSON)

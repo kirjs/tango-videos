@@ -60,7 +60,7 @@ public class Neo4jSongService implements SongService {
         try (Transaction transaction = graphDb.beginTx()) {
             final Result result = graphDb.execute(query, parameters);
             if (result.hasNext()) {
-                song = this.mapNode((Node) result.next().get("song"));
+                song = mapNode((Node) result.next().get("song"));
             } else {
                 throw new NoSuchElementException();
             }
@@ -72,7 +72,7 @@ public class Neo4jSongService implements SongService {
 
     }
 
-    private Song mapNode(Node songNode) {
+    public static Song mapNode(Node songNode) {
         final Song song = new Song();
         if (songNode.hasProperty("year")) {
             song.setYear(songNode.getProperty("year").toString());
