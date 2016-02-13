@@ -1,4 +1,5 @@
-import {Component} from 'angular2/core';
+import {Component, ViewChild} from 'angular2/core';
+import {PlayerService} from "../../services/PlayerService";
 
 @Component({
     selector: 'video-player',
@@ -10,7 +11,13 @@ import {Component} from 'angular2/core';
 })
 export class VideoPlayer {
 
-    constructor() {
+    @ViewChild("player") player;
+
+    ngAfterViewInit() {
+        this.playerService.init(this.player.nativeElement);
+    }
+
+    constructor(private playerService:PlayerService) {
     }
 
 }

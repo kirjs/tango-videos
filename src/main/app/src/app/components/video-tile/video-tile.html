@@ -1,6 +1,6 @@
 <div class="video-tile">
     <div class="thumb">
-        <img [src]="getThumbnail(video.id)">
+        <img [src]="getThumbnail(video.id)" (click)="playVideo(video.id)">
     </div>
     <video-info [video]=video [readonly]="readonly"></video-info>
 </div>
