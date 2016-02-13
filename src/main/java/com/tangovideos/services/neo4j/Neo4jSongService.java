@@ -26,7 +26,8 @@ public class Neo4jSongService implements SongService {
         }
         try (Transaction tx = graphDb.beginTx()) {
             String query = String.format("MATCH (v:Video {id: {videoId}}) " +
-                    "MERGE v<-[:PLAYS_IN{index: {index}}]-(s:Song {%s:{value}}) " +
+                    "MERGE v<-[:PLAYS_IN{index: {index}}]-(s:Song) " +
+                    "SET s.%s = {value} " +
                     "RETURN s as song", field);
 
             final ImmutableMap<String, Object> parameters = ImmutableMap.of(

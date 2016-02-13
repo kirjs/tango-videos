@@ -9,6 +9,7 @@ import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.test.TestGraphDatabaseFactory;
 
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertEquals;
@@ -65,21 +66,25 @@ public class Neo4jSongServiceTest {
     public void testUpdateFieldName() throws Exception {
         final String videoId = "test";
         TestHelpers.addVideo(graphDb, videoId);
-        final String year = "Poema";
+        final String value = "Poema";
         final int index = 0;
         final String name = "name";
-        neo4jSongService.updateField(videoId, index, name, year);
+        neo4jSongService.updateField(videoId, index, name, value);
+        final String year = "1936";
+        neo4jSongService.updateField(videoId, index, "year", year);
 
 
         try (Transaction tx = graphDb.beginTx()){
             final Result result = graphDb.execute(
                     "MATCH (s:Song)-[:PLAYS_IN{index: {index}}]-(v:Video {id: {videoId}}) " +
-                            "RETURN s.name as name",
+                            "RETURN s.name as name, s.year as year",
                     ImmutableMap.of(
                             "videoId", videoId,
                             "index", index
                     ));
-            assertEquals(year, result.next().get(name));
+            final Map<String, Object> node = result.next();
+            assertEquals(value, node.get(name));
+            assertEquals(year, node.get("year"));
             tx.success();
         }
     }
