@@ -13,7 +13,7 @@ public class Neo4jSongService implements SongService {
     }
 
     @Override
-    public Song insert(String videoId, Integer index, String field, String value) {
+    public Song updateField(String videoId, Integer index, String field, String value) {
         return null;
     }
 }
