@@ -21,7 +21,17 @@ public class SongResource {
 
     @GET
     @Path("listNames")
-    public Response list() {
+    public Response listNames() {
+        final String result = new JSONArray(songService.listNames()).toString();
+        return Response.status(200)
+                .entity(result)
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+    }
+
+    @GET
+    @Path("listOrquestras")
+    public Response listOrquestras() {
         final String result = new JSONArray(songService.listNames()).toString();
         return Response.status(200)
                 .entity(result)
