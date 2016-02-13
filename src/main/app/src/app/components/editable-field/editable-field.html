@@ -5,10 +5,9 @@
         <input type="button" value="save" (click)="changeValue(f.value); editMode = false">
         <input type="button" value="cancel" (click)="editMode = false">
 </span>
-<span *ngIf="!editMode" class="editable-field">
+<span *ngIf="!editMode" class="editable-field" (click)="editMode = true">
         <span *ngIf="!value" class="empty-value">
                 {{emptyValue}}
         </span>
         <span *ngIf="value">{{value}}</span>
-        <span class="suggest-edit" (click)="editMode = true">Edit value</span>
 </span>

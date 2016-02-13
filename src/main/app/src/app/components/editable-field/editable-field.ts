@@ -17,7 +17,6 @@ export class EditableField {
     @Input() autocompleteSource:Array<String> = [];
     @Output() update = new EventEmitter();
 
-
     editMode:boolean = false;
 
     changeValue(value:string) {

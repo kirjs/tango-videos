@@ -17,7 +17,7 @@ var keyToActionMapping = {
 
 })
 export class NgAutocompleteContainer {
-    @Input() source:Observable<Array<String>>;
+    @Input() source:Observable<Array<String>> = new Observable();
     items:Array<String> = [];
     selectedIndex:number = 0;
     private dropdownOpen:boolean = false;
