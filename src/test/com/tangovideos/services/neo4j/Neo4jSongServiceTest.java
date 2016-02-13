@@ -37,7 +37,6 @@ public class Neo4jSongServiceTest {
 
         neo4jSongService.updateField(videoId, index, "year", year);
 
-
         try (Transaction tx = graphDb.beginTx()){
             final Result result = graphDb.execute(
                     "MATCH (s:Song)-[:PLAYS_IN{index: {index}}]-(v:Video {id: {videoId}}) " +
@@ -47,6 +46,27 @@ public class Neo4jSongServiceTest {
                             "index", index
                     ));
             assertEquals(year, result.next().get("year"));
+            tx.success();
+        }
+    }
+
+    public void testUpdateFieldName() throws Exception {
+        final String videoId = "test";
+        TestHelpers.addVideo(graphDb, videoId);
+        final String year = "Poema";
+        final int index = 0;
+        final String name = "name";
+        neo4jSongService.updateField(videoId, index, name, year);
+
+        try (Transaction tx = graphDb.beginTx()){
+            final Result result = graphDb.execute(
+                    "MATCH (s:Song)-[:PLAYS_IN{index: {index}}]-(v:Video {id: {videoId}}) " +
+                            "RETURN s.name as name",
+                    ImmutableMap.of(
+                            "videoId", videoId,
+                            "index", index
+                    ));
+            assertEquals(year, result.next().get(name));
             tx.success();
         }
     }
