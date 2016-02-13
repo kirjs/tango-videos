@@ -9,6 +9,8 @@ import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.test.TestGraphDatabaseFactory;
 
+import java.util.NoSuchElementException;
+
 import static org.junit.Assert.assertEquals;
 
 public class Neo4jSongServiceTest {
@@ -50,6 +52,16 @@ public class Neo4jSongServiceTest {
         }
     }
 
+
+    @Test(expected=NoSuchElementException.class)
+    public void testUpdateFieldUnexistingPraameter() {
+        final String videoId = "test";
+        TestHelpers.addVideo(graphDb, videoId);
+
+        neo4jSongService.updateField(videoId, 0, "leg", "123");
+    }
+
+    @Test
     public void testUpdateFieldName() throws Exception {
         final String videoId = "test";
         TestHelpers.addVideo(graphDb, videoId);
@@ -57,6 +69,7 @@ public class Neo4jSongServiceTest {
         final int index = 0;
         final String name = "name";
         neo4jSongService.updateField(videoId, index, name, year);
+
 
         try (Transaction tx = graphDb.beginTx()){
             final Result result = graphDb.execute(
