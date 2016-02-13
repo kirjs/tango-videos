@@ -8,6 +8,7 @@ import com.tangovideos.services.neo4j.Neo4JServiceFactory;
 
 public class TangoVideosServiceFactory {
     public static ServiceFactory serviceFactory = new Neo4JServiceFactory(true);
+    private static Object songService;
 
     public static UserService getUserService() {
         return serviceFactory.getUserService();
@@ -23,5 +24,9 @@ public class TangoVideosServiceFactory {
 
     public static DancerService getDancerService() {
         return serviceFactory.getDancerService();
+    }
+
+    public static Object getSongService() {
+        return serviceFactory.getSongService();
     }
 }

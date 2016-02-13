@@ -7,4 +7,5 @@ public interface ServiceFactory {
     VideoService getVideoService();
     DancerService getDancerService();
     YoutubeService getYoutubeService();
+    SongService getSongService();
 }

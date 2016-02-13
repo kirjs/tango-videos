@@ -108,9 +108,13 @@ public class VideoResource {
 
     @POST
     @Path("{id}/songs/update")
-    public Response updateSong(@PathParam("index") String index, @FormParam("field") String field, @FormParam("data") String data) {
+    public Response updateSong(@PathParam("id") String id, @FormParam("index") String index, @FormParam("field") String field, @FormParam("data") String data) {
+        TangoVideosServiceFactory.getVideoService();
+        final Node video = TangoVideosServiceFactory.getVideoService().get(id);
+        TangoVideosServiceFactory.getSongService();
+
 //        final Node dancer = dancerService.insertOrGetNode(dancerId);
-//        final Node video = TangoVideosServiceFactory.getVideoService().get(id);
+//
 //        TangoVideosServiceFactory.getDancerService().addToVideo(dancer, video);
 //        final Set<String> entity = TangoVideosServiceFactory.getDancerService().getForVideo(id);
 //        final String result = new JSONArray(entity).toString();

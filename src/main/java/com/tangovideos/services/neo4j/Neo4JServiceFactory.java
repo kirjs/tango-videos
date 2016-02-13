@@ -18,6 +18,7 @@ public class Neo4JServiceFactory implements ServiceFactory {
     private Neo4jPermissionsService permissionService;
     private YoutubeService youtubeService;
     private DancerService dancerService;
+    private SongService songService;
 
 
     public Neo4JServiceFactory() {
@@ -82,6 +83,14 @@ public class Neo4JServiceFactory implements ServiceFactory {
         }
 
         return youtubeService;
+    }
+
+    @Override
+    public SongService getSongService() {
+        if (songService == null) {
+            songService = new Neo4jSongService(graphDb);
+        }
+        return songService;
     }
 
     public DancerService getDancerService() {

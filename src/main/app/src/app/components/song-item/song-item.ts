@@ -25,7 +25,6 @@ export class SongItem {
     }
 
     constructor() {
-
         this.yearSource = Observable.from([["1900", "1934"]]);
         this.orchestraSource = Observable.from([["Francisco Canaro"]]);
         this.songSource = Observable.fromArray([["Poema"]]);
