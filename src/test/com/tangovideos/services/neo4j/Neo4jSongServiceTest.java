@@ -1,9 +1,12 @@
 package com.tangovideos.services.neo4j;
 
+import com.google.common.collect.ImmutableMap;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Result;
+import org.neo4j.graphdb.Transaction;
 import org.neo4j.test.TestGraphDatabaseFactory;
 
 import static org.junit.Assert.assertEquals;
@@ -26,9 +29,25 @@ public class Neo4jSongServiceTest {
     }
 
     @Test
-    public void testInsert() throws Exception {
+    public void testUpdateFieldYear() throws Exception {
         final String videoId = "test";
         TestHelpers.addVideo(graphDb, videoId);
-        assertEquals(neo4jSongService.updateField(videoId, 0, "year", "1934"), null);
+        final String year = "1934";
+        final int index = 0;
+
+        neo4jSongService.updateField(videoId, index, "year", year);
+
+
+        try (Transaction tx = graphDb.beginTx()){
+            final Result result = graphDb.execute(
+                    "MATCH (s:Song)-[:PLAYS_IN{index: {index}}]-(v:Video {id: {videoId}}) " +
+                            "RETURN s.year as year",
+                    ImmutableMap.of(
+                            "videoId", videoId,
+                            "index", index
+                    ));
+            assertEquals(year, result.next().get("year"));
+            tx.success();
+        }
     }
 }
