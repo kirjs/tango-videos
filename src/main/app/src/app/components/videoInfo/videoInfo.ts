@@ -28,7 +28,6 @@ export class VideoInfo {
 
     updateSong(info) {
         this.videoService.updateSongInfo(this.video.id, info.index, info.field, info.data).subscribe((song)=> {
-            this.video.songs = this.video.songs|| [];
             this.video.songs[info.index] = song;
         });
     }
@@ -47,7 +46,6 @@ export class VideoInfo {
             this.video.dancers = data;
         });
     }
-
 
     constructor(private videoService:VideoService) {
 

@@ -12,7 +12,7 @@ import {Observable} from 'rxjs';
     pipes: []
 })
 export class SongItem {
-    @Input() item;
+    @Input() song;
     @Output() update = new EventEmitter();
     yearSource:Observable<Array<string>>;
     songSource:Observable<Array<string>>;
