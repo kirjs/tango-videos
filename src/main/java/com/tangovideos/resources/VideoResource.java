@@ -108,18 +108,15 @@ public class VideoResource {
 
     @POST
     @Path("{id}/songs/update")
-    public Response updateSong(@PathParam("id") String id, @FormParam("index") String index, @FormParam("field") String field, @FormParam("data") String data) {
-        TangoVideosServiceFactory.getVideoService();
-        final Node video = TangoVideosServiceFactory.getVideoService().get(id);
-        TangoVideosServiceFactory.getSongService();
-
-//        final Node dancer = dancerService.insertOrGetNode(dancerId);
-//
-//        TangoVideosServiceFactory.getDancerService().addToVideo(dancer, video);
-//        final Set<String> entity = TangoVideosServiceFactory.getDancerService().getForVideo(id);
-//        final String result = new JSONArray(entity).toString();
+    public Response updateSong(
+            @PathParam("id") String id,
+            @FormParam("index") Integer index,
+            @FormParam("field") String field,
+            @FormParam("data") String data
+    ) {
+        TangoVideosServiceFactory.getSongService().updateField(id, index, field, data);
         return Response.status(200)
-                .entity("TODO")
+                .entity("true")
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }

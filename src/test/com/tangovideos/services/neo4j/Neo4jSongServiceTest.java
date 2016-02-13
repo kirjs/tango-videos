@@ -82,6 +82,7 @@ public class Neo4jSongServiceTest {
                             "videoId", videoId,
                             "index", index
                     ));
+
             final Map<String, Object> node = result.next();
             assertEquals(value, node.get(name));
             assertEquals(year, node.get("year"));

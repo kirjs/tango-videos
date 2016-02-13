@@ -1,9 +1,6 @@
 package com.tangovideos.services;
 
-import com.tangovideos.services.Interfaces.DancerService;
-import com.tangovideos.services.Interfaces.ServiceFactory;
-import com.tangovideos.services.Interfaces.UserService;
-import com.tangovideos.services.Interfaces.VideoService;
+import com.tangovideos.services.Interfaces.*;
 import com.tangovideos.services.neo4j.Neo4JServiceFactory;
 
 public class TangoVideosServiceFactory {
@@ -26,7 +23,7 @@ public class TangoVideosServiceFactory {
         return serviceFactory.getDancerService();
     }
 
-    public static Object getSongService() {
+    public static SongService getSongService() {
         return serviceFactory.getSongService();
     }
 }
