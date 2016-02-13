@@ -4,7 +4,7 @@ import 'rxjs/add/operator/map';
 
 
 @Injectable()
-export class VideoService {
+export class SongService {
     constructor(private http:Http) {
     }
 
