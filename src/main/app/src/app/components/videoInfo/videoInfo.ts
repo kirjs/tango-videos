@@ -27,10 +27,12 @@ export class VideoInfo {
     }
 
     updateSong(info) {
-        this.videoService.updateSongInfo(this.video.id, info.index, info.field, info.data).subscribe((data)=> {
-            this.video.dancers = data;
+        this.videoService.updateSongInfo(this.video.id, info.index, info.field, info.data).subscribe((song)=> {
+            this.video.songs = this.video.songs|| [];
+            this.video.songs[info.index] = song;
         });
     }
+
     recover(){
         throw "not implemented";
     }

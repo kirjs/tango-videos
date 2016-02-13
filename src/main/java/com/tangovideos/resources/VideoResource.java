@@ -1,11 +1,13 @@
 package com.tangovideos.resources;
 
 import com.google.common.collect.ImmutableSet;
+import com.tangovideos.models.Song;
 import com.tangovideos.models.Video;
 import com.tangovideos.services.Interfaces.DancerService;
 import com.tangovideos.services.Interfaces.VideoService;
 import com.tangovideos.services.TangoVideosServiceFactory;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.neo4j.graphdb.Node;
 
 import javax.ws.rs.*;
@@ -114,9 +116,9 @@ public class VideoResource {
             @FormParam("field") String field,
             @FormParam("data") String data
     ) {
-        TangoVideosServiceFactory.getSongService().updateField(id, index, field, data);
+        final Song song = TangoVideosServiceFactory.getSongService().updateField(id, index, field, data);
         return Response.status(200)
-                .entity("true")
+                .entity(new JSONObject(song).toString())
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }

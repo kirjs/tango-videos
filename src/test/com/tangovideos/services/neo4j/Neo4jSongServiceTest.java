@@ -1,6 +1,7 @@
 package com.tangovideos.services.neo4j;
 
 import com.google.common.collect.ImmutableMap;
+import com.tangovideos.models.Song;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,9 +70,13 @@ public class Neo4jSongServiceTest {
         final String value = "Poema";
         final int index = 0;
         final String name = "name";
-        neo4jSongService.updateField(videoId, index, name, value);
+        Song song = neo4jSongService.updateField(videoId, index, name, value);
+        assertEquals(null, song.getYear());
+        assertEquals(value, song.getName());
         final String year = "1936";
-        neo4jSongService.updateField(videoId, index, "year", year);
+        song = neo4jSongService.updateField(videoId, index, "year", year);
+        assertEquals(year, song.getYear());
+        assertEquals(value, song.getName());
 
 
         try (Transaction tx = graphDb.beginTx()){

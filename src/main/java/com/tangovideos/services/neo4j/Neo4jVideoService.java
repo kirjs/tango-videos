@@ -40,7 +40,7 @@ public class Neo4jVideoService implements VideoService {
     @Override
     public Node addVideo(@NotNull Video video) {
         final Node node;
-        try (Transaction transaction = graphDb.beginTx()) {
+        try (Transaction tx = graphDb.beginTx()) {
             if (exists(video.getId())) {
                 throw new RuntimeException("VideoExists");
             }
@@ -51,7 +51,7 @@ public class Neo4jVideoService implements VideoService {
             node.setProperty("publishedAt", video.getPublishedAt());
             node.setProperty("id", video.getId());
             node.setProperty("addedAt", Instant.now().getEpochSecond());
-            transaction.success();
+            tx.success();
         }
         return node;
     }
@@ -150,7 +150,7 @@ public class Neo4jVideoService implements VideoService {
         return getMultipleVideos(query, ImmutableMap.of());
     }
 
-
+    @SuppressWarnings("unchecked")
     private List<VideoResponse> getMultipleVideos(String query, Map<String, Object> params) {
         List<VideoResponse> videos = Lists.newArrayList();
         try (Transaction tx = this.graphDb.beginTx()) {
