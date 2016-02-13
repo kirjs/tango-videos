@@ -16,7 +16,7 @@ export class SongItem {
     @Output() update = new EventEmitter();
     yearSource:Observable<Array<string>>;
     songSource:Observable<Array<string>>;
-    orchestraSource:Observable<Array<string>>;
+    orquestraSource:Observable<Array<string>>;
     song:Object = {};
     autocompleteSource:any = {};
 
@@ -26,7 +26,7 @@ export class SongItem {
 
     constructor() {
         this.yearSource = Observable.from([["1900", "1934"]]);
-        this.orchestraSource = Observable.from([["Francisco Canaro"]]);
+        this.orquestraSource = Observable.from([["Francisco Canaro"]]);
         this.songSource = Observable.fromArray([["Poema"]]);
     }
 
