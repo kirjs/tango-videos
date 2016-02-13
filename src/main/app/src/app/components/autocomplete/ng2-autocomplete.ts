@@ -49,7 +49,9 @@ export class NgAutocompleteContainer {
                 this.updateSelectedIndex(this.selectedIndex + 1);
                 break;
             case Action.CHOOSE:
-                this.selectItem(this.selectedIndex);
+                if(this.dropdownOpen){
+                    this.selectItem(this.selectedIndex);
+                }
                 break;
             case Action.ESC:
                 this.selectedIndex = 0;
@@ -123,10 +125,6 @@ export class NgAutocompleteInput {
 
     setValue(value:String) {
         this.nativeElement.value = value;
-    }
-
-    updateSource() {
-
     }
 
     updateValue(event) {
