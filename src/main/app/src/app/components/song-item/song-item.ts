@@ -3,13 +3,14 @@ import {EditableField} from "../editable-field/editable-field";
 import {DancerService} from "../../services/DancerService";
 import {Observable} from 'rxjs';
 import {SongService} from "../../services/SongService";
+import {Icon} from "../icon/icon";
 
 @Component({
     selector: 'song-item',
     template: require('./song-item.html'),
     styles: [require('./song-item.css')],
     providers: [],
-    directives: [EditableField],
+    directives: [EditableField, Icon],
     pipes: []
 })
 export class SongItem {

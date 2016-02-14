@@ -6,6 +6,7 @@ import {NgAutocompleteContainer} from "../autocomplete/ng2-autocomplete";
 import {NgAutocompleteInput} from "../autocomplete/ng2-autocomplete";
 import {Focus} from "../focus/focus";
 import {AddableFIeld} from "../addable-field/addable-field";
+import {Icon} from "../icon/icon";
 
 
 @Component({
@@ -13,7 +14,7 @@ import {AddableFIeld} from "../addable-field/addable-field";
     template: require('./dancer-tile.html'),
     styles: [require('./dancer-tile.css'), require('../common/list.css')],
     providers: [],
-    directives: [ROUTER_DIRECTIVES, NgAutocompleteContainer, NgAutocompleteInput, AddableFIeld],
+    directives: [ROUTER_DIRECTIVES, NgAutocompleteContainer, NgAutocompleteInput, AddableFIeld, Icon],
     pipes: []
 })
 export class DancerTile {

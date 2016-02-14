@@ -2,7 +2,7 @@
     Please wait, saving your changes.
 </div>
 <div *ngIf="!saving">
-    <div class="dancer-icon"></div>
+    <icon name = "dancer"></icon>
     <div *ngFor="#dancer of dancers" class="dancer-item">
         <div *ngIf="dancer != ''" class="tile" [routerLink]="['Dancer', {id: dancer}]">
             <div class="name">{{dancer}}</div>
