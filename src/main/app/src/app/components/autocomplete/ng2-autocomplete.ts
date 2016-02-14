@@ -1,5 +1,12 @@
 import {Component, Directive, SkipSelf, Host, Optional, EventEmitter, Output, ElementRef, Input, Attribute} from 'angular2/core';
 import { Observable } from 'rxjs/Rx';
+var removeDiacritics = require('diacritics');
+
+interface AutocompleteItem {
+    key: String;
+    value: String;
+}
+
 
 enum Action {UP, DOWN, ESC, CHOOSE}
 
@@ -18,10 +25,10 @@ var keyToActionMapping = {
 })
 export class NgAutocompleteContainer {
     @Input() source:Observable<Array<String>> = new Observable();
-    items:Array<String> = [];
+    items:Array<AutocompleteItem> = [];
     selectedIndex:number = 0;
     private dropdownOpen:boolean = false;
-    sourceData:Array<String> = [];
+    sourceData:Array<AutocompleteItem> = [];
     input:NgAutocompleteInput;
     value:string = '';
 
@@ -33,9 +40,9 @@ export class NgAutocompleteContainer {
         this.dropdownOpen = false;
     }
 
-    selectItem(index:number){
+    selectItem(index:number) {
         this.closeDropdown();
-        this.input.setValue(this.items[index]);
+        this.input.setValue(this.items[index].value);
     }
 
     handleKeydown(action:Action) {
@@ -49,7 +56,7 @@ export class NgAutocompleteContainer {
                 this.updateSelectedIndex(this.selectedIndex + 1);
                 break;
             case Action.CHOOSE:
-                if(this.dropdownOpen && this.items.length > 0){
+                if (this.dropdownOpen && this.items.length > 0) {
                     this.selectItem(this.selectedIndex);
                 }
                 break;
@@ -73,7 +80,7 @@ export class NgAutocompleteContainer {
         this.value = search;
 
         this.items = this.sourceData.filter(function (item) {
-            return item.toLowerCase().indexOf(search) > -1;
+            return item.key.toLowerCase().indexOf(search) > -1;
         });
 
         this.updateSelectedIndex(this.items.reduce((index, item, itemIndex)=> {
@@ -86,7 +93,14 @@ export class NgAutocompleteContainer {
     }
 
     ngOnInit() {
-        this.source.subscribe((data)=>{
+        this.source.map((items) => {
+            return items.map((item) => {
+                return {
+                    key: item,
+                    value: item
+                }
+            });
+        }).subscribe((data)=> {
             this.sourceData = data;
             this.filterValues(this.value);
         });

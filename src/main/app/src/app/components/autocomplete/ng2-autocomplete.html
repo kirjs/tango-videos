@@ -5,6 +5,6 @@
              *ngFor="#item of items; #i = index"
              [class.selected]="i === selectedIndex"
              (mousedown)="selectItem(i)"
-        >{{item}}</div>
+        >{{item.value}}</div>
     </span>
 </span>
