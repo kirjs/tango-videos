@@ -18,8 +18,8 @@ export class VideoInfo {
     @Input() readonly:boolean = true;
 
     // TODO: We have 2 different date formats here, need to standardize
-    toDate(publishedAt:string, recordedAt: number) {
-        return new Date((recordedAt && recordedAt * 1000).toString() || publishedAt);
+    toDate(publishedAt:string, recordedAt:number) {
+        return recordedAt ? new Date(recordedAt * 1000) : new Date(publishedAt);
     }
 
     handleUpdate(field, value) {
@@ -27,7 +27,8 @@ export class VideoInfo {
             value = Date.parse(value) / 1000;
         }
 
-        this.videoService.update(this.video.id, field, value).subscribe(x => {});
+        this.videoService.update(this.video.id, field, value).subscribe(x => {
+        });
     }
 
     addDancer(name:string) {
@@ -53,7 +54,7 @@ export class VideoInfo {
     }
 
 
-    markComplete(value: boolean) {
+    markComplete(value:boolean) {
         this.videoService.markComplete(this.video.id, value).subscribe(() => {
             this.video.complete = value;
         })
