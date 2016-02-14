@@ -6,6 +6,7 @@ import com.tangovideos.models.Video;
 import com.tangovideos.services.Interfaces.DancerService;
 import com.tangovideos.services.Interfaces.VideoService;
 import com.tangovideos.services.TangoVideosServiceFactory;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.neo4j.graphdb.Node;
@@ -83,6 +84,7 @@ public class VideoResource {
     }
     @POST
     @Path("{id}/markComplete")
+    @RequiresPermissions("video:write")
     public Response markComplete(@PathParam("id") String id, @FormParam("value") Boolean value) {
         videoService.markComplete(id, value);
 
