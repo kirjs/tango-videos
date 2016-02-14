@@ -1,6 +1,5 @@
 .editable-field {
-    color: #999;
-    text-decoration: underline;
+    font-size: 12px;
 }
 
 .editable-field:hover .suggest-edit {

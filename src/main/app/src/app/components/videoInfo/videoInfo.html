@@ -6,7 +6,6 @@
     <h2><a class = "youtube-social-icon-red-24px" href="https://www.youtube.com/watch?v={{video.id}}"></a>{{video.title}}</h2>
     <div>{{toDate(video.publishedAt)|date}}</div>
     <dancer-tile [readonly]="readonly" [dancers]="video.dancers" (add)="addDancer($event)" (remove)="removeDancer($event)" ></dancer-tile>
-    <h3>Songs:</h3>
     <song-list  [readonly]="readonly" [songs] = "video.songs" (update) = "updateSong($event)"></song-list>
-    <div (click)="hide()">Hide</div>
+    <div (click)="hide()" class = "hide">Hide</div>
 </div>
