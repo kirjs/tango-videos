@@ -1,0 +1,22 @@
+.video-player {
+    background-color: #000000;
+    position: fixed;
+    width: 100%;
+    box-shadow: 10px 0 10px #444;
+}
+
+#player {
+    margin: 10px auto;
+    width: 450px;
+
+}
+
+.close {
+    background-color: #444;
+    color: #ffffff;
+    padding: 4px;
+    font-size: 10px;
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+}

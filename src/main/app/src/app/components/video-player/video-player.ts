@@ -17,6 +17,13 @@ export class VideoPlayer {
         this.playerService.init(this.player.nativeElement);
     }
 
+    close(){
+        this.playerService.stop();
+    }
+    isPlaying(){
+        return this.playerService.isPlaying();
+    }
+
     constructor(private playerService:PlayerService) {
     }
 

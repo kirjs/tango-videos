@@ -1,3 +1,4 @@
-<div class="video-player">
+<div class="video-player" [hidden] = "!isPlaying()">
     <div #player>Loading</div>
+    <div class = "close" (click) = "close()">Close video player</div>
 </div>
