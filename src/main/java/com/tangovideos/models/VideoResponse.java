@@ -27,6 +27,7 @@ public class VideoResponse {
 
     @XmlElement
     private List<Song> songs = Lists.newArrayList();
+    private String recordedAt;
 
     public String getPublishedAt() {
         return publishedAt;
@@ -75,5 +76,13 @@ public class VideoResponse {
 
     public void setSongs(List<Song> songs) {
         this.songs = songs;
+    }
+
+    public void setRecordedAt(String recordedAt) {
+        this.recordedAt = recordedAt;
+    }
+
+    public String getRecordedAt() {
+        return recordedAt;
     }
 }

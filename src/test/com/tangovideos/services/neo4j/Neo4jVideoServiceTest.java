@@ -198,6 +198,6 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
         final String videoId = "test";
         TestHelpers.addVideo(graphDb, videoId);
 
-        neo4jVideoService.updateField(videoId, "leg", "123");
+        videoService.updateField(videoId, "leg", "123");
     }
 }
