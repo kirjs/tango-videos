@@ -1,23 +1,14 @@
 package com.tangovideos.exceptions;
 
 
-import org.apache.commons.beanutils.BeanUtils;
-
 import javax.ws.rs.NotFoundException;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.lang.reflect.InvocationTargetException;
 
-@XmlRootElement
+
 public class ErrorMessage {
-    @XmlElement(name = "status")
-    int status;
-
-    @XmlElement(name = "code")
+    int status = 401;
     int code;
-
-    @XmlElement(name = "message")
     String message;
+    private String name;
 
 
     public int getStatus() {
@@ -45,13 +36,13 @@ public class ErrorMessage {
     }
 
 
-    public ErrorMessage(Exception ex){
-        try {
-            BeanUtils.copyProperties(this, ex);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
+    public ErrorMessage(Exception ex) {
+        this.setName(ex.getClass().getName());
+        this.setMessage(ex.getMessage());
     }
+
+
+
 
     public ErrorMessage(NotFoundException ex){
         this.status = 404;
@@ -59,4 +50,12 @@ public class ErrorMessage {
     }
 
     public ErrorMessage() {}
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }
