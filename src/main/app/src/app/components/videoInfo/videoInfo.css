@@ -5,8 +5,27 @@ h2 {
     font-weight: 300;
     width: 600px;
 }
+
 .data {
     padding: 0 10px;
+    position: relative;
+}
+
+.data .admin-controls {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 30px;
+    background-color: #eeeeee;
+}
+
+.data:hover .admin-controls {
+    display: block;
+}
+.data:hover .admin-controls {
+    padding: 5px;
+    margin-left: 5px;
 }
 
 .hide {
@@ -18,3 +37,4 @@ h3 {
     margin-top: 5px;
     margin-bottom: 5px;
 }
+

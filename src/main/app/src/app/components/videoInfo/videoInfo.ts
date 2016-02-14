@@ -52,8 +52,9 @@ export class VideoInfo {
         })
     }
 
-    markComplete() {
-        this.videoService.markComplete(this.video.id).subscribe(() => {
+
+    markComplete(value: boolean) {
+        this.videoService.markComplete(this.video.id, value).subscribe(() => {
             this.video.complete = true;
         })
     }

@@ -14,15 +14,21 @@
     <dancer-tile [readonly]="readonly" [dancers]="video.dancers" (add)="addDancer($event)" (remove)="removeDancer($event)" ></dancer-tile>
 
     <song-list  [readonly]="readonly" [songs] = "video.songs" (update) = "updateSong($event)"></song-list>
+    <div class="admin-controls">
+        <div (click)="hide()" class = "hide admin-control">&times;</div>
+        <div (click)="markComplete(true)" class = "complete admin-control">✓</div>
+    </div>
 </div>
 
 
 <div class="data" *ngIf="!video.hidden && video.complete">
-    <icon name = "date"></icon>
-    {{toDate(video.publishedAt, video.recordedAt)|date}}
     <dancer-tile [readonly]="true" [dancers]="video.dancers" (add)="addDancer($event)" (remove)="removeDancer($event)" ></dancer-tile>
 
     <song-list  [readonly]="true" [songs] = "video.songs" (update) = "updateSong($event)"></song-list>
-    <div (click)="hide()" class = "hide">Hide</div>
-    <div (click)="markComplete()" class = "hide">Mark complete</div>
+    <icon name = "date"></icon>
+    {{toDate(video.publishedAt, video.recordedAt)|date}}
+
+    <div class="admin-controls">
+        <div (click)="markComplete(false)" class = "complete admin-control">✓</div>
+    </div>
 </div>
