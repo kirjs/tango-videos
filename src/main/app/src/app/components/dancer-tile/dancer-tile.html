@@ -4,7 +4,7 @@
 <div *ngIf="!saving">
     <icon name = "dancer"></icon>
     <div *ngFor="#dancer of dancers" class="dancer-item">
-        <div *ngIf="dancer != ''" class="tile" [routerLink]="['Dancer', {id: dancer}]">
+        <div class="tile" [routerLink]="['Dancer', {id: dancer}]">
             <div class="name">{{dancer}}</div>
             <div class="remove" (click)="removeDancer($event, dancer)" *ngIf = "!readonly">&times;</div>
         </div>
