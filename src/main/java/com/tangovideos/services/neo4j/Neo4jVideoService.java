@@ -3,6 +3,7 @@ package com.tangovideos.services.neo4j;
 import com.google.api.client.util.Lists;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.tangovideos.data.Labels;
 import com.tangovideos.models.Video;
@@ -18,6 +19,7 @@ import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -156,8 +158,12 @@ public class Neo4jVideoService implements VideoService {
     }
 
 
+    final private Set<String> allowedParameters = ImmutableSet.of("recordedAt");
     @Override
     public void updateField(String id, String field, String value) {
+        if (!allowedParameters.contains(field)) {
+            throw new NoSuchElementException(String.format("Invalid parameter: %s", field));
+        }
         String query = String.format("MATCH (v:Video {id: {id}}) " +
                 "SET v.%s = {value} " +
                 "RETURN v", field);

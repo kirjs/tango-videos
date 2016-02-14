@@ -57,7 +57,7 @@ public class Neo4jSongServiceTest {
 
 
     @Test(expected=NoSuchElementException.class)
-    public void testUpdateFieldUnexistingPraameter() {
+    public void testUpdateFieldUnexistingParameter() {
         final String videoId = "test";
         TestHelpers.addVideo(graphDb, videoId);
 

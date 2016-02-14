@@ -14,6 +14,7 @@ import org.neo4j.graphdb.Transaction;
 import org.neo4j.test.TestGraphDatabaseFactory;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -185,13 +186,18 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
     public void testUpdateField() throws Exception {
         final String videoId = "videoId0";
         final String newValue = "12345";
-        try(Transaction tx = graphDb.beginTx()){
+        try (Transaction tx = graphDb.beginTx()) {
             final Node node = TestHelpers.addVideo(graphDb, videoId);
             videoService.updateField(videoId, "recordedAt", newValue);
             assertEquals(node.getProperty("recordedAt"), newValue);
             tx.success();
         }
+    }
+    @Test(expected=NoSuchElementException.class)
+    public void testUpdateFieldUnexistingParameter() {
+        final String videoId = "test";
+        TestHelpers.addVideo(graphDb, videoId);
 
-
+        neo4jVideoService.updateField(videoId, "leg", "123");
     }
 }
