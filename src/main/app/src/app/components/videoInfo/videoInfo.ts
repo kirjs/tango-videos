@@ -2,13 +2,14 @@ import {Component, Input} from 'angular2/core';
 import {DancerTile} from "../dancer-tile/dancer-tile";
 import {VideoService} from "../../services/VideoService";
 import {SongList} from "../song-list/song-list";
+import {EditableField} from "../editable-field/editable-field";
 
 @Component({
     selector: 'video-info',
     template: require('./videoInfo.html'),
     styles: [require('./videoInfo.css')],
     providers: [],
-    directives: [DancerTile, SongList],
+    directives: [DancerTile, SongList, EditableField],
     pipes: []
 })
 export class VideoInfo {

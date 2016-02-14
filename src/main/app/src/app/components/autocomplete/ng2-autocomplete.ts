@@ -1,5 +1,5 @@
 import {Component, Directive, SkipSelf, Host, Optional, EventEmitter, Output, ElementRef, Input, Attribute} from 'angular2/core';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
 var removeDiacritics = require('diacritics').remove;
 
 
@@ -25,7 +25,7 @@ var keyToActionMapping = {
 
 })
 export class NgAutocompleteContainer {
-    @Input() source:Observable<Array<String>> = new Observable();
+    @Input() source:Observable<Array<String>> = Observable.from([[]]);
     items:Array<AutocompleteItem> = [];
     selectedIndex:number = 0;
     private dropdownOpen:boolean = false;
