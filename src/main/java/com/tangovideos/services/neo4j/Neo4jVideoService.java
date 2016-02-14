@@ -187,12 +187,12 @@ public class Neo4jVideoService implements VideoService {
     }
 
     @Override
-    public void markComplete(String id) {
+    public void markComplete(String id, Boolean value) {
         final String query = "MATCH (v:Video {id: {id}}) " +
-                "SET v.complete = true " +
+                "SET v.complete = {value} " +
                 "RETURN v ";
 
-        final ImmutableMap<String, Object> params = ImmutableMap.of("id", id);
+        final ImmutableMap<String, Object> params = ImmutableMap.of("id", id, "value", value);
         try (
                 Transaction tx = graphDb.beginTx();
                 Result result = graphDb.execute(query, params)

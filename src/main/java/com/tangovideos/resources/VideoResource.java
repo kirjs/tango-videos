@@ -83,8 +83,8 @@ public class VideoResource {
     }
     @POST
     @Path("{id}/markComplete")
-    public Response markComplete(@PathParam("id") String id) {
-        videoService.markComplete(id);
+    public Response markComplete(@PathParam("id") String id, @FormParam("value") Boolean value) {
+        videoService.markComplete(id, value);
 
         return Response.status(200)
                 .entity("true")

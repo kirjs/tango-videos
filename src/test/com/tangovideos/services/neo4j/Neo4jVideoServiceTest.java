@@ -206,8 +206,10 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
         try (Transaction tx = graphDb.beginTx()) {
             final String videoId = "videoId0";
             final Node video = TestHelpers.addVideo(graphDb, videoId);
-            videoService.markComplete(videoId);
+            videoService.markComplete(videoId, true);
             assertEquals(true, video.getProperty("complete"));
+            videoService.markComplete(videoId, false);
+            assertEquals(false, video.getProperty("complete"));
             tx.success();
         }
     }

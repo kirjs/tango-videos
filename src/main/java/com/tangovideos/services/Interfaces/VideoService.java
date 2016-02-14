@@ -27,5 +27,5 @@ public interface VideoService {
 
     void updateField(String id, String field, String value);
 
-    void markComplete(String id);
+    void markComplete(String id, Boolean value);
 }
