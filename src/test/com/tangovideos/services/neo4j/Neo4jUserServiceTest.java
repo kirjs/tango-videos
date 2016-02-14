@@ -9,6 +9,8 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.test.TestGraphDatabaseFactory;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class Neo4jUserServiceTest {
 
@@ -19,6 +21,7 @@ public class Neo4jUserServiceTest {
     public void setUp() throws Exception {
         graphDb = new TestGraphDatabaseFactory().newImpermanentDatabase();
         userService = new Neo4jUserService(graphDb);
+        TestHelpers.setUpAdminNode(graphDb);
     }
 
     @After
@@ -28,7 +31,6 @@ public class Neo4jUserServiceTest {
 
     @Test
     public void testGetAllRolesAdmin() throws Exception {
-        TestHelpers.setUpAdminNode(graphDb);
         assertEquals(ImmutableSet.of(
                 new WildcardPermission("video:read"),
                 new WildcardPermission("video:write")
@@ -37,7 +39,15 @@ public class Neo4jUserServiceTest {
 
     @Test
     public void testGetAllRolesNobody() throws Exception {
-        TestHelpers.setUpAdminNode(graphDb);
         assertEquals(ImmutableSet.of(), userService.getAllPermissions("nobody"));
     }
+
+    @Test
+    public void testVerifyCredentials() throws Exception {
+        assertTrue(userService.verifyCredentials("admin", "hashme"));
+        assertFalse(userService.verifyCredentials("admin", "wrong password"));
+        assertFalse(userService.verifyCredentials("duck", "wrong password"));
+    }
+
+
 }

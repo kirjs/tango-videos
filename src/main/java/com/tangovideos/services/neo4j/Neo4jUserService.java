@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.google.common.collect.ImmutableMap.of;
+
 
 public class Neo4jUserService implements UserService {
 
@@ -39,19 +41,15 @@ public class Neo4jUserService implements UserService {
 
     @Override
     public boolean verifyCredentials(String id, String password) {
-        try (Transaction tx = this.graphDb.beginTx()) {
-            final ResourceIterator<Node> nodes = graphDb.findNodes(Labels.USER.label, "id", id);
-            if (nodes.hasNext()) {
-                final Node next = nodes.next();
-                final Object userPassword = next.getProperty("password");
-                if (userPassword.equals(password)) {
-                    return true;
-                }
-            }
+        boolean isValid;
+        final String query = "MATCH (u:User {password: {password}}) RETURN u";
+        final ImmutableMap<String, Object> params = of("password", password);
+
+        try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params)) {
+            isValid = result.hasNext();
             tx.success();
         }
-
-        return false;
+        return isValid;
     }
 
     @Override
