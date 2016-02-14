@@ -49,7 +49,7 @@ export class NgAutocompleteContainer {
                 this.updateSelectedIndex(this.selectedIndex + 1);
                 break;
             case Action.CHOOSE:
-                if(this.dropdownOpen){
+                if(this.dropdownOpen && this.items.length > 0){
                     this.selectItem(this.selectedIndex);
                 }
                 break;
