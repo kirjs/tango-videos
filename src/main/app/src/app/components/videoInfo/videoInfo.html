@@ -8,7 +8,7 @@
     <editable-field (update)="handleUpdate('recordedAt', $event)"
                     emptyValue="Unknown date"
                     label="Date"
-                    [value]="toDate(video.recordedAt || video.publishedAt)|date">
+                    [value]="toDate(video.publishedAt, video.recordedAt)|date">
     </editable-field>
 
     <dancer-tile [readonly]="readonly" [dancers]="video.dancers" (add)="addDancer($event)" (remove)="removeDancer($event)" ></dancer-tile>

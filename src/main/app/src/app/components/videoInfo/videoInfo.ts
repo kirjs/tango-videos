@@ -17,8 +17,9 @@ export class VideoInfo {
     @Input() video:any;
     @Input() readonly:boolean = true;
 
-    toDate(date:string) {
-        return new Date(date);
+    // TODO: We have 2 different date formats here, need to standardize
+    toDate(publishedAt:string, recordedAt) {
+        return new Date((recordedAt && recordedAt * 1000) || publishedAt);
     }
 
     handleUpdate(field, value) {
@@ -26,9 +27,7 @@ export class VideoInfo {
             value = Date.parse(value) / 1000;
         }
 
-        this.videoService.update(this.video.id, field, value).subscribe(data => {
-            debugger
-        });
+        this.videoService.update(this.video.id, field, value).subscribe(x => {});
     }
 
     addDancer(name:string) {
