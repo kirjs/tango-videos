@@ -78,4 +78,12 @@ export class VideoService {
             'field=' + field + '&value=' + value, {headers: headers}).map(res => res.json());
 
     }
+
+    markComplete(id:String) {
+            var headers = new Headers();
+            headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+            return this.http.post(`api/videos/${id}/markComplete`, 'id=1').map(res => res.json());
+
+    }
 }

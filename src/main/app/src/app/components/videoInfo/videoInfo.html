@@ -15,4 +15,5 @@
 
     <song-list  [readonly]="readonly" [songs] = "video.songs" (update) = "updateSong($event)"></song-list>
     <div (click)="hide()" class = "hide">Hide</div>
+    <div (click)="markComplete()" class = "hide">Mark complete</div>
 </div>

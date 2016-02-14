@@ -52,6 +52,12 @@ export class VideoInfo {
         })
     }
 
+    markComplete() {
+        this.videoService.markComplete(this.video.id).subscribe(() => {
+            this.video.complete = true;
+        })
+    }
+
     removeDancer(name:string) {
         this.videoService.removeDancer(this.video.id, name).subscribe((data)=> {
             this.video.dancers = data;
