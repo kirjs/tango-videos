@@ -1,10 +1,12 @@
 package com.tangovideos.services.neo4j;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.tangovideos.data.Labels;
 import com.tangovideos.services.Interfaces.PermissionsService;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Result;
+import org.neo4j.graphdb.Transaction;
 
 import java.util.HashSet;
 import java.util.stream.Collectors;
@@ -18,9 +20,14 @@ public class Neo4jPermissionsService implements PermissionsService {
     }
 
     @Override
-    public Node addPermission(String permissionId) {
-        final Node permission = this.graphDb.createNode(Labels.PERMISSION.label);
-        permission.setProperty("label", permissionId);
+    public Node addPermission(String label) {
+        Node permission;
+        String query = "MERGE (p:Permission {label: {label}}) return p";
+        final ImmutableMap<String, Object> params = ImmutableMap.of("label", label);
+        try(Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params);){
+            permission = (Node) result.next().get("p");
+            tx.success();
+        }
         return permission;
     }
 

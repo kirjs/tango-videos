@@ -1,12 +1,6 @@
 package com.tangovideos.services;
 
-import java.util.Set;
-
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.Permission;
@@ -14,6 +8,8 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.authz.permission.WildcardPermission;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+
+import java.util.Set;
 
 
 // https://github.com/SchulteMarkus/tiramisu/blob/d8b247f8a8f4fd7350b723f09aabde571f61bcba/src/main/java/com/bestellbaer/services/Neo4jUserShiroRealm.java
@@ -38,8 +34,8 @@ public class TangoVideosAuthRealm extends AuthorizingRealm {
             throw new AuthorizationException("Principal is null.");
         }
 
-        final Set<Permission> permissions = TangoVideosServiceFactory.getUserService().getAllRoles("admin");
-        permissions.add(new WildcardPermission("company:readOrders:whatever"));
+        final Set<Permission> permissions = TangoVideosServiceFactory.getUserService().getAllPermissions("admin");
+        permissions.add(new WildcardPermission("videos:write"));
         final SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.setObjectPermissions(permissions);
         return info;

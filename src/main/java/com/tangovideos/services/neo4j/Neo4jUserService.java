@@ -1,7 +1,6 @@
 package com.tangovideos.services.neo4j;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Sets;
 import com.tangovideos.data.Labels;
 import com.tangovideos.data.Relationships;
 import com.tangovideos.models.UserProfile;
@@ -64,7 +63,7 @@ public class Neo4jUserService implements UserService {
     public UserProfile getUserProfile(String id){
         UserProfile profile = new UserProfile();
         profile.setId(id);
-        final HashSet<String> permissions = this.getAllRoles(id).stream()
+        final HashSet<String> permissions = this.getAllPermissions(id).stream()
                 .map(Object::toString)
                 .collect(Collectors.toCollection(HashSet::new));
 
@@ -73,18 +72,19 @@ public class Neo4jUserService implements UserService {
     }
 
     @Override
-    public Set<Permission> getAllRoles(String id) {
+    public Set<Permission> getAllPermissions(String id) {
+        Set<Permission> permissions;
         final String query = "MATCH (u:User)-[:IS]->(r:Role)-[:CAN]->(p:Permission) " +
                 "WHERE u.id = \"admin\" " +
-                "RETURN p.label";
+                "RETURN p.label as label";
         final ImmutableMap<String, Object> params = ImmutableMap.<String, Object>of("id", id);
-        Set<Permission> result = Sets.newHashSet();
-        final Result results = this.graphDb.execute(query, params);
-        while(results.hasNext()){
-            result.add(new WildcardPermission(results.next().get("p.label").toString()));
+
+        try(Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params)){
+            permissions = IteratorUtil.<String>asSet(result.columnAs("label")).stream().map(WildcardPermission::new).collect(Collectors.toSet());
+            tx.success();
         }
 
-        return result;
+        return permissions;
     }
 
     @Override
