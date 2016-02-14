@@ -79,6 +79,7 @@ public class Neo4jVideoService implements VideoService {
         }
         video.setTitle(node.getProperty("title").toString());
         video.setAddedAt(node.getProperty("addedAt").toString());
+        video.setComplete(node.hasProperty("complete") && node.getProperty("complete").toString().equals("true"));
         return video;
     }
 

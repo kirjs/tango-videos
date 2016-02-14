@@ -29,6 +29,16 @@ public class VideoResponse {
     private List<Song> songs = Lists.newArrayList();
     private String recordedAt;
 
+    public boolean isComplete() {
+        return complete;
+    }
+
+    public void setComplete(boolean complete) {
+        this.complete = complete;
+    }
+
+    public boolean complete;
+
     public String getPublishedAt() {
         return publishedAt;
     }
