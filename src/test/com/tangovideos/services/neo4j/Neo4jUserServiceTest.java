@@ -27,11 +27,17 @@ public class Neo4jUserServiceTest {
     }
 
     @Test
-    public void testGetAllRoles() throws Exception {
+    public void testGetAllRolesAdmin() throws Exception {
         TestHelpers.setUpAdminNode(graphDb);
-        assertEquals(userService.getAllPermissions("admin"), ImmutableSet.of(
+        assertEquals(ImmutableSet.of(
                 new WildcardPermission("video:read"),
                 new WildcardPermission("video:write")
-        ));
+        ), userService.getAllPermissions("admin"));
+    }
+
+    @Test
+    public void testGetAllRolesNobody() throws Exception {
+        TestHelpers.setUpAdminNode(graphDb);
+        assertEquals(ImmutableSet.of(), userService.getAllPermissions("nobody"));
     }
 }

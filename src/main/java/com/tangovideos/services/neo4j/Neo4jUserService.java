@@ -74,9 +74,10 @@ public class Neo4jUserService implements UserService {
     @Override
     public Set<Permission> getAllPermissions(String id) {
         Set<Permission> permissions;
-        final String query = "MATCH (u:User)-[:IS]->(r:Role)-[:CAN]->(p:Permission) " +
-                "WHERE u.id = \"admin\" " +
+        final String query = "MATCH (u:User)-[:IS]->(:Role)-[:CAN]->(p:Permission) " +
+                "WHERE u.id = {id} " +
                 "RETURN p.label as label";
+
         final ImmutableMap<String, Object> params = ImmutableMap.<String, Object>of("id", id);
 
         try(Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params)){
