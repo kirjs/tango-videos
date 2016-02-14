@@ -2,8 +2,8 @@
         <ng2-autocomplete [source]="autocompleteSource">
             <input (keyup)="handleKeyup($event)" focus="true" type="text" value="{{value}}" #input>
         </ng2-autocomplete>
-        <input type="button" value="save" (click)="changeValue(input.value); editMode = false">
-        <input type="button" value="cancel" (click)="editMode = false">
+        <input type="button" value="✓" (click)="changeValue(input.value); editMode = false">
+        <input type="button" value="&times;" (click)="editMode = false">
 </span>
 <span *ngIf="!editMode" class="editable-field" (click)="editMode = !readonly">
         <span *ngIf="!value" class="empty-value">
