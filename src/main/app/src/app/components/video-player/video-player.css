@@ -1,14 +1,23 @@
-.video-player {
+.video-player-wrapper {
     background-color: #000000;
     position: fixed;
     width: 100%;
     box-shadow: 10px 0 10px #444;
+    color: white;
+    min-width: 1280px;
 }
 
-#player {
+.video-player {
     margin: 10px auto;
     width: 450px;
+}
+.video-player, .video-info {
+    display: inline-block;
+    vertical-align: top;
+}
 
+.video-info {
+    padding: 10px;
 }
 
 .close {

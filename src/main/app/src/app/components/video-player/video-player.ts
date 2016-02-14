@@ -1,25 +1,27 @@
 import {Component, ViewChild} from 'angular2/core';
 import {PlayerService} from "../../services/PlayerService";
+import {VideoInfo} from "../videoInfo/videoInfo";
 
 @Component({
     selector: 'video-player',
     template: require('./video-player.html'),
     styles: [require('./video-player.css')],
     providers: [],
-    directives: [],
+    directives: [VideoInfo],
     pipes: []
 })
 export class VideoPlayer {
-
     @ViewChild("player") player;
+    private video:any;
 
     ngAfterViewInit() {
-        this.playerService.init(this.player.nativeElement);
+        this.playerService.init(this.player.nativeElement, this);
     }
 
     close(){
         this.playerService.stop();
     }
+
     isPlaying(){
         return this.playerService.isPlaying();
     }
@@ -27,4 +29,8 @@ export class VideoPlayer {
     constructor(private playerService:PlayerService) {
     }
 
+    setVideo(video:any):void {
+        this.video = video;
+
+    }
 }

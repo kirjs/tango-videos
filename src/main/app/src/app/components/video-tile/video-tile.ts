@@ -17,7 +17,7 @@ export class VideoTile {
     }
 
     playVideo(id: String){
-        this.playerService.play(id);
+        this.playerService.play(this.video);
 
     }
 

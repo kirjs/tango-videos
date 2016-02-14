@@ -1,4 +1,5 @@
-<div class="video-player" [hidden] = "!isPlaying()">
-    <div #player>Loading</div>
+<div class="video-player-wrapper" [hidden] = "!isPlaying()">
+    <div class = "video-player" #player>Loading</div>
+    <video-info class = "video-info" *ngIf="video" [video]=video [readonly]="false"></video-info>
     <div class = "close" (click) = "close()">Close video player</div>
 </div>
