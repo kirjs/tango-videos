@@ -22,7 +22,7 @@ export class VideoInfo {
     }
 
     handleUpdate(field, value) {
-        if (field == 'date') {
+        if (field == 'recordedAt') {
             value = Date.parse(value) / 1000;
         }
 

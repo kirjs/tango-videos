@@ -5,10 +5,10 @@
 <div class="data" *ngIf="!video.hidden">
     <h2><a class = "youtube-social-icon-red-24px" href="https://www.youtube.com/watch?v={{video.id}}"><icon name = "youtube"></icon></a>{{video.title}}</h2>
     <icon name = "date"></icon>
-    <editable-field (update)="handleUpdate('date', $event)"
+    <editable-field (update)="handleUpdate('recordedAt', $event)"
                     emptyValue="Unknown date"
                     label="Date"
-                    [value]="toDate(video.publishedAt)|date">
+                    [value]="toDate(video.recordedAt || video.publishedAt)|date">
     </editable-field>
 
     <dancer-tile [readonly]="readonly" [dancers]="video.dancers" (add)="addDancer($event)" (remove)="removeDancer($event)" ></dancer-tile>
