@@ -30,6 +30,7 @@ export class EditableField {
     }
 
     changeValue(value:string) {
+        value = value.trim();
         this.update.emit(value);
         this.value = value;
     }
