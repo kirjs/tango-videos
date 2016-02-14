@@ -7,6 +7,7 @@ public class Song {
     ArrayList<Performer> performer;
     private String name;
     private String orquestra;
+    private String genre;
 
     public void setYear(String year) {
         this.year = year;
@@ -30,5 +31,13 @@ public class Song {
 
     public String getOrquestra() {
         return orquestra;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public String getGenre() {
+        return genre;
     }
 }

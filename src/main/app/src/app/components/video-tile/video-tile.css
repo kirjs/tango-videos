@@ -2,6 +2,7 @@
     padding: 20px;
     box-shadow: 1px 1px 5px #ddd;
     margin: 20px;
+    min-width: 1024px;
 }
 
 .thumb {

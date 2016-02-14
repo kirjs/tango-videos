@@ -16,7 +16,7 @@ import java.util.Set;
 
 public class Neo4jSongService implements SongService {
     final private GraphDatabaseService graphDb;
-    final private Set<String> allowedParameters = ImmutableSet.of("year", "name", "orquestra");
+    final private Set<String> allowedParameters = ImmutableSet.of("year", "name", "orquestra", "genre");
 
 
     public Neo4jSongService(GraphDatabaseService graphDb) {
@@ -110,6 +110,9 @@ public class Neo4jSongService implements SongService {
         }
         if (songNode.hasProperty("orquestra")) {
             song.setOrquestra(songNode.getProperty("orquestra").toString());
+        }
+        if (songNode.hasProperty("genre")) {
+            song.setGenre(songNode.getProperty("genre").toString());
         }
         return song;
     }
