@@ -1,6 +1,7 @@
 import {Component, Input, Output, EventEmitter, ViewChild} from 'angular2/core';
 import {NgAutocompleteContainer} from "../autocomplete/ng2-autocomplete";
 import {NgAutocompleteInput} from "../autocomplete/ng2-autocomplete";
+import {Focus} from "../focus/focus";
 
 
 @Component({
@@ -8,7 +9,7 @@ import {NgAutocompleteInput} from "../autocomplete/ng2-autocomplete";
     template: require('./editable-field.html'),
     styles: [require('./editable-field.css')],
     providers: [],
-    directives: [NgAutocompleteContainer, NgAutocompleteInput],
+    directives: [NgAutocompleteContainer, NgAutocompleteInput, Focus],
     pipes: []
 })
 export class EditableField {
