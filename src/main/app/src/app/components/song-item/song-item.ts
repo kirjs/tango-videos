@@ -15,6 +15,7 @@ import {Icon} from "../icon/icon";
 })
 export class SongItem {
     @Input() song = {};
+    @Input() readonly: boolean = false;
     @Output() update = new EventEmitter();
     yearSource:Observable<Array<string>>;
     genreSource:Observable<Array<string>>;

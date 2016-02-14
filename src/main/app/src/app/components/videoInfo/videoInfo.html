@@ -2,7 +2,7 @@
     <h2><a class = "youtube-social-icon-red-24px" href="https://www.youtube.com/watch?v={{video.id}}"></a>{{video.title}}</h2>
     This video has been hidden <div (click)="recover()">recover</div>
 </div>
-<div class="data" *ngIf="!video.hidden">
+<div class="data" *ngIf="!video.hidden && !video.complete">
     <h2><a class = "youtube-social-icon-red-24px" href="https://www.youtube.com/watch?v={{video.id}}"><icon name = "youtube"></icon></a>{{video.title}}</h2>
     <icon name = "date"></icon>
     <editable-field (update)="handleUpdate('recordedAt', $event)"
@@ -14,6 +14,15 @@
     <dancer-tile [readonly]="readonly" [dancers]="video.dancers" (add)="addDancer($event)" (remove)="removeDancer($event)" ></dancer-tile>
 
     <song-list  [readonly]="readonly" [songs] = "video.songs" (update) = "updateSong($event)"></song-list>
+</div>
+
+
+<div class="data" *ngIf="!video.hidden && video.complete">
+    <icon name = "date"></icon>
+    {{toDate(video.publishedAt, video.recordedAt)|date}}
+    <dancer-tile [readonly]="true" [dancers]="video.dancers" (add)="addDancer($event)" (remove)="removeDancer($event)" ></dancer-tile>
+
+    <song-list  [readonly]="true" [songs] = "video.songs" (update) = "updateSong($event)"></song-list>
     <div (click)="hide()" class = "hide">Hide</div>
     <div (click)="markComplete()" class = "hide">Mark complete</div>
 </div>

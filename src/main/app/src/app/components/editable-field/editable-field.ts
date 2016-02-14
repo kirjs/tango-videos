@@ -17,6 +17,7 @@ export class EditableField {
     @Input() value:String = '';
     @Input() emptyValue:String = '';
     @Input() autocompleteSource:Observable<Array<String>> = Observable.from([[]]);
+    @Input() readonly: boolean = false;
     @Output() update = new EventEmitter();
     @ViewChild("input") input;
 

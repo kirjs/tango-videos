@@ -3,13 +3,13 @@
     <div>
         <icon name = "song"></icon>
         [<editable-field (update)="handleUpdate('genre', $event)" emptyValue="Unknown Genre" label="genre"
-                         updateValue [value]="song.genre" [autocompleteSource]="genreSource"></editable-field>]
+                         updateValue [readonly]="readonly" [value]="song.genre" [autocompleteSource]="genreSource"></editable-field>]
 
         <editable-field (update)="handleUpdate('orquestra', $event)" emptyValue="Unknown Orquestra" label="orquestra"
-                        updateValue [value]="song.orquestra" [autocompleteSource]="orquestraSource"></editable-field>
+                        updateValue  [readonly]="readonly" [value]="song.orquestra" [autocompleteSource]="orquestraSource"></editable-field>
         -
         <editable-field (update)="handleUpdate('name', $event)" emptyValue="Unknown Song" label="name"
-                        [value]="song.name" [autocompleteSource]="songSource"></editable-field>,<editable-field (update)="handleUpdate('year', $event)" label="Unknown Genre" [value]="song.year"
-                        emptyValue="Unknown Year" [autocompleteSource]="yearSource"></editable-field>
+                        [value]="song.name" [autocompleteSource]="songSource"  [readonly]="readonly" ></editable-field>,<editable-field (update)="handleUpdate('year', $event)" label="Unknown Genre" [value]="song.year"
+                        emptyValue="Unknown Year" [autocompleteSource]="yearSource" [readonly]="readonly"></editable-field>
     </div>
 </div>
