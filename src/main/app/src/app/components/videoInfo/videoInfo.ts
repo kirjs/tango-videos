@@ -18,8 +18,8 @@ export class VideoInfo {
     @Input() readonly:boolean = true;
 
     // TODO: We have 2 different date formats here, need to standardize
-    toDate(publishedAt:string, recordedAt) {
-        return new Date((recordedAt && recordedAt * 1000) || publishedAt);
+    toDate(publishedAt:string, recordedAt: number) {
+        return new Date((recordedAt && recordedAt * 1000).toString() || publishedAt);
     }
 
     handleUpdate(field, value) {
