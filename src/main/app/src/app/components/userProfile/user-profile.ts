@@ -6,8 +6,8 @@ import { FORM_DIRECTIVES, ControlGroup, Control,  Validators, FormBuilder } from
 
 @Component({
     selector: 'user-profile',
-    template: require('./userProfile.html'),
-    styles: [require('./userProfile.css')],
+    template: require('./user-profile.html'),
+    styles: [require('./user-profile.css')],
     directives: [FORM_DIRECTIVES]
 
 })

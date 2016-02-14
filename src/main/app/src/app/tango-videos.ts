@@ -4,7 +4,6 @@ import {Router, Route, RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 import {Home} from './components/home/home';
 import {Videos} from './components/videos/videos';
 import {VideoForm} from './components/videoForm/videoForm';
-import {UserProfile} from './components/userProfile/userProfile';
 import {Dancer} from "./components/dancer/dancer";
 import {Explore} from "./components/explore/explore";
 import {NeedsReview} from "./components/needs-review/needs-review";
@@ -18,7 +17,7 @@ import {VideoPlayer} from "./components/video-player/video-player";
     selector: 'tango-videos',
     providers: [],
     template: require('./tango-videos.html'),
-    directives: [ROUTER_DIRECTIVES, UserProfile, Header, VideoPlayer],
+    directives: [ROUTER_DIRECTIVES,  Header, VideoPlayer],
     pipes: []
 })
 @RouteConfig([
