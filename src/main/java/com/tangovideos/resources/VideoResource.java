@@ -81,6 +81,16 @@ public class VideoResource {
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }
+   @POST
+    @Path("{id}/markComplete")
+    public Response markComplete(@PathParam("id") String id) {
+        videoService.markComplete(id);
+
+        return Response.status(200)
+                .entity("true")
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+    }
 
     @GET
     @Path("exist/{ids}")

@@ -180,10 +180,24 @@ public class Neo4jVideoService implements VideoService {
                 Transaction tx = graphDb.beginTx();
                 final Result result = graphDb.execute(query, params)
         ) {
-
             tx.success();
         }
 
+    }
+
+    @Override
+    public void markComplete(String id) {
+        final String query = "MATCH (v:Video {id: {id}}) " +
+                "SET v.complete = true " +
+                "RETURN v ";
+
+        final ImmutableMap<String, Object> params = ImmutableMap.of("id", id);
+        try (
+                Transaction tx = graphDb.beginTx();
+                Result result = graphDb.execute(query, params)
+        ) {
+            tx.success();
+        }
     }
 
     @SuppressWarnings("unchecked")

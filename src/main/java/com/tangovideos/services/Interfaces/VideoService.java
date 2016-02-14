@@ -26,4 +26,6 @@ public interface VideoService {
     List<VideoResponse> needsReview();
 
     void updateField(String id, String field, String value);
+
+    void markComplete(String id);
 }
