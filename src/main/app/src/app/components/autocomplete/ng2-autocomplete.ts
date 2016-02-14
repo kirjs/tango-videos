@@ -1,6 +1,7 @@
 import {Component, Directive, SkipSelf, Host, Optional, EventEmitter, Output, ElementRef, Input, Attribute} from 'angular2/core';
 import { Observable } from 'rxjs/Rx';
-var removeDiacritics = require('diacritics');
+var removeDiacritics = require('diacritics').remove;
+
 
 interface AutocompleteItem {
     key: String;
@@ -96,7 +97,7 @@ export class NgAutocompleteContainer {
         this.source.map((items) => {
             return items.map((item) => {
                 return {
-                    key: item,
+                    key: removeDiacritics(item),
                     value: item
                 }
             });
