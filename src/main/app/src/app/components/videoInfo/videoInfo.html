@@ -1,34 +1,47 @@
 <div class="data" *ngIf="video.hidden">
-    <h2><a class = "youtube-social-icon-red-24px" href="https://www.youtube.com/watch?v={{video.id}}"></a>{{video.title}}</h2>
-    This video has been hidden <div (click)="recover()">recover</div>
+    <h2><a class="youtube-social-icon-red-24px" href="https://www.youtube.com/watch?v={{video.id}}"></a>{{video.title}}
+    </h2>
+    This video has been hidden
+    <div (click)="recover()">recover</div>
 </div>
 <div class="data" *ngIf="!video.hidden && !video.complete">
-    <h2><a class = "youtube-social-icon-red-24px" href="https://www.youtube.com/watch?v={{video.id}}"><icon name = "youtube"></icon></a>{{video.title}}</h2>
-    <icon name = "date"></icon>
+    <h2><a class="youtube-social-icon-red-24px" href="https://www.youtube.com/watch?v={{video.id}}">
+        <icon name="youtube"></icon>
+    </a>{{video.title}}
+    </h2>
+    <icon name="date"></icon>
     <editable-field (update)="handleUpdate('recordedAt', $event)"
                     emptyValue="Unknown date"
                     label="Date"
                     [value]="toDate(video.publishedAt, video.recordedAt)|date">
     </editable-field>
 
-    <dancer-tile [readonly]="readonly" [dancers]="video.dancers" (add)="addDancer($event)" (remove)="removeDancer($event)" ></dancer-tile>
+    <dancer-tile [readonly]="readonly" [dancers]="video.dancers" (add)="addDancer($event)"
+                 (remove)="removeDancer($event)"></dancer-tile>
 
-    <song-list  [readonly]="readonly" [songs] = "video.songs" (update) = "updateSong($event)"></song-list>
+    <song-list [readonly]="readonly" [songs]="video.songs" (update)="updateSong($event)"></song-list>
     <div class="admin-controls">
-        <div (click)="hide()" class = "hide admin-control">&times;</div>
-        <div (click)="markComplete(true)" class = "complete admin-control">✓</div>
+        <div (click)="hide()" class="hide admin-control">&times;</div>
+        <div (click)="markComplete(true)" class="complete admin-control">✓</div>
     </div>
 </div>
 
 
 <div class="data" *ngIf="!video.hidden && video.complete">
-    <dancer-tile [readonly]="true" [dancers]="video.dancers" (add)="addDancer($event)" (remove)="removeDancer($event)" ></dancer-tile>
+    <div class="line">
+        <dancer-tile [readonly]="true" [dancers]="video.dancers" (add)="addDancer($event)"
+                     (remove)="removeDancer($event)"></dancer-tile>
+    </div>
+    <div class="line">
+        <song-list [readonly]="true" [songs]="video.songs" (update)="updateSong($event)"></song-list>
+    </div>
+    <div class="line">
+        <icon name="date"></icon>
+        {{toDate(video.publishedAt, video.recordedAt)|date}}
+    </div>
 
-    <song-list  [readonly]="true" [songs] = "video.songs" (update) = "updateSong($event)"></song-list>
-    <icon name = "date"></icon>
-    {{toDate(video.publishedAt, video.recordedAt)|date}}
 
     <div class="admin-controls">
-        <div (click)="markComplete(false)" class = "complete admin-control">✓</div>
+        <div (click)="markComplete(false)" class="complete admin-control">⎌</div>
     </div>
 </div>

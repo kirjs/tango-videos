@@ -87,7 +87,7 @@ public class VideoResource {
         videoService.markComplete(id, value);
 
         return Response.status(200)
-                .entity("true")
+                .entity(value.toString())
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }

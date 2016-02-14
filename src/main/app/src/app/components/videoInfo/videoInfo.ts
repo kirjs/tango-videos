@@ -55,7 +55,7 @@ export class VideoInfo {
 
     markComplete(value: boolean) {
         this.videoService.markComplete(this.video.id, value).subscribe(() => {
-            this.video.complete = true;
+            this.video.complete = value;
         })
     }
 

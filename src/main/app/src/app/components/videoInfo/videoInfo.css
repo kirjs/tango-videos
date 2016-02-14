@@ -14,27 +14,35 @@ h2 {
 .data .admin-controls {
     display: none;
     position: absolute;
-    right: 0;
+    left: -25px;
     top: 0;
-    width: 30px;
-    background-color: #eeeeee;
+    width: 20px;
+    background-color: #fff;
 }
 
 .data:hover .admin-controls {
     display: block;
 }
-.data:hover .admin-controls {
-    padding: 5px;
-    margin-left: 5px;
+.data:hover .admin-control:hover {
+    box-shadow: 2px 2px 2px #444;
+    background-color: #eeeeee;
+    cursor: pointer;
+}
+.data:hover .admin-control {
+    background-color: #ffffff;
+    text-align: center;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
 }
 
-.hide {
-    float: right;
-    font-size: 10px;
-}
 
 h3 {
     margin-top: 5px;
     margin-bottom: 5px;
 }
 
+.line {
+    padding: 10px;
+    font-size: 12px;
+}
