@@ -9,6 +9,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Transaction;
 import org.neo4j.test.TestGraphDatabaseFactory;
 
 import java.util.List;
@@ -170,6 +172,25 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
         assertEquals(true, videoService.exists(videoId));
         videoService.hide(videoId);
         assertEquals(false, videoService.exists(videoId));
+
+
+    }
+
+    @Test
+    public void testHide() throws Exception {
+
+    }
+
+    @Test
+    public void testUpdateField() throws Exception {
+        final String videoId = "videoId0";
+        final String newValue = "12345";
+        try(Transaction tx = graphDb.beginTx()){
+            final Node node = TestHelpers.addVideo(graphDb, videoId);
+            videoService.updateField(videoId, "recordedAt", newValue);
+            assertEquals(node.getProperty("recordedAt"), newValue);
+            tx.success();
+        }
 
 
     }

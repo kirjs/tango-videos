@@ -24,4 +24,6 @@ public interface VideoService {
     Set<String> exist(Set<String> ids);
 
     List<VideoResponse> needsReview();
+
+    void updateField(String id, String field, String value);
 }

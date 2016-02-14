@@ -31,7 +31,7 @@ public class Neo4jVideoService implements VideoService {
 
     @Override
     public boolean exists(String videoId) {
-        try(Transaction tx = graphDb.beginTx()){
+        try (Transaction tx = graphDb.beginTx()) {
             final boolean result = this.graphDb.findNodes(Labels.VIDEO.label, "id", videoId).hasNext();
             tx.success();
             return result;
@@ -50,8 +50,9 @@ public class Neo4jVideoService implements VideoService {
             node.setProperty("title", video.getTitle());
             node.setProperty("description", video.getDescription());
             node.setProperty("publishedAt", video.getPublishedAt());
-            node.setProperty("id", video.getId());
+            node.setProperty("recordedAt", video.getPublishedAt());
             node.setProperty("addedAt", Instant.now().getEpochSecond());
+            node.setProperty("id", video.getId());
             tx.success();
         }
         return node;
@@ -109,7 +110,7 @@ public class Neo4jVideoService implements VideoService {
                 "REMOVE v:Video " +
                 "RETURN v ";
 
-        try(Transaction tx = graphDb.beginTx()){
+        try (Transaction tx = graphDb.beginTx()) {
             graphDb.execute(query, ImmutableMap.of("id", id));
             tx.success();
             return true;
@@ -147,11 +148,33 @@ public class Neo4jVideoService implements VideoService {
     @Override
     public List<VideoResponse> needsReview() {
         final String query = "MATCH (v:Video) " +
-                        "WHERE NOT (:Dancer)-[:DANCES]->(v) " +
-                        "RETURN v, [] as dancers, [] as songs";
+                "WHERE NOT (:Dancer)-[:DANCES]->(v) " +
+                "RETURN v, [] as dancers, [] as songs";
 
 
         return getMultipleVideos(query, ImmutableMap.of());
+    }
+
+
+    @Override
+    public void updateField(String id, String field, String value) {
+        String query = String.format("MATCH (v:Video {id: {id}}) " +
+                "SET v.%s = {value} " +
+                "RETURN v", field);
+
+        final ImmutableMap<String, Object> params = ImmutableMap.of(
+                "id", id,
+                "value", value);
+
+
+        try (
+                Transaction tx = graphDb.beginTx();
+                final Result result = graphDb.execute(query, params)
+        ) {
+
+            tx.success();
+        }
+
     }
 
     @SuppressWarnings("unchecked")

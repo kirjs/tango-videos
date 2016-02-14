@@ -125,6 +125,21 @@ public class VideoResource {
     }
 
     @POST
+    @Path("{id}/update")
+    public Response updateField(
+            @PathParam("id") String id,
+            @FormParam("field") String field,
+            @FormParam("value") String value
+    ) {
+        this.videoService.updateField(id, field, value);
+
+        return Response.status(200)
+                .entity("true")
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+    }
+
+    @POST
     @Path("{id}/dancers/remove")
     public Response removeDancer(@PathParam("id") String id, @FormParam("name") String dancerId) {
         final Node dancer = dancerService.insertOrGetNode(dancerId);

@@ -74,8 +74,8 @@ export class VideoService {
     update(id:string, field:String, value:String) {
         var headers = new Headers();
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        return this.http.post(`api/videos/update`,
-            'id=' + id + '&field=' + field + '&value=' + value, {headers: headers}).map(res => res.json());
+        return this.http.post(`api/videos/${id}/update`,
+            'field=' + field + '&value=' + value, {headers: headers}).map(res => res.json());
 
     }
 }
