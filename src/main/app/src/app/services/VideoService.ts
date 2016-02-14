@@ -13,7 +13,7 @@ export class VideoService {
         return this.http.get(url).map((res) => res.json());
     }
 
-    list(skip: number, limit: number) {
+    list(skip:number, limit:number) {
         return this.makeRequest("/list/" + skip + "/" + limit);
     }
 
@@ -39,7 +39,7 @@ export class VideoService {
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
         return this.http.post(`api/videos/${id}/songs/update`,
-            'index=' + index + '&field='+field + '&data=' + data , {headers: headers}).map(res => res.json());
+            'index=' + index + '&field=' + field + '&data=' + data, {headers: headers}).map(res => res.json());
 
     }
 
@@ -49,7 +49,7 @@ export class VideoService {
     }
 
     exists(id:String) {
-        return this.makeRequest("/exist/" + id).map((result)=>{
+        return this.makeRequest("/exist/" + id).map((result)=> {
             return !!result.length;
         });
     }
@@ -59,16 +59,23 @@ export class VideoService {
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
         return this.http.post(`api/videos/add`,
-            'id=' + id , {headers: headers}).map(res => res.json());
+            'id=' + id, {headers: headers}).map(res => res.json());
 
     }
 
-    hide(id:string){
+    hide(id:string) {
         var headers = new Headers();
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
         return this.http.post(`api/videos/hide`,
-            'id=' + id , {headers: headers}).map(res => res.json());
+            'id=' + id, {headers: headers}).map(res => res.json());
     }
 
+    update(id:string, field:String, value:String) {
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        return this.http.post(`api/videos/update`,
+            'id=' + id + '&field=' + field + '&value=' + value, {headers: headers}).map(res => res.json());
+
+    }
 }

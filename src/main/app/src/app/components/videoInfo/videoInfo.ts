@@ -17,10 +17,19 @@ export class VideoInfo {
     @Input() video:any;
     @Input() readonly:boolean = true;
 
-    toDate(date:string){
+    toDate(date:string) {
         return new Date(date);
     }
 
+    handleUpdate(field, value) {
+        if (field == 'date') {
+            value = Date.parse(value) / 1000;
+        }
+
+        this.videoService.update(this.video.id, field, value).subscribe(data => {
+            debugger
+        });
+    }
 
     addDancer(name:string) {
         this.videoService.addDancer(this.video.id, name).subscribe((data)=> {
@@ -34,15 +43,16 @@ export class VideoInfo {
         });
     }
 
-    recover(){
+    recover() {
         throw "not implemented";
     }
 
-    hide(){
+    hide() {
         this.videoService.hide(this.video.id).subscribe(() => {
             this.video.hidden = true;
         })
     }
+
     removeDancer(name:string) {
         this.videoService.removeDancer(this.video.id, name).subscribe((data)=> {
             this.video.dancers = data;

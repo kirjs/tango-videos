@@ -5,7 +5,7 @@
 <div class="data" *ngIf="!video.hidden">
     <h2><a class = "youtube-social-icon-red-24px" href="https://www.youtube.com/watch?v={{video.id}}"><icon name = "youtube"></icon></a>{{video.title}}</h2>
     <icon name = "date"></icon>
-    <editable-field (update)="handleUpdate('orquestra', $event)"
+    <editable-field (update)="handleUpdate('date', $event)"
                     emptyValue="Unknown date"
                     label="Date"
                     [value]="toDate(video.publishedAt)|date">

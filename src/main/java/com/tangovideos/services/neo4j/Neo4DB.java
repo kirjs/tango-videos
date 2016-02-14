@@ -10,11 +10,7 @@ public class Neo4DB {
     public final GraphDatabaseService graphDb;
 
     public Neo4DB() {
-
         final File storeDir = new File(DB_PATH);
-        if(storeDir.exists()){
-            storeDir.delete();
-        }
         graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(storeDir);
     }
 }
