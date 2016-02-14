@@ -2,12 +2,14 @@
 
     <div>
         <div class="music-note-music-icon"></div>
+        [<editable-field (update)="handleUpdate('genre', $event)" emptyValue="Unknown Genre" label="genre"
+                         updateValue [value]="song.genre" [autocompleteSource]="genreSource"></editable-field>]
+
         <editable-field (update)="handleUpdate('orquestra', $event)" emptyValue="Unknown Orquestra" label="orquestra"
                         updateValue [value]="song.orquestra" [autocompleteSource]="orquestraSource"></editable-field>
         -
         <editable-field (update)="handleUpdate('name', $event)" emptyValue="Unknown Song Name" label="name"
-                        [value]="song.name" [autocompleteSource]="songSource"></editable-field>
-        (<editable-field (update)="handleUpdate('year', $event)" label="Unknown Genre" [value]="song.year"
-                        emptyValue="Unknown Year" [autocompleteSource]="yearSource"></editable-field>)
+                        [value]="song.name" [autocompleteSource]="songSource"></editable-field>,<editable-field (update)="handleUpdate('year', $event)" label="Unknown Genre" [value]="song.year"
+                        emptyValue="Unknown Year" [autocompleteSource]="yearSource"></editable-field>
     </div>
 </div>
