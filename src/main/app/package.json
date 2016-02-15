@@ -9,8 +9,7 @@
     "type": "git",
     "url": "git+https://github.com/kirjs/tango-videos.git"
   },
-  "keywords": [
-  ],
+  "keywords": [],
   "author": "Kirill Cherkashin <kirill@kcherkashin.org>",
   "license": "MIT",
   "devDependencies": {

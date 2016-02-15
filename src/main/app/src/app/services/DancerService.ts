@@ -2,11 +2,12 @@ import {Injectable} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
 
 import {Observable} from 'rxjs';
+import {BackendService} from "./BackendService";
 
 
 @Injectable()
 export class DancerService {
-    constructor(private http:Http) {
+    constructor(private http:Http, private backendService: BackendService) {
     }
 
     private makeRequest(url) {
@@ -15,15 +16,15 @@ export class DancerService {
     }
 
     get(id:String) {
-        return this.makeRequest(`/${id}`);
+        return this.backendService.read(`dancers/${id}`)
     }
 
     listNames() {
-        return this.makeRequest(`/listNames`);
+        return this.backendService.read('dancers/listNames');
     }
 
     list() {
-        return this.makeRequest(`/list`);
+        return this.backendService.read('dancers/listNames');
     }
 
 }
