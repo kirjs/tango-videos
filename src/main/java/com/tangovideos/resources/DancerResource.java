@@ -28,7 +28,7 @@ public class DancerResource {
                 .entity(new JSONArray(dancerService.list()).toString())
                 .type(MediaType.APPLICATION_JSON).build();
     }
-   @GET
+    @GET
     @Path("list")
     public Response list() {
         return Response.status(200)

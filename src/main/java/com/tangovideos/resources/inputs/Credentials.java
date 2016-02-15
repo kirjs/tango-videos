@@ -1,4 +1,4 @@
-package com.tangovideos.models;
+package com.tangovideos.resources.inputs;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

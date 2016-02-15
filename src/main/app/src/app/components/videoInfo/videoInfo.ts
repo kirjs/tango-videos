@@ -18,8 +18,13 @@ export class VideoInfo {
     @Input() readonly:boolean = true;
 
     // TODO: We have 2 different date formats here, need to standardize
+    // TODO: Ugly hack
     toDate(publishedAt:string, recordedAt:number) {
-        return recordedAt ? new Date(recordedAt * 1000) : new Date(publishedAt);
+        if (recordedAt) {
+            return (recordedAt == +recordedAt ) ? new Date(recordedAt * 1000) : new Date(recordedAt);
+        } else {
+            return new Date(publishedAt);
+        }
     }
 
     handleUpdate(field, value) {
@@ -44,11 +49,13 @@ export class VideoInfo {
     }
 
     recover() {
-        throw "not implemented";
+        this.videoService.hide(this.video.id, false).subscribe(() => {
+            this.video.hidden = false;
+        })
     }
 
     hide() {
-        this.videoService.hide(this.video.id).subscribe(() => {
+        this.videoService.hide(this.video.id, true).subscribe(() => {
             this.video.hidden = true;
         })
     }

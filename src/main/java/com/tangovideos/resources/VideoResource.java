@@ -3,6 +3,7 @@ package com.tangovideos.resources;
 import com.google.common.collect.ImmutableSet;
 import com.tangovideos.models.Song;
 import com.tangovideos.models.Video;
+import com.tangovideos.resources.inputs.*;
 import com.tangovideos.services.Interfaces.DancerService;
 import com.tangovideos.services.Interfaces.VideoService;
 import com.tangovideos.services.TangoVideosServiceFactory;
@@ -58,9 +59,10 @@ public class VideoResource {
     }
 
     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("add")
-    public Response add(@FormParam("id") String id) {
-        final Video videoInfo = TangoVideosServiceFactory.getYoutubeService().getVideoInfo(id);
+    public Response add(JustId id) {
+        final Video videoInfo = TangoVideosServiceFactory.getYoutubeService().getVideoInfo(id.getId());
         final Node video = videoService.addVideo(videoInfo);
         videoInfo.getDancers().stream()
                 .map(dancerService::insertOrGetNode)
@@ -73,23 +75,26 @@ public class VideoResource {
     }
 
     @POST
-    @Path("hide")
-    public Response hide(@FormParam("id") String id) {
-        videoService.hide(id);
+    @Path("{id}/hide")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response hide(@PathParam("id") String id, JustValue value) {
+        videoService.hide(id, value.getValue());
 
         return Response.status(200)
                 .entity("true")
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }
+
     @POST
     @Path("{id}/markComplete")
+    @Consumes(MediaType.APPLICATION_JSON)
     @RequiresPermissions("video:write")
-    public Response markComplete(@PathParam("id") String id, @FormParam("value") Boolean value) {
-        videoService.markComplete(id, value);
+    public Response markComplete(@PathParam("id") String id, JustValue payload) {
+        videoService.markComplete(id, payload.getValue());
 
         return Response.status(200)
-                .entity(value.toString())
+                .entity(payload.getValue().toString())
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }
@@ -107,9 +112,10 @@ public class VideoResource {
     }
 
     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("{id}/dancers/add")
-    public Response addDancer(@PathParam("id") String id, @FormParam("name") String dancerId) {
-        final Node dancer = dancerService.insertOrGetNode(dancerId);
+    public Response addDancer(@PathParam("id") String id, JustName dancerName) {
+        final Node dancer = dancerService.insertOrGetNode(dancerName.getName());
         final Node video = TangoVideosServiceFactory.getVideoService().get(id);
         TangoVideosServiceFactory.getDancerService().addToVideo(dancer, video);
         final Set<String> entity = TangoVideosServiceFactory.getDancerService().getForVideo(id);
@@ -122,13 +128,13 @@ public class VideoResource {
 
     @POST
     @Path("{id}/songs/update")
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response updateSong(
             @PathParam("id") String id,
-            @FormParam("index") Integer index,
-            @FormParam("field") String field,
-            @FormParam("data") String data
+            SongUpdate songUpdate
     ) {
-        final Song song = TangoVideosServiceFactory.getSongService().updateField(id, index, field, data);
+        final Song song = TangoVideosServiceFactory.getSongService()
+                .updateField(id, songUpdate.getIndex(), songUpdate.getField(), songUpdate.getData());
 
         return Response.status(200)
                 .entity(new JSONObject(song).toString())
@@ -137,13 +143,10 @@ public class VideoResource {
     }
 
     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("{id}/update")
-    public Response updateField(
-            @PathParam("id") String id,
-            @FormParam("field") String field,
-            @FormParam("value") String value
-    ) {
-        this.videoService.updateField(id, field, value);
+    public Response updateField(@PathParam("id") String id, VideoUpdate payload) {
+        this.videoService.updateField(id, payload.getField(), payload.getValue());
 
         return Response.status(200)
                 .entity("true")
@@ -152,11 +155,12 @@ public class VideoResource {
     }
 
     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("{id}/dancers/remove")
-    public Response removeDancer(@PathParam("id") String id, @FormParam("name") String dancerId) {
-        final Node dancer = dancerService.insertOrGetNode(dancerId);
+    public Response removeDancer(@PathParam("id") String id, JustName dancer) {
+        final Node dancerNode = dancerService.insertOrGetNode(dancer.getName());
         final Node video = TangoVideosServiceFactory.getVideoService().get(id);
-        dancerService.removeFromVideo(dancer, video);
+        dancerService.removeFromVideo(dancerNode, video);
         final Set<String> entity = dancerService.getForVideo(id);
         final String result = new JSONArray(entity).toString();
         return Response.status(200)

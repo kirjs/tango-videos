@@ -171,10 +171,10 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
         final String videoId = "videoId0";
         TestHelpers.addVideo(graphDb, videoId);
         assertEquals(true, videoService.exists(videoId));
-        videoService.hide(videoId);
+        videoService.hide(videoId, true);
         assertEquals(false, videoService.exists(videoId));
-
-
+        videoService.hide(videoId, false);
+        assertEquals(true, videoService.exists(videoId));
     }
 
     @Test

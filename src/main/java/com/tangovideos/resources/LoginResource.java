@@ -1,6 +1,6 @@
 package com.tangovideos.resources;
 
-import com.tangovideos.models.Credentials;
+import com.tangovideos.resources.inputs.Credentials;
 import com.tangovideos.services.TangoVideosServiceFactory;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;

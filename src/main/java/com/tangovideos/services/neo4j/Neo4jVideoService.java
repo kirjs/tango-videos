@@ -74,7 +74,7 @@ public class Neo4jVideoService implements VideoService {
         VideoResponse video = new VideoResponse();
         video.setId(node.getProperty("id").toString());
         video.setPublishedAt(node.getProperty("publishedAt").toString());
-        if(node.hasProperty("recordedAt")){
+        if (node.hasProperty("recordedAt")) {
             video.setRecordedAt(node.getProperty("recordedAt").toString());
         }
         video.setTitle(node.getProperty("title").toString());
@@ -110,11 +110,19 @@ public class Neo4jVideoService implements VideoService {
     }
 
     @Override
-    public boolean hide(String id) {
-        final String query = "MATCH (v:Video {id: {id}}) " +
-                "SET v:VideoRemoved " +
-                "REMOVE v:Video " +
-                "RETURN v ";
+    public boolean hide(String id, Boolean value) {
+        String query;
+        if (value) {
+            query = "MATCH (v:Video {id: {id}}) " +
+                    "SET v:VideoRemoved " +
+                    "REMOVE v:Video " +
+                    "RETURN v ";
+        } else {
+            query = "MATCH (v:VideoRemoved  {id: {id}}) " +
+                    "SET v:Video " +
+                    "REMOVE v:VideoRemoved " +
+                    "RETURN v ";
+        }
 
         try (Transaction tx = graphDb.beginTx()) {
             graphDb.execute(query, ImmutableMap.of("id", id));
@@ -163,6 +171,7 @@ public class Neo4jVideoService implements VideoService {
 
 
     final private Set<String> allowedParameters = ImmutableSet.of("recordedAt");
+
     @Override
     public void updateField(String id, String field, String value) {
         if (!allowedParameters.contains(field)) {

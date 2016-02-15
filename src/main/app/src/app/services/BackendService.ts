@@ -3,7 +3,7 @@ import {Injectable} from "angular2/core";
 
 @Injectable()
 export class BackendService {
-    base:string = 'api/';
+    private base:string = 'api/';
 
     read(url: string){
         return this.http.get(this.base + url)
