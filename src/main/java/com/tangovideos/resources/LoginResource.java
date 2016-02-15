@@ -1,8 +1,9 @@
 package com.tangovideos.resources;
 
+import com.tangovideos.models.Credentials;
 import com.tangovideos.services.TangoVideosServiceFactory;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 
 import javax.ws.rs.*;
@@ -26,14 +27,17 @@ public class LoginResource {
     }
 
     @POST
-    public Response doPost(@FormParam("username") String username,
-                           @FormParam("password") String password,
-                           @FormParam("rememberMe") @DefaultValue("false") Boolean rememberMe) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response doPost(Credentials credentials) {
         Subject currentUser = SecurityUtils.getSubject();
 
-        UsernamePasswordToken token =
-                new UsernamePasswordToken(username, password);
-        token.setRememberMe(rememberMe == null ? false : rememberMe);
+        UsernamePasswordToken token = new UsernamePasswordToken(
+                credentials.getUsername(),
+                credentials.getPassword()
+        );
+
+        token.setRememberMe(true);
         try {
             currentUser.login(token);
         } catch (Exception uae) {
@@ -44,7 +48,7 @@ public class LoginResource {
         }
 
         return Response.status(200).
-                entity(TangoVideosServiceFactory.getUserService().getUserProfile(username)).
+                entity(TangoVideosServiceFactory.getUserService().getUserProfile(credentials.getUsername())).
                 type(MediaType.APPLICATION_JSON).
                 build();
     }

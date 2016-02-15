@@ -1,6 +1,5 @@
 import {Http, Response, Headers} from 'angular2/http';
 import {Injectable} from "angular2/core";
-var YouTubePlayer = require('youtube-player');
 
 interface Dictionary {
     [index: string]: string;
@@ -16,10 +15,10 @@ export class BackendService {
 
     write(url: string, params: Dictionary){
         var headers = new Headers();
-        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        headers.append('Content-Type', 'application/json');
+        headers.append('Accept', 'application/json');
 
-
-        return this.http.post('api/login/', JSON.stringify(params), {headers: headers})
+        return this.http.post(this.base + url, JSON.stringify(params), {headers: headers})
             .map(res => res.json());
     }
     constructor(private http:Http){}
