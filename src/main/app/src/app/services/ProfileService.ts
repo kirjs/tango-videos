@@ -1,7 +1,6 @@
 import {Injectable} from 'angular2/core';
-import {Http, URLSearchParams, Headers} from 'angular2/http';
-import 'rxjs/add/operator/map';
 import {BackendService} from "./BackendService";
+import {Observable} from "rxjs";
 
 
 export interface Credentials {
@@ -11,17 +10,17 @@ export interface Credentials {
 
 @Injectable()
 export class CurrentUserService {
-    constructor(private http:Http, private backendService: BackendService) {}
+    constructor(private backendService: BackendService) {}
 
-    getCurrentUser() {
+    getCurrentUser():Observable<any> {
         return this.backendService.read('currentUser');
     }
 
-    login(credentials:Credentials) {
+    login(credentials:Credentials):Observable<any> {
         return this.backendService.write('login', credentials);
     }
 
-    logout() {
+    logout():Observable<any> {
         return this.backendService.read('logout');
     }
 }

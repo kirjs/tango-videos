@@ -1,17 +1,16 @@
 import {Injectable} from 'angular2/core';
-import {Http, URLSearchParams, Headers} from 'angular2/http';
-import 'rxjs/add/operator/map';
 import {BackendService} from "./BackendService";
+import {Observable} from "rxjs";
 
 
 @Injectable()
 export class SongService {
     constructor(private backendService: BackendService) {}
 
-    listNames() {
+    listNames():Observable<any> {
         return this.backendService.read('listNames');
     }
-    listOrquestras() {
+    listOrquestras():Observable<any> {
         return this.backendService.read('listOrquestras');
     }
 }

@@ -1,25 +1,20 @@
 import {Injectable} from 'angular2/core';
-import {Http, Response} from 'angular2/http';
-
-import {Observable} from 'rxjs';
 import {BackendService} from "./BackendService";
-
+import {Observable} from "rxjs";
 
 @Injectable()
 export class DancerService {
-    constructor(private backendService: BackendService) {
-    }
+    constructor(private backendService: BackendService) {}
 
-    get(id:String) {
+    get(id:String):Observable<any> {
         return this.backendService.read(`dancers/${id}`)
     }
 
-    listNames() {
+    listNames():Observable<any> {
         return this.backendService.read('dancers/listNames');
     }
 
-    list() {
+    list():Observable<any> {
         return this.backendService.read('dancers/list');
     }
-
 }
