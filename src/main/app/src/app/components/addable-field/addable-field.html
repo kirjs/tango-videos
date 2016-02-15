@@ -3,7 +3,7 @@
 </spon>
 <span *ngIf="addMode" class="tile add">
     <ng2-autocomplete [source]="autocompleteSource">
-        <input focus="true" #f type="text">
+        <input focus="true" (keyup)="handleKeyup($event, f.value)" #f type="text">
     </ng2-autocomplete>
     <input type="submit" value="Add" (click)="add(f.value)">
     <input type="submit" value="Cancel" (click)="switchToNormalMode();">

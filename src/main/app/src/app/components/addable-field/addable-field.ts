@@ -17,14 +17,21 @@ export class AddableFIeld {
 
     addMode:boolean = false;
 
-    switchToAddMode(){
+    switchToAddMode() {
         this.addMode = true;
     }
-    switchToNormalMode(){
+
+    switchToNormalMode() {
         this.addMode = false;
     }
 
-    add(value: String){
+    handleKeyup($event, value:String) {
+        if ($event.keyCode == 13) {
+            this.add(value)
+        }
+    }
+
+    add(value:String) {
         this.switchToNormalMode();
         this.onAdd.emit(value);
     }
