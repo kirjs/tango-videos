@@ -7,12 +7,7 @@ import {BackendService} from "./BackendService";
 
 @Injectable()
 export class DancerService {
-    constructor(private http:Http, private backendService: BackendService) {
-    }
-
-    private makeRequest(url) {
-        url = '/api/dancers' + url;
-        return this.http.get(url).map((res) => res.json());
+    constructor(private backendService: BackendService) {
     }
 
     get(id:String) {
@@ -24,7 +19,7 @@ export class DancerService {
     }
 
     list() {
-        return this.backendService.read('dancers/listNames');
+        return this.backendService.read('dancers/list');
     }
 
 }

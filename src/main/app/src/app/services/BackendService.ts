@@ -4,8 +4,8 @@ var YouTubePlayer = require('youtube-player');
 
 @Injectable()
 export class BackendService {
-    base:String = 'api/';
-    read(url: String){
+    base:string = 'api/';
+    read(url: string){
         return this.http.get(this.base + url)
             .map((res) => res.json());
     }
