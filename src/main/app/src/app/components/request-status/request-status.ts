@@ -14,15 +14,19 @@ export class RequestStatus {
 
     requests:Array<any> = [];
 
+
     constructor(backendService:BackendService) {
-        backendService.progress.subscribe((observable:Observable) => {
+        backendService.progress.subscribe((observable:Observable<any>) => {
             var request = {
-                message: '?',
+                message: '',
                 actions: []
             };
 
             observable.subscribe(
                 (data) => {
+                    if(this.requests.indexOf(request) === -1){
+                        this.requests.push(request);
+                    }
                     request.message = data.message;
                     request.actions = data.actions || [];
                 },
@@ -34,7 +38,7 @@ export class RequestStatus {
                 }
             );
 
-            this.requests.push(request);
+
         })
     }
 

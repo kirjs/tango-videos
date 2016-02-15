@@ -13,6 +13,7 @@ function errorToMessage(response, request$, retry$) {
         login: {
             label: 'Login',
             callback: () => {
+                throw new Error("Not implemented");
             }
         },
         cancel:  {
@@ -26,11 +27,11 @@ function errorToMessage(response, request$, retry$) {
     var messages = {
         "org.apache.shiro.authz.UnauthorizedException": {
             message: 'You need to be authorized for this action',
-            actions: [actions.login, actions.cancel]
+            actions: [ actions.cancel]
         },
         "default": {
             message: 'Request failed',
-            actions: [actions.retry, actions.login, actions.cancel]
+            actions: [actions.retry,  actions.cancel]
         }
     };
     return messages[response.name] || messages.default;
@@ -42,28 +43,43 @@ export class BackendService {
     public progress = new Subject();
 
     read(url:string):Observable<any> {
-        return this.http.get(this.base + url)
-            .map((res) => res.json());
+        return this.trackProgress(this.http.get(this.base + url)
+            .map((res) => res.json()), url);
+    }
+
+    trackProgress(request, url){
+        var requestProgress = new Subject();
+        this.progress.next(requestProgress);
+
+
+
+        return request
+            .do(res => requestProgress.complete())
+            .retryWhen(attempts => attempts.flatMap((response)=> {
+            return Observable.create(function (obs) {
+                var error;
+                try{
+                    error = response.json();
+                } catch ( e ){
+                    error = {
+                        name: 'ServerError'
+                    };
+                }
+                requestProgress.next(errorToMessage(error, requestProgress, obs));
+            })
+        }))
+
+
     }
 
     write(url:string, params:any):Observable<any> {
         var headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Accept', 'application/json');
-        var requestProgress = new Subject();
 
+        return this.trackProgress(this.http.post(this.base + url, JSON.stringify(params), {headers: headers})
+            .map(res => res.json()), url);
 
-        this.progress.next(requestProgress.startWith({
-            message: 'Starting a request'
-        }));
-
-        return this.http.post(this.base + url, JSON.stringify(params), {headers: headers})
-            .map(res => res.json())
-            .retryWhen(attempts => attempts.flatMap((response)=> {
-                return Observable.create(function (obs) {
-                    requestProgress.next(errorToMessage(response.json(), requestProgress, obs));
-                })
-            }))
 
     }
 
