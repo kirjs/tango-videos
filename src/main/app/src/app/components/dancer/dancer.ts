@@ -1,7 +1,8 @@
-import {Component, Input} from 'angular2/core';
+import {Component} from 'angular2/core';
 import {DancerService} from "../../services/DancerService";
 import {RouteParams} from 'angular2/router';
 import {Videos} from "../videos/videos";
+import {Observable} from "rxjs";
 
 @Component({
     selector: 'dancer',
@@ -13,17 +14,11 @@ import {Videos} from "../videos/videos";
 })
 export class Dancer {
     id:string;
-    dancer: any;
+    dancer:any;
 
     constructor(private dancerService:DancerService, params:RouteParams) {
-        this.id = params.get('id');
-
-    }
-
-    ngOnInit() {
-        this.dancerService.get(this.id).subscribe((data) => {
+        this.dancerService.get(params.get('id')).subscribe((data) => {
             this.dancer = data;
         });
     }
-
 }
