@@ -1,17 +1,30 @@
 .video-tile {
     box-shadow: 1px 1px 5px #ddd;
-    margin: 2px;
+    margin: 1px 0;
     min-width: 1280px;
+    background-color: #fefefe;
 }
-.video-tile:hover {
-    box-shadow: 2px 2px 10px #999;
 
+.video-tile:hover {
+    background-color: #fff;
+    box-shadow: 2px 2px 20px #999;
 }
 
 .thumb {
     width: 320px;
     height: 120px;
     overflow: hidden;
+}
+
+.video-tile:hover .thumb img:hover {
+    cursor: pointer;
+    -webkit-filter: brightness(110%);
+}
+.video-tile:hover .thumb img {
+    -webkit-filter: blur(0px) grayscale(0%);
+}
+.thumb img {
+    -webkit-filter: blur(1px) grayscale(20%);
 }
 
 .thumb, .data, video-info {

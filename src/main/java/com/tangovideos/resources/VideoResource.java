@@ -89,7 +89,7 @@ public class VideoResource {
     @POST
     @Path("{id}/markComplete")
     @Consumes(MediaType.APPLICATION_JSON)
-    @RequiresPermissions("video:write2")
+    @RequiresPermissions("video:write")
     public Response markComplete(@PathParam("id") String id, JustValue payload) {
         videoService.markComplete(id, payload.getValue());
 
