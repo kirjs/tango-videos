@@ -10,14 +10,14 @@ import {NeedsReview} from "./components/needs-review/needs-review";
 import {Header} from "./components/header/header";
 import {Dancers} from "./components/dancers/dancers";
 import {VideoPlayer} from "./components/video-player/video-player";
-
+import {RequestStatus} from "./components/request-status/request-status";
 
 
 @Component({
     selector: 'tango-videos',
     providers: [],
     template: require('./tango-videos.html'),
-    directives: [ROUTER_DIRECTIVES,  Header, VideoPlayer],
+    directives: [ROUTER_DIRECTIVES, Header, VideoPlayer, RequestStatus],
     pipes: []
 })
 @RouteConfig([
