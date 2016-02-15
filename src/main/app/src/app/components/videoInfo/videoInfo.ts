@@ -57,6 +57,9 @@ export class VideoInfo {
     markComplete(value:boolean) {
         this.videoService.markComplete(this.video.id, value).subscribe(() => {
             this.video.complete = value;
+        }, (error) => {
+            //noinspection TypeScriptUnresolvedFunction
+            var errorName = error.json().name;
         })
     }
 
