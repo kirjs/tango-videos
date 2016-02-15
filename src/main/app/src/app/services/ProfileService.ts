@@ -1,6 +1,6 @@
 import {Injectable} from 'angular2/core';
 import {BackendService} from "./BackendService";
-import {Observable} from "rxjs";
+import {Observable, Subject} from "rxjs";
 
 
 export interface Credentials {
@@ -10,10 +10,27 @@ export interface Credentials {
 
 @Injectable()
 export class CurrentUserService {
-    constructor(private backendService: BackendService) {}
+
+    permissions: Subject;
+    private permissionObservable: Observable;
+    constructor(private backendService: BackendService) {
+        this.permissions = new Subject();
+        this.permissionObservable = this.permissions
+            .startWith('')
+            .flatMap(() => this.fetchPermissions())
+            .share()
+    }
+
+    refreshPermissions(){
+
+    }
 
     getCurrentUser():Observable<any> {
         return this.backendService.read('currentUser');
+    }
+
+    fetchPermissions():Observable<any> {
+        return this.backendService.read('user/permissions');
     }
 
     login(credentials:Credentials):Observable<any> {
