@@ -8,9 +8,9 @@ export class SongService {
     constructor(private backendService: BackendService) {}
 
     listNames():Observable<any> {
-        return this.backendService.read('listNames');
+        return this.backendService.read('songs/listNames');
     }
     listOrquestras():Observable<any> {
-        return this.backendService.read('listOrquestras');
+        return this.backendService.read('songs/listOrquestras');
     }
 }
