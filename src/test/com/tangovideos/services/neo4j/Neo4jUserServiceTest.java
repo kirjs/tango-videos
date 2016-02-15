@@ -50,4 +50,8 @@ public class Neo4jUserServiceTest {
     }
 
 
+    @Test
+    public void testGetAllPermissionsAsStrings() throws Exception {
+        assertEquals(ImmutableSet.of("video:read", "video:write"), userService.getAllPermissionsAsStrings("admin"));
+    }
 }

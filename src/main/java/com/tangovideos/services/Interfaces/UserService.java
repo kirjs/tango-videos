@@ -14,6 +14,8 @@ public interface UserService {
 
     UserProfile getUserProfile(String id);
 
+    Set<String> getAllPermissionsAsStrings(String id);
+
     Set<Permission> getAllPermissions(String id);
 
     Node addUser(String admin, String password, Node role);

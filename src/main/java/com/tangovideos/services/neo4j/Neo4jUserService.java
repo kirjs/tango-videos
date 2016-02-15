@@ -58,7 +58,7 @@ public class Neo4jUserService implements UserService {
     }
 
     @Override
-    public UserProfile getUserProfile(String id){
+    public UserProfile getUserProfile(String id) {
         UserProfile profile = new UserProfile();
         profile.setId(id);
         final HashSet<String> permissions = this.getAllPermissions(id).stream()
@@ -69,21 +69,27 @@ public class Neo4jUserService implements UserService {
         return profile;
     }
 
+
     @Override
-    public Set<Permission> getAllPermissions(String id) {
-        Set<Permission> permissions;
+    public Set<String> getAllPermissionsAsStrings(String id) {
+        Set<String> permissions;
         final String query = "MATCH (u:User)-[:IS]->(:Role)-[:CAN]->(p:Permission) " +
                 "WHERE u.id = {id} " +
                 "RETURN p.label as label";
 
         final ImmutableMap<String, Object> params = ImmutableMap.<String, Object>of("id", id);
 
-        try(Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params)){
-            permissions = IteratorUtil.<String>asSet(result.columnAs("label")).stream().map(WildcardPermission::new).collect(Collectors.toSet());
+        try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params)) {
+            permissions = IteratorUtil.<String>asSet(result.columnAs("label"));
             tx.success();
         }
 
         return permissions;
+    }
+
+    @Override
+    public Set<Permission> getAllPermissions(String id) {
+        return getAllPermissionsAsStrings(id).stream().map(WildcardPermission::new).collect(Collectors.toSet());
     }
 
     @Override
