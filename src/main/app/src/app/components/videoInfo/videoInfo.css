@@ -36,6 +36,9 @@ h2 {
     line-height: 25px;
 }
 
+.data a {
+    text-decoration: none;
+}
 
 h3 {
     margin-top: 5px;

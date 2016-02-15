@@ -20,6 +20,9 @@
 .video-info {
     padding: 10px;
 }
+.video-info .data {
+    width: 600px;
+}
 
 .close {
     background-color: #444;
