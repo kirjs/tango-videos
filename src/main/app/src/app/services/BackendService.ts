@@ -1,9 +1,6 @@
 import {Http, Response, Headers} from 'angular2/http';
 import {Injectable} from "angular2/core";
 
-interface Dictionary {
-    [index: string]: string;
-}
 @Injectable()
 export class BackendService {
     base:string = 'api/';
@@ -13,7 +10,7 @@ export class BackendService {
             .map((res) => res.json());
     }
 
-    write(url: string, params: Dictionary){
+    write(url: string, params: any){
         var headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Accept', 'application/json');
