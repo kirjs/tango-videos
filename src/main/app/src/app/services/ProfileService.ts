@@ -11,33 +11,39 @@ export interface Credentials {
 @Injectable()
 export class CurrentUserService {
 
-    permissions: Subject;
-    private permissionObservable: Observable;
-    constructor(private backendService: BackendService) {
+    private permissions:Subject;
+    public permissionObservable:Observable;
+
+    constructor(private backendService:BackendService) {
         this.permissions = new Subject();
         this.permissionObservable = this.permissions
             .startWith('')
             .flatMap(() => this.fetchPermissions())
-            .share()
+            .map((permissions)=>permissions.reduce((result, permission)=> {
+                    result[permission] = true;
+                    return result;
+                }, {})
+            )
+            .share();
     }
 
-    refreshPermissions(){
-
+    refreshPermissions() {
+        this.permissions.next(true);
     }
 
     getCurrentUser():Observable<any> {
-        return this.backendService.read('currentUser');
+        return this.backendService.read('currentUser').do(this.refreshPermissions.bind(this));
     }
 
     fetchPermissions():Observable<any> {
-        return this.backendService.read('user/permissions');
+        return this.backendService.read('currentUser/permissions');
     }
 
     login(credentials:Credentials):Observable<any> {
-        return this.backendService.write('login', credentials);
+        return this.backendService.write('login', credentials).do(this.refreshPermissions.bind(this));
     }
 
     logout():Observable<any> {
-        return this.backendService.read('logout');
+        return this.backendService.read('logout').do(this.refreshPermissions.bind(this));
     }
 }

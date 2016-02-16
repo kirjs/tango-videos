@@ -50,13 +50,13 @@ export class VideoInfo {
 
     recover() {
         this.videoService.hide(this.video.id, false).subscribe(() => {
-            this.video.hidden = false;
+            this.video.shown = false;
         })
     }
 
     hide() {
         this.videoService.hide(this.video.id, true).subscribe(() => {
-            this.video.hidden = true;
+            this.video.shown = true;
         })
     }
 
