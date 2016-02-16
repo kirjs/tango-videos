@@ -19,7 +19,6 @@ export class VideoTile {
 
     playVideo(id: String){
         this.playerService.play(this.video);
-
     }
 
     getThumbnail(id:string) {

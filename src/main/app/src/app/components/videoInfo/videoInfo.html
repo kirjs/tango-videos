@@ -20,7 +20,7 @@
                  (remove)="removeDancer($event)"></dancer-tile>
 
     <song-list [readonly]="readonly" [songs]="video.songs" (update)="updateSong($event)"></song-list>
-    <div class="admin-controls">
+    <div class="admin-controls" needs-permission = "video:write">
         <div (click)="hide()" class="hide admin-control">&times;</div>
         <div (click)="markComplete(true)" class="complete admin-control">✓</div>
     </div>

@@ -4,13 +4,14 @@ import {VideoService} from "../../services/VideoService";
 import {SongList} from "../song-list/song-list";
 import {EditableField} from "../editable-field/editable-field";
 import {Icon} from "../icon/icon";
+import {NeedsPermission} from "../needs-permission/needs-permission";
 
 @Component({
     selector: 'video-info',
     template: require('./videoInfo.html'),
     styles: [require('./videoInfo.css')],
     providers: [],
-    directives: [DancerTile, SongList, EditableField, Icon],
+    directives: [DancerTile, SongList, EditableField, Icon, NeedsPermission],
     pipes: []
 })
 export class VideoInfo {
