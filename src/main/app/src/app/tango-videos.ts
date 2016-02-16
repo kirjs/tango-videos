@@ -11,6 +11,7 @@ import {Header} from "./components/header/header";
 import {Dancers} from "./components/dancers/dancers";
 import {VideoPlayer} from "./components/video-player/video-player";
 import {RequestStatus} from "./components/request-status/request-status";
+import {AdminTools} from "./components/admin-tools/admin-tools";
 
 
 @Component({
@@ -27,6 +28,7 @@ import {RequestStatus} from "./components/request-status/request-status";
     new Route({path: '/home', component: Home, name: 'Home'}),
     new Route({path: '/new/video', component: VideoForm, name: 'AddVideo'}),
     new Route({path: '/needs-review', component: NeedsReview, name: 'NeedsReview'}),
+    new Route({path: '/admin-tools', component: AdminTools, name: 'AdminTools'}),
 ])
 export class TangoVideos {
     constructor() {
