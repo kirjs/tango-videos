@@ -20,7 +20,7 @@ public class AdminToolsResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("listNames")
+    @Path("renameDancer")
     public Response listNames(RenameDancer payload) {
 
 
