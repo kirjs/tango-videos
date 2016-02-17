@@ -3,7 +3,7 @@ import {Router, Route, RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 
 import {Home} from './components/home/home';
 import {Videos} from './components/videos/videos';
-import {VideoForm} from './components/videoForm/videoForm';
+import {VideoForm} from './components/video-form/videoForm';
 import {Dancer} from "./components/dancer/dancer";
 import {Explore} from "./components/explore/explore";
 import {NeedsReview} from "./components/needs-review/needs-review";

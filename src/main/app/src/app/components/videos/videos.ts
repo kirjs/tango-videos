@@ -1,6 +1,6 @@
 import {Component, Input} from 'angular2/core';
 import {VideoService} from "../../services/VideoService";
-import {VideoInfo} from "../videoInfo/videoInfo";
+import {VideoInfo} from "../video-info/videoInfo";
 import {EditableField} from "../editable-field/editable-field";
 import {VideoTile} from "../video-tile/video-tile";
 

@@ -1,6 +1,6 @@
 import {Component} from 'angular2/core';
 import {Http} from 'angular2/http';
-import {VideoPreview} from '../videoPreview/videoPreview';
+import {VideoPreview} from '../video-preview/videoPreview';
 import {Youtube} from "../../services/youtube";
 import {VideoService} from "../../services/VideoService";
 

@@ -1,6 +1,6 @@
 import {Component, ViewChild} from 'angular2/core';
 import {PlayerService} from "../../services/PlayerService";
-import {VideoInfo} from "../videoInfo/videoInfo";
+import {VideoInfo} from "../video-info/videoInfo";
 
 @Component({
     selector: 'video-player',

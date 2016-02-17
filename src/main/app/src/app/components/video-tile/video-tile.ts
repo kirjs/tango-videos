@@ -1,5 +1,5 @@
 import {Component, Input} from 'angular2/core';
-import {VideoInfo} from "../videoInfo/videoInfo";
+import {VideoInfo} from "../video-info/videoInfo";
 import {PlayerService} from "../../services/PlayerService";
 import {NeedsPermission} from "../needs-permission/needs-permission";
 

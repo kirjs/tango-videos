@@ -1,6 +1,6 @@
 import {Component} from 'angular2/core';
 import {Menu} from "../menu/menu";
-import {UserProfile} from "../userProfile/user-profile";
+import {UserProfile} from "../user-profile/user-profile";
 
 @Component({
     selector: 'header',

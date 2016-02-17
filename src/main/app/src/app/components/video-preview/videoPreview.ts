@@ -1,7 +1,7 @@
 import {Component, Input} from 'angular2/core';
 import {Http} from 'angular2/http';
 import {Youtube} from '../../services/youtube';
-import {VideoInfo} from "../videoInfo/videoInfo";
+import {VideoInfo} from "../video-info/videoInfo";
 import {VideoTile} from "../video-tile/video-tile";
 
 
