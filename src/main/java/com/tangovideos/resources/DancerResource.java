@@ -18,8 +18,8 @@ import javax.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 public class DancerResource {
 
-    private DancerService dancerService =TangoVideosServiceFactory.getDancerService();
-    private VideoService videoService =TangoVideosServiceFactory.getVideoService();
+    private DancerService dancerService = TangoVideosServiceFactory.getDancerService();
+    private VideoService videoService = TangoVideosServiceFactory.getVideoService();
 
     @GET
     @Path("listNames")
@@ -28,6 +28,7 @@ public class DancerResource {
                 .entity(new JSONArray(dancerService.list()).toString())
                 .type(MediaType.APPLICATION_JSON).build();
     }
+
     @GET
     @Path("list")
     public Response list() {
@@ -35,8 +36,6 @@ public class DancerResource {
                 .entity(new JSONArray(dancerService.list(0, 1000, Neo4jDancerService.SortBy.VIDEO_COUNT)).toString())
                 .type(MediaType.APPLICATION_JSON).build();
     }
-
-
 
     @GET
     @Path("{id}")
