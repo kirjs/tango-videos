@@ -1,18 +1,18 @@
 import {Component} from 'angular2/core';
 import {Router, Route, RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 
-import {Home} from './components/home/home';
-import {Videos} from './components/videos/videos';
-import {VideoForm} from './components/video-form/videoForm';
-import {Dancer} from "./components/dancer/dancer";
-import {Explore} from "./components/explore/explore";
-import {NeedsReview} from "./components/needs-review/needs-review";
-import {Header} from "./components/header/header";
-import {Dancers} from "./components/dancers/dancers";
-import {VideoPlayer} from "./components/video-player/video-player";
-import {RequestStatus} from "./components/request-status/request-status";
-import {AdminTools} from "./components/admin-tools/admin-tools";
-import {TagSongs} from "./components/tag-songs/tag-songs";
+import {Home} from './components/pages/home/home';
+import {Videos} from './components/entities/video/videos/videos';
+import {VideoForm} from './components/entities/video/video-form/video-form';
+import {Dancer} from './components/entities/dancer/dancer/dancer';
+import {Explore} from './components/pages/explore/explore';
+import {NeedsReview} from './components/pages/needs-review/needs-review';
+import {Header} from './components/layout/header/header';
+import {Dancers} from './components/pages/dancers/dancers';
+import {VideoPlayer} from './components/entities/player/video-player/video-player';
+import {RequestStatus} from './components/common/request-status/request-status';
+import {AdminTools} from './components/pages/admin-tools/admin-tools';
+import {TagSongs} from './components/pages/tag-songs/tag-songs';
 
 
 @Component({

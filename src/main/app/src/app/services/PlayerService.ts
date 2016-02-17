@@ -1,5 +1,5 @@
 import {Injectable} from 'angular2/core';
-import {VideoPlayer} from "../components/video-player/video-player";
+import {VideoPlayer} from "../components/entities/player/video-player/video-player";
 var YouTubePlayer = require('youtube-player');
 
 @Injectable()
