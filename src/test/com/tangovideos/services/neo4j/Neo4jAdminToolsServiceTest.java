@@ -1,6 +1,7 @@
 package com.tangovideos.services.neo4j;
 
 import com.google.common.collect.ImmutableMap;
+import com.tangovideos.models.KeyValue;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +10,9 @@ import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.helpers.collection.IteratorUtil;
 import org.neo4j.test.TestGraphDatabaseFactory;
+
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
@@ -28,6 +32,7 @@ public class Neo4jAdminToolsServiceTest {
     public void tearDown() throws Exception {
         graphDb.shutdown();
     }
+
     @Test
     public void testRenameDancer() throws Exception {
         final String oldName = "Le g";
@@ -53,5 +58,14 @@ public class Neo4jAdminToolsServiceTest {
 
             tx.success();
         }
+    }
+
+    @Test
+    public void testStats() throws Exception {
+        TestHelpers.addVideoAndDancer(graphDb, "anyVideo", "anyDancer");
+        TestHelpers.addVideoAndDancer(graphDb, "otherVideo", "OtheDancer");
+
+        final Map<String, String> result = adminService.stats().stream().collect(Collectors.toMap(KeyValue::getKey, KeyValue::getValue));
+        assertEquals(result.get("videos"), "2");
     }
 }
