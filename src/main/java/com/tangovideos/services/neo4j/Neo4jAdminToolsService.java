@@ -38,11 +38,18 @@ public class Neo4jAdminToolsService implements AdminToolsService {
     @Override
     public List<KeyValue> stats() {
         List<KeyValue> stats;
-        final String query = "MATCH (v:Video)" +
-                "" +
-                " RETURN count(v) as videos";
-        try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query)) {
-            stats = ImmutableList.of(new KeyValue("videos", result.columnAs("videos").next().toString()));
+        try (Transaction tx = graphDb.beginTx();
+             Result videos = graphDb.execute("MATCH (v:Video) RETURN count(v) as videos");
+             Result activeDancers = graphDb.execute("MATCH (d:Dancer)-[:DANCES]->(v:Video) RETURN count(DISTINCT d) as dancers");
+             Result allDancers = graphDb.execute("MATCH (d:Dancer) RETURN count(DISTINCT d) as dancers");
+             Result allSongs = graphDb.execute("MATCH (s:Songs) RETURN count(DISTINCT s) as songs")
+        ) {
+            stats = ImmutableList.of(
+                    new KeyValue("videos", videos.hasNext() ? videos.columnAs("videos").next().toString() : "0"),
+                    new KeyValue("activeDancers", activeDancers.hasNext() ? activeDancers.columnAs("dancers").next().toString() : "0"),
+                    new KeyValue("allDancers", allDancers.hasNext() ? allDancers.columnAs("dancers").next().toString() : "0"),
+                    new KeyValue("songs", allSongs.hasNext() ? allSongs.columnAs("songs").next().toString() : "0")
+            );
             tx.success();
         }
         return stats;

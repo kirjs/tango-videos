@@ -20,12 +20,16 @@ public class Neo4jAdminToolsServiceTest {
 
     private GraphDatabaseService graphDb;
     private Neo4jAdminToolsService adminService;
+    private Neo4jDancerService dancerService;
+    private Neo4jSongService songService;
 
 
     @Before
     public void setUp() throws Exception {
         graphDb = new TestGraphDatabaseFactory().newImpermanentDatabase();
         adminService = new Neo4jAdminToolsService(graphDb);
+        dancerService = new Neo4jDancerService(graphDb);
+        songService = new Neo4jSongService(graphDb);
     }
 
     @After
@@ -54,18 +58,31 @@ public class Neo4jAdminToolsServiceTest {
             assertEquals(0, IteratorUtil.count(oldDancers));
             final Result newDancers = graphDb.execute(query, newDancerParams);
             assertEquals(2, IteratorUtil.count(newDancers));
-
-
             tx.success();
         }
     }
 
     @Test
     public void testStats() throws Exception {
-        TestHelpers.addVideoAndDancer(graphDb, "anyVideo", "anyDancer");
-        TestHelpers.addVideoAndDancer(graphDb, "otherVideo", "OtheDancer");
+        TestHelpers.addVideoAndDancer(graphDb, "Video1", "Dancer1");
+        TestHelpers.addVideoAndDancer(graphDb, "Video2", "Dancer1");
+        TestHelpers.addVideoAndDancer(graphDb, "Video3", "Dancer2");
+        dancerService.insertOrGetNode("Inactive dancer");
+
 
         final Map<String, String> result = adminService.stats().stream().collect(Collectors.toMap(KeyValue::getKey, KeyValue::getValue));
-        assertEquals(result.get("videos"), "2");
+        assertEquals("3", result.get("videos"));
+        assertEquals("2", result.get("activeDancers"));
+        assertEquals("3", result.get("allDancers"));
+        assertEquals("0", result.get("songs"));
+    }
+
+    @Test
+    public void testEmptyStats() throws Exception {
+        final Map<String, String> result = adminService.stats().stream().collect(Collectors.toMap(KeyValue::getKey, KeyValue::getValue));
+        assertEquals("0", result.get("videos"));
+        assertEquals("0", result.get("activeDancers"));
+        assertEquals("0", result.get("allDancers"));
+        assertEquals("0", result.get("songs"));
     }
 }

@@ -25,7 +25,6 @@ public class Neo4jSongServiceTest {
     public void setUp() throws Exception {
         graphDb = new TestGraphDatabaseFactory().newImpermanentDatabase();
         neo4jSongService = new Neo4jSongService(graphDb);
-
     }
 
     @After
