@@ -12,6 +12,7 @@ import {Dancers} from "./components/dancers/dancers";
 import {VideoPlayer} from "./components/video-player/video-player";
 import {RequestStatus} from "./components/request-status/request-status";
 import {AdminTools} from "./components/admin-tools/admin-tools";
+import {TagSongs} from "./components/tag-songs/tag-songs";
 
 
 @Component({
@@ -25,6 +26,7 @@ import {AdminTools} from "./components/admin-tools/admin-tools";
     new Route({path: '/videos', component: Explore, name: 'Videos', useAsDefault: true}),
     new Route({path: '/dancers', component: Dancers, name: 'Dancers'}),
     new Route({path: '/dancers/:id', component: Dancer, name: 'Dancer'}),
+    new Route({path: '/tag', component: TagSongs, name: 'Tag'}),
     new Route({path: '/home', component: Home, name: 'Home'}),
     new Route({path: '/new/video', component: VideoForm, name: 'AddVideo'}),
     new Route({path: '/needs-review', component: NeedsReview, name: 'NeedsReview'}),
