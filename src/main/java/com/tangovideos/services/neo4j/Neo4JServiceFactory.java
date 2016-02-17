@@ -19,6 +19,7 @@ public class Neo4JServiceFactory implements ServiceFactory {
     private YoutubeService youtubeService;
     private DancerService dancerService;
     private SongService songService;
+    private AdminToolsService adminToolsService;
 
 
     public Neo4JServiceFactory() {
@@ -93,6 +94,15 @@ public class Neo4JServiceFactory implements ServiceFactory {
         return songService;
     }
 
+    @Override
+    public AdminToolsService getAdminToolsService() {
+        if(adminToolsService == null){
+            adminToolsService = new Neo4jAdminToolsService(graphDb);
+        }
+
+        return adminToolsService;
+    }
+
     public DancerService getDancerService() {
         if (dancerService == null) {
             dancerService = new Neo4jDancerService(graphDb);
@@ -100,5 +110,4 @@ public class Neo4JServiceFactory implements ServiceFactory {
 
         return dancerService;
     }
-
 }

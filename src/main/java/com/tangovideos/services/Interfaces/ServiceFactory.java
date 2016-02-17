@@ -8,4 +8,5 @@ public interface ServiceFactory {
     DancerService getDancerService();
     YoutubeService getYoutubeService();
     SongService getSongService();
+    AdminToolsService getAdminToolsService();
 }

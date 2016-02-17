@@ -19,9 +19,8 @@ public class TangoVideosServiceFactory {
         return serviceFactory.getYoutubeService();
     }
 
-    public static DancerService getDancerService() {
-        return serviceFactory.getDancerService();
-    }
+    public static DancerService getDancerService() {return serviceFactory.getDancerService();}
+    public static AdminToolsService getAdminToolsService(){return serviceFactory.getAdminToolsService();}
 
     public static SongService getSongService() {
         return serviceFactory.getSongService();
