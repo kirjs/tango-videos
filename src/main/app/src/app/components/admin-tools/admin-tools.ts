@@ -1,6 +1,11 @@
 import {Component} from 'angular2/core';
-import {NeedsPermission} from "../needs-permission/needs-permission";
-import {AdminToolsService} from "../../services/AdminToolsService";
+import {NeedsPermission} from '../needs-permission/needs-permission';
+import {AdminToolsService} from '../../services/AdminToolsService';
+import {Observable} from 'rxjs';
+export interface Stat {
+    name: string;
+    value: string;
+}
 
 @Component({
     selector: 'admin-tools',
@@ -11,15 +16,18 @@ import {AdminToolsService} from "../../services/AdminToolsService";
     pipes: []
 })
 export class AdminTools {
-    constructor(private adminToolsService:AdminToolsService) {
 
+    stats$:Observable<Array<Stat>>;
+
+    constructor(private adminToolsService:AdminToolsService) {
+        this.stats$ = this.adminToolsService.stats();
     }
 
     renameDancerStatus:String = '';
 
-    renameDancer(oldName, newName){
+    renameDancer(oldName, newName) {
         this.renameDancerStatus = 'In progress';
-        this.adminToolsService.renameDancer(oldName, newName).subscribe(()=>{
+        this.adminToolsService.renameDancer(oldName, newName).subscribe(()=> {
             this.renameDancerStatus = 'Done renaming ' + oldName + ' to ' + newName;
         });
     }

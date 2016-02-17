@@ -11,4 +11,8 @@ export class AdminToolsService {
     renameDancer(oldName:String, newName:String):Observable<any> {
         return this.backendService.write('adminTools/renameDancer', {oldName, newName});
     }
+
+    stats():any {
+        return this.backendService.read('adminTools/stats');
+    }
 }

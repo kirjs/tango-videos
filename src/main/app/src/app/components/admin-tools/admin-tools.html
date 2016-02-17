@@ -8,5 +8,13 @@
         <input value = "rename" type="button" (click)="renameDancer(oldName.value, newName.value)">
         <div>{{renameDancerStatus}}</div>
     </div>
+    <div class="block">
+        <h2>Stats</h2>
+        <div *ngFor="#stat of stats$ | async">
+            <span>{{stat.name}}</span>
+            <span>{{stat.value}}</span>
+        </div>
+
+    </div>
 
 </div>
