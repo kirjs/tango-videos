@@ -1,7 +1,7 @@
 <div class="user-profile">
     <div *ngIf="authentificated">
         {{user.id}}
-        [<a class="log-out" (click)="logout()">Log out</a>]
+        [<a class="log-out" (click)="logout()">x</a>]
     </div>
     <div *ngIf="!authentificated">
         <form [ngFormModel]="loginForm" (ngSubmit)="authenticate()">
