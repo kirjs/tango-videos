@@ -1,1 +1,12 @@
-empty
+<div needs-permission = "video:write">
+    <div class="block">
+        <h2>Rename dancers</h2>
+        <span>Old name</span>
+        <input type="text" #oldName>
+        <span>New name</span>
+        <input type="text" #newName>
+        <input value = "rename" type="button" (click)="renameDancer(oldName.value, newName.value)">
+        <div>{{renameDancerStatus}}</div>
+    </div>
+
+</div>
