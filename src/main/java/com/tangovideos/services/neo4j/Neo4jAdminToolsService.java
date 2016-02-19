@@ -23,15 +23,15 @@ public class Neo4jAdminToolsService implements AdminToolsService {
     @Override
     public void renameDancer(String oldName, String newName) {
         final String query = "" +
-                "MATCH (o:Dancer {id: {oldName}})-[r:DANCES]->(v:Video) " +
+                "MATCH (od:Dancer {id: {oldName}})-[r:DANCES]->(v:Video) " +
                 "MERGE (nd:Dancer {id: {newName}}) " +
                 "MERGE (nd)-[:DANCES]->(v) " +
+                "DELETE od " +
                 "DELETE r " +
                 "RETURN v";
         final ImmutableMap<String, Object> params = of("oldName", oldName, "newName", newName);
 
         try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params)) {
-
             tx.success();
         }
     }

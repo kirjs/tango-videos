@@ -67,9 +67,12 @@ public class Neo4jAdminToolsServiceTest {
             final Result newDancers = graphDb.execute(videosWithDancersQuery, newDancerParams);
             assertEquals(2, IteratorUtil.count(newDancers));
 
-            // Assert there is just one dancer node eventually
+            // Assert there is just one new  dancer node eventually
             final Result eventuallyOldDancers = graphDb.execute(dancersQuery, newDancerParams);
             assertEquals(1, IteratorUtil.count(eventuallyOldDancers));
+            // Assert that the old node was removed
+            final Result eventuallylOldDancers = graphDb.execute(dancersQuery, oldDancerParams);
+            assertEquals(0, IteratorUtil.count(eventuallylOldDancers ));
             tx.success();
         }
     }
