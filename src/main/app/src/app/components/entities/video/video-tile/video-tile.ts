@@ -3,6 +3,7 @@ import {VideoInfo} from "../video-info/video-info";
 
 import {PlayerService} from "../../../../services/PlayerService";
 import {NeedsPermission} from "../../../common/needs-permission/needs-permission";
+import {Video} from "../../../../interfaces/video";
 
 @Component({
     selector: 'video-tile',
@@ -13,18 +14,18 @@ import {NeedsPermission} from "../../../common/needs-permission/needs-permission
     pipes: []
 })
 export class VideoTile {
-    @Input() video: any;
+    @Input() video: Video;
     @Input() readonly: boolean = true;
     @Output() play:EventEmitter<any>;
     constructor() {
         this.play = new EventEmitter();
     }
 
-    playVideo(id: String){
+    playVideo(){
         this.play.emit(this.video);
     }
 
     getThumbnail(id:string) {
-        return `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
+        return `https://i.ytimg.com/vi/${this.video.id}/mqdefault.jpg`;
     }
 }

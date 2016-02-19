@@ -3,6 +3,7 @@ import {VideoInfo} from "../video-info/video-info";
 import {VideoTile} from "../video-tile/video-tile";
 import {EditableField} from "../../../common/editable-field/editable-field";
 import {PlayerService} from "../../../../services/PlayerService";
+import {Video} from "../../../../interfaces/video";
 
 @Component({
     selector: 'videos',
@@ -13,7 +14,7 @@ import {PlayerService} from "../../../../services/PlayerService";
     pipes: []
 })
 export class Videos {
-    @Input() videos:Array<any> = [];
+    @Input() videos:Array<Video> = [];
     playVideo(video){
         this.playerService.play(video);
     }
