@@ -32,15 +32,16 @@ export class PlayerService {
 
 
     prev() {
-        var index = this.playlist.indexOf(this.currentVideo) + 1;
-        if (index === this.playlist.length) {
-            index = 0;
+        this.currentVideoIndex--;
+        if (this.currentVideoIndex < 0) {
+            this.currentVideoIndex = this.playlist.length - 1;
         }
-        this.play(this.playlist, this.playlist[index]);
+
+        this.play(this.playlist, this.playlist[this.currentVideoIndex]);
     }
 
 
-    playVideo(video: Video){
+    playVideo(video:Video) {
         this.playing = true;
         this.player.loadVideoById(video.id);
         this.player.setSize(450, 350);

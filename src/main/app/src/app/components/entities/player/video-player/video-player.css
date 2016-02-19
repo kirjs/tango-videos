@@ -1,9 +1,8 @@
 .video-player-wrapper {
-    background-color: #000000;
+    background-color: #fff;
     position: fixed;
     width: 100%;
     box-shadow: 10px 0 10px #444;
-    color: white;
     min-width: 1280px;
     z-index: 20;
 }
@@ -31,5 +30,19 @@
     font-size: 10px;
     text-transform: uppercase;
     text-align: center;
+    cursor: pointer;
+}
+
+.controls {
+    padding: 10px;
+}
+.controls .prev:hover, .controls .next:hover {
+    box-shadow: 2px 2px 2px #ddd;
+}
+.controls .prev, .controls .next {
+    vertical-align: top;
+    display: inline-block;
+    padding: 4px 16px;
+    background-color: #eeeeee;
     cursor: pointer;
 }

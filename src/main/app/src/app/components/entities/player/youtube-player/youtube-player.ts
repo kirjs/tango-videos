@@ -35,7 +35,7 @@ export class YoutubePlayer {
     }
 
     prev(){
-        this.playerService.next()
+        this.playerService.prev()
     }
 
 
