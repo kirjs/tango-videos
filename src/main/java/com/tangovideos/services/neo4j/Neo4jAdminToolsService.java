@@ -24,7 +24,8 @@ public class Neo4jAdminToolsService implements AdminToolsService {
     public void renameDancer(String oldName, String newName) {
         final String query = "" +
                 "MATCH (o:Dancer {id: {oldName}})-[r:DANCES]->(v:Video) " +
-                "MERGE (n:Dancer {id: {newName}})-[:DANCES]->(v) " +
+                "MERGE (nd:Dancer {id: {newName}}) " +
+                "MERGE (nd)-[:DANCES]->(v) " +
                 "DELETE r " +
                 "RETURN v";
         final ImmutableMap<String, Object> params = of("oldName", oldName, "newName", newName);

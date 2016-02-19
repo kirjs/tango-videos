@@ -42,22 +42,34 @@ public class Neo4jAdminToolsServiceTest {
         final String oldName = "Le g";
         final String betterName = "BetterName";
 
-        TestHelpers.addVideoAndDancer(graphDb, "anyVideo", oldName);
-        TestHelpers.addVideoAndDancer(graphDb, "otherVideo", oldName);
 
-        adminService.renameDancer(oldName, betterName);
-
-        String query = "MATCH (v:Video)<-[:DANCES]-(d:Dancer {id: {id}}) return v";
+        String dancersQuery = "MATCH (d:Dancer {id: {id}}) return d";
+        String videosWithDancersQuery = "MATCH (v:Video)<-[:DANCES]-(d:Dancer {id: {id}}) return v";
 
         final ImmutableMap<String, Object> oldDancerParams = ImmutableMap.of("id", oldName);
         final ImmutableMap<String, Object> newDancerParams = ImmutableMap.of("id", betterName);
 
 
         try (Transaction tx = graphDb.beginTx()) {
-            final Result oldDancers = graphDb.execute(query, oldDancerParams);
+
+            TestHelpers.addVideoAndDancer(graphDb, "anyVideo", oldName);
+            TestHelpers.addVideoAndDancer(graphDb, "otherVideo", oldName);
+
+            // Assert there is just one dancer node initially
+            final Result initialOldDancers = graphDb.execute(dancersQuery, oldDancerParams);
+            assertEquals(1, IteratorUtil.count(initialOldDancers));
+
+            adminService.renameDancer(oldName, betterName);
+
+
+            final Result oldDancers = graphDb.execute(videosWithDancersQuery, oldDancerParams);
             assertEquals(0, IteratorUtil.count(oldDancers));
-            final Result newDancers = graphDb.execute(query, newDancerParams);
+            final Result newDancers = graphDb.execute(videosWithDancersQuery, newDancerParams);
             assertEquals(2, IteratorUtil.count(newDancers));
+
+            // Assert there is just one dancer node eventually
+            final Result eventuallyOldDancers = graphDb.execute(dancersQuery, newDancerParams);
+            assertEquals(1, IteratorUtil.count(eventuallyOldDancers));
             tx.success();
         }
     }
