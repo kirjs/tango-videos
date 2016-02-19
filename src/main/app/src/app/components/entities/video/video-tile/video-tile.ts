@@ -1,4 +1,4 @@
-import {Component, Input} from 'angular2/core';
+import {Component, Input, Output, EventEmitter} from 'angular2/core';
 import {VideoInfo} from "../video-info/video-info";
 
 import {PlayerService} from "../../../../services/PlayerService";
@@ -15,11 +15,13 @@ import {NeedsPermission} from "../../../common/needs-permission/needs-permission
 export class VideoTile {
     @Input() video: any;
     @Input() readonly: boolean = true;
-    constructor(private playerService: PlayerService) {
+    @Output() play:EventEmitter<any>;
+    constructor() {
+        this.play = new EventEmitter();
     }
 
     playVideo(id: String){
-        this.playerService.play(this.video);
+        this.play.emit(this.video);
     }
 
     getThumbnail(id:string) {

@@ -1,5 +1,5 @@
 <div class="videos">
     <div *ngFor="#video of videos" class="video">
-        <video-tile [readonly] = "false" [video] = "video"></video-tile>
+        <video-tile [readonly] = "false" [video] = "video" (play)="playVideo($event)"></video-tile>
     </div>
 </div>
