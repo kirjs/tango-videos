@@ -12,4 +12,6 @@ import {YoutubePlayer} from "../youtube-player/youtube-player";
     directives: [VideoInfo, YoutubePlayer],
     pipes: []
 })
-export class VideoPlayer {}
+export class VideoPlayer {
+
+}

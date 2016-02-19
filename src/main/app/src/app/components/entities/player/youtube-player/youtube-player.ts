@@ -1,5 +1,6 @@
 import {Component, ViewChild} from 'angular2/core';
 import {PlayerService} from "../../../../services/PlayerService";
+import {Video} from "../../../../interfaces/video";
 
 @Component({
     selector: 'youtube-player',
@@ -11,7 +12,7 @@ import {PlayerService} from "../../../../services/PlayerService";
 })
 export class YoutubePlayer {
     @ViewChild("player") player;
-    private video:any;
+    private video:Video;
 
     isPlaying(){
         return this.playerService.isPlaying();
@@ -28,6 +29,15 @@ export class YoutubePlayer {
     setVideo(video:any):void {
         this.video = video;
     }
+
+    next(){
+        this.playerService.next()
+    }
+
+    prev(){
+        this.playerService.next()
+    }
+
 
     constructor(private playerService:PlayerService) {}
 

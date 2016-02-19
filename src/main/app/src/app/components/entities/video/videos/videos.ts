@@ -15,9 +15,11 @@ import {Video} from "../../../../interfaces/video";
 })
 export class Videos {
     @Input() videos:Array<Video> = [];
+
     playVideo(video){
-        this.playerService.play(video);
+        this.playerService.play(this.videos, video);
     }
+
     constructor(private playerService: PlayerService){
 
     }
