@@ -1,6 +1,7 @@
 .header {
     padding: 0 20px;
     box-shadow: 2px 0 10px #999;
+    min-width: 1000px;
 }
 .profile {
     float: right;
