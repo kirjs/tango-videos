@@ -84,16 +84,13 @@ public class Neo4jDancerService implements DancerService {
 
     @Override
     public void addToVideo(Node dancer, Node video) {
-        try (Transaction tx = this.graphDb.beginTx()) {
+        String query = "MATCH (d:Dancer {id: {dancerId}}) " +
+                "MATCH (v:Video {id: {videoId}})" +
+                "MERGE (d)-[:DANCES]->(v)" +
+                "RETURN d";
+        final ImmutableMap<String, Object> params = ImmutableMap.of("videoId", video.getProperty("id"), "dancerId", dancer.getProperty("id"));
 
-            for (Relationship relationship : video.getRelationships(Relationships.DANCES, Direction.INCOMING)) {
-                if (relationship.getOtherNode(video).equals(dancer)) {
-                    return;
-                }
-            }
-
-            dancer.createRelationshipTo(video, Relationships.DANCES);
-
+        try (Transaction tx = this.graphDb.beginTx(); Result result = graphDb.execute(query, params)) {
             tx.success();
         }
     }
