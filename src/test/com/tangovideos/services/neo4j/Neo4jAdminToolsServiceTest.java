@@ -14,6 +14,7 @@ import org.neo4j.test.TestGraphDatabaseFactory;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.google.common.collect.ImmutableMap.of;
 import static org.junit.Assert.assertEquals;
 
 public class Neo4jAdminToolsServiceTest {
@@ -46,8 +47,8 @@ public class Neo4jAdminToolsServiceTest {
         String dancersQuery = "MATCH (d:Dancer {id: {id}}) return d";
         String videosWithDancersQuery = "MATCH (v:Video)<-[:DANCES]-(d:Dancer {id: {id}}) return v";
 
-        final ImmutableMap<String, Object> oldDancerParams = ImmutableMap.of("id", oldName);
-        final ImmutableMap<String, Object> newDancerParams = ImmutableMap.of("id", betterName);
+        final ImmutableMap<String, Object> oldDancerParams = of("id", oldName);
+        final ImmutableMap<String, Object> newDancerParams = of("id", betterName);
 
 
         try (Transaction tx = graphDb.beginTx()) {
@@ -79,17 +80,22 @@ public class Neo4jAdminToolsServiceTest {
 
     @Test
     public void testStats() throws Exception {
-        TestHelpers.addVideoAndDancer(graphDb, "Video1", "Dancer1");
-        TestHelpers.addVideoAndDancer(graphDb, "Video2", "Dancer1");
-        TestHelpers.addVideoAndDancer(graphDb, "Video3", "Dancer2");
-        dancerService.insertOrGetNode("Inactive dancer");
+        try (Transaction tx = graphDb.beginTx()) {
+            TestHelpers.addVideoAndDancer(graphDb, "Video1", "Dancer1");
+            TestHelpers.addVideoAndDancer(graphDb, "Video2", "Dancer1");
+            TestHelpers.addVideoAndDancer(graphDb, "Video3", "Dancer2");
+            dancerService.insertOrGetNode("Inactive dancer");
 
 
-        final Map<String, String> result = adminService.stats().stream().collect(Collectors.toMap(KeyValue::getKey, KeyValue::getValue));
-        assertEquals("3", result.get("videos"));
-        assertEquals("2", result.get("activeDancers"));
-        assertEquals("3", result.get("allDancers"));
-        assertEquals("0", result.get("songs"));
+            final Map<String, String> result = adminService.stats().stream().collect(Collectors.toMap(KeyValue::getKey, KeyValue::getValue));
+            assertEquals("3", result.get("videos"));
+            assertEquals("2", result.get("activeDancers"));
+            assertEquals("3", result.get("allDancers"));
+            assertEquals("0", result.get("songs"));
+
+            tx.success();
+        }
+
     }
 
     @Test
