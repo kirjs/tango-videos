@@ -157,16 +157,18 @@ public class Neo4jVideoService implements VideoService {
     /**
      * Find videos that don't have any dancers assigned.
      *
-     * @return list of videos
      * @param params
+     * @return list of videos
      */
     @Override
     public List<VideoResponse> needsReview(Map<String, Boolean> params) {
 
         final String query = "MATCH (v:Video) " +
-                 "WHERE (:Dancer)-[:DANCES]->(v) " +
-                //"WHERE (:Dancer)-[:DANCES]->(v) " +
-                "RETURN v, [] as dancers, [] as songs";
+                "OPTIONAL MATCH (d:Dancer)-[:DANCES]->(v) " +
+                "OPTIONAL MATCH (v)<-[:PLAYS_IN]-(s:Song) " +
+                "WITH d, v, s " +
+                "WHERE NOT (:Dancer)-[:DANCES]->(v) " +
+                "RETURN v, collect(d.id) as dancers, collect(s) as songs";
 
         return getMultipleVideos(query, ImmutableMap.of());
     }
@@ -217,7 +219,7 @@ public class Neo4jVideoService implements VideoService {
         List<VideoResponse> videos = Lists.newArrayList();
         try (Transaction tx = this.graphDb.beginTx()) {
             final Result result = this.graphDb.execute(query, params);
-
+            System.out.println(this.graphDb.execute(query, params).resultAsString());
             while (result.hasNext()) {
                 final Map<String, Object> next = result.next();
                 final Node videoNode = (Node) next.get("v");

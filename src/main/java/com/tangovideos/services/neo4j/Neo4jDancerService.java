@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.google.common.collect.ImmutableMap.of;
+
 
 public class Neo4jDancerService implements DancerService {
     private final GraphDatabaseService graphDb;
@@ -62,7 +64,7 @@ public class Neo4jDancerService implements DancerService {
             final String query = "MATCH (d:Dancer)-[:DANCES]->(v:Video) " +
                     "RETURN DISTINCT d as dancer, collect(v.id) as videos, count(v.id) as count " +
                     "ORDER BY count DESC";
-            ImmutableMap.of("skip", skip, "limit", limit);
+            of("skip", skip, "limit", limit);
             final Result result = this.graphDb.execute(query);
 
 
@@ -84,13 +86,18 @@ public class Neo4jDancerService implements DancerService {
 
     @Override
     public void addToVideo(Node dancer, Node video) {
+        if(!dancer.hasLabel(Labels.DANCER.label)){
+            throw new RuntimeException("Expected dancer node, got: " + dancer.getLabels());
+        }
         String query = "MATCH (d:Dancer {id: {dancerId}}) " +
-                "MATCH (v:Video {id: {videoId}})" +
-                "MERGE (d)-[:DANCES]->(v)" +
-                "RETURN d";
-        final ImmutableMap<String, Object> params = ImmutableMap.of("videoId", video.getProperty("id"), "dancerId", dancer.getProperty("id"));
+                "MATCH (v:Video {id: {videoId}}) " +
+                "MERGE (d)-[r:DANCES]->(v) " +
+                "RETURN d, v,r";
+
+        final ImmutableMap<String, Object> params = of("videoId", video.getProperty("id"), "dancerId", dancer.getProperty("id"));
 
         try (Transaction tx = this.graphDb.beginTx(); Result result = graphDb.execute(query, params)) {
+            result.close();
             tx.success();
         }
     }
@@ -112,17 +119,15 @@ public class Neo4jDancerService implements DancerService {
     public Node insertOrGetNode(String dancerId) {
         Node dancer;
 
-        try (Transaction tx = this.graphDb.beginTx()) {
-            final ResourceIterator<Node> nodes = this.graphDb.findNodes(Labels.DANCER.label, "id", dancerId);
-            if (nodes.hasNext()) {
-                dancer = nodes.next();
-            } else {
-                dancer = this.graphDb.createNode(Labels.DANCER.label);
-                dancer.setProperty("id", dancerId);
-            }
-            nodes.close();
+        final String query = "MERGE (d:Dancer {id: {id}}) RETURN d as dancer";
+        final ImmutableMap<String, Object> params = of("id", dancerId);
+
+        try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params)) {
+            dancer = result.<Node>columnAs("dancer").next();
+            result.close();
             tx.success();
         }
+
         return dancer;
     }
 
@@ -135,7 +140,7 @@ public class Neo4jDancerService implements DancerService {
                     "WHERE v.id = {id} " +
                     "RETURN d.id";
 
-            final Result results = this.graphDb.execute(query, ImmutableMap.of("id", videoId));
+            final Result results = this.graphDb.execute(query, of("id", videoId));
             while (results.hasNext()) {
                 result.add(results.next().get("d.id").toString());
             }

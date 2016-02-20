@@ -79,7 +79,6 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
             assertEquals(video.getSongs().get(0).getYear(), year);
             assertEquals(video.getDancers().iterator().next(), dancerId);
 
-
             tx.success();
         }
 
@@ -154,8 +153,8 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
             songService.updateField(videoId0, 0, "genre", "genre");
             songService.updateField(videoId0, 0, "year", "2000");
             songService.updateField(videoId0, 0, "orquestra", "orquestra");
-            dancerService.addToVideo(video0, dancerService.insertOrGetNode("SuperDancer"));
-            dancerService.addToVideo(video0, dancerService.insertOrGetNode("OtherDancer"));
+            dancerService.addToVideo(dancerService.insertOrGetNode("SuperDancer"), video0);
+            dancerService.addToVideo(dancerService.insertOrGetNode("OtherDancer"), video0);
 
 
             // No dancer
@@ -171,8 +170,8 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
             songService.updateField(videoId2, 0, "genre", "genre");
             songService.updateField(videoId2, 0, "year", "2000");
             songService.updateField(videoId2, 0, "orquestra", "orquestra");
-            dancerService.addToVideo(video2, dancerService.insertOrGetNode("SuperDancer"));
-            dancerService.addToVideo(video2, dancerService.insertOrGetNode("OtherDancer"));
+            dancerService.addToVideo(dancerService.insertOrGetNode("SuperDancer"), video2);
+            dancerService.addToVideo(dancerService.insertOrGetNode("OtherDancer"), video2);
 
 
             final Node video3 = TestHelpers.addVideo(graphDb, videoId3);
@@ -180,8 +179,8 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
             songService.updateField(videoId3, 0, "genre", "genre");
             songService.updateField(videoId3, 0, "year", "2000");
             songService.updateField(videoId3, 0, "orquestra", "orquestra");
-            dancerService.addToVideo(video3, dancerService.insertOrGetNode("SuperDancer"));
-            dancerService.addToVideo(video3, dancerService.insertOrGetNode("OtherDancer"));
+            dancerService.addToVideo(dancerService.insertOrGetNode("SuperDancer"), video3);
+            dancerService.addToVideo(dancerService.insertOrGetNode("OtherDancer"), video3);
 
 
             // Find videos with no dancers
