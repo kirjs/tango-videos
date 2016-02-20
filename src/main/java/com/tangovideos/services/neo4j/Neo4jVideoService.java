@@ -158,9 +158,10 @@ public class Neo4jVideoService implements VideoService {
      * Find videos that don't have any dancers assigned.
      *
      * @return list of videos
+     * @param of
      */
     @Override
-    public List<VideoResponse> needsReview() {
+    public List<VideoResponse> needsReview(Map<String, Boolean> params) {
         final String query = "MATCH (v:Video) " +
                 "WHERE NOT (:Dancer)-[:DANCES]->(v) " +
                 "RETURN v, [] as dancers, [] as songs";

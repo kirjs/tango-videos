@@ -1,1 +1,8 @@
-<videos [videos] = "videos"></videos>
+<div class="controls">
+
+    <label class=button *ngFor="#filter of filters">
+        <input type="checkbox" #cb [checked]="filter.defaultValue" (change)="updateFilter(filter.key, cb.checked)">{{filter.name}}
+    </label>
+
+</div>
+<videos [videos]="videos"></videos>

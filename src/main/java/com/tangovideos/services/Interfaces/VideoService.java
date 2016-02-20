@@ -6,6 +6,7 @@ import org.neo4j.graphdb.Node;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface VideoService {
@@ -23,7 +24,7 @@ public interface VideoService {
 
     Set<String> exist(Set<String> ids);
 
-    List<VideoResponse> needsReview();
+    List<VideoResponse> needsReview(Map<String, Boolean> of);
 
     void updateField(String id, String field, String value);
 

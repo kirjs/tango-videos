@@ -1,5 +1,6 @@
 package com.tangovideos.services.neo4j;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.tangovideos.models.Song;
 import com.tangovideos.models.VideoResponse;
@@ -130,7 +131,7 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
         TestHelpers.addVideoAndDancer(graphDb, "someVideo", "dancerId");
         TestHelpers.addVideo(graphDb, videoId);
 
-        final List<VideoResponse> list = videoService.needsReview();
+        final List<VideoResponse> list = videoService.needsReview(ImmutableMap.of("dancers", true, "song", true, "orquestra", true, "genre", true, "year", true));
         assertEquals(list.size(), 1);
         final VideoResponse video = list.get(0);
         assertEquals(video.getId(), videoId);

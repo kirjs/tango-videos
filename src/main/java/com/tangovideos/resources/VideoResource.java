@@ -1,5 +1,6 @@
 package com.tangovideos.resources;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.tangovideos.models.Song;
 import com.tangovideos.models.Video;
@@ -49,8 +50,20 @@ public class VideoResource {
 
     @GET
     @Path("needsreview")
-    public Response needsreview() {
-        final String result = new JSONArray(videoService.needsReview()).toString();
+    public Response needsreview(
+            @QueryParam("dancers") Boolean dancers,
+            @QueryParam("song") Boolean song,
+            @QueryParam("orquestra") Boolean orquestra,
+            @QueryParam("genre") Boolean genre,
+            @QueryParam("year") Boolean year
+    ) {
+        final String result = new JSONArray(videoService.needsReview(
+                ImmutableMap.of("dancers", dancers,
+                        "song", song,
+                        "orquestra", orquestra,
+                        "genre", genre,
+                        "year", year)
+        )).toString();
 
         return Response.status(200)
                 .entity(result)

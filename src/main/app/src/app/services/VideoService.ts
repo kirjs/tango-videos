@@ -1,11 +1,14 @@
 import {Injectable} from 'angular2/core';
 import {BackendService} from "./BackendService";
 import {Observable} from "rxjs";
+import {ReviewFilters} from "../components/pages/needs-review/needs-review";
+import {URLSearchParams} from "angular2/http";
 
 
 @Injectable()
 export class VideoService {
-    constructor(private backendService:BackendService) {}
+    constructor(private backendService:BackendService) {
+    }
 
     list(skip:number, limit:number):Observable<any> {
         return this.backendService.read("videos/list/" + skip + "/" + limit);
@@ -23,8 +26,16 @@ export class VideoService {
         return this.backendService.write(`videos/${id}/songs/update`, {index, field, data});
     }
 
-    needsReview():Observable<any> {
-        return this.backendService.read("videos/needsreview");
+    needsReview(filters:any):Observable<any> {
+
+        //noinspection TypeScriptUnresolvedFunction
+        var urlSearchParams = Object.keys(filters).reduce((params, filter)=>{
+            params.set(filter, filters[filter]);
+            return params;
+        }, new URLSearchParams());
+
+
+        return this.backendService.read("videos/needsreview", urlSearchParams);
     }
 
     exists(id:String):Observable<any> {

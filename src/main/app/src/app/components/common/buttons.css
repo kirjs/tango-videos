@@ -1,0 +1,11 @@
+.controls {
+    padding: 10px;
+
+}
+.button {
+    vertical-align: top;
+    display: inline-block;
+    padding: 4px 16px;
+    background-color: #eeeeee;
+    cursor: pointer;
+}
