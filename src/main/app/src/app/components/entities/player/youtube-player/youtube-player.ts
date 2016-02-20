@@ -13,16 +13,17 @@ import {Video} from "../../../../interfaces/video";
 export class YoutubePlayer {
     @ViewChild("player") player;
     private video:Video;
+    private autoplay:boolean = true;
 
-    isPlaying(){
+    isPlaying() {
         return this.playerService.isPlaying();
     }
 
-    getVideo(){
+    getVideo() {
         return this.video
     }
 
-    stopPlaying(){
+    stopPlaying() {
         this.playerService.stop();
     }
 
@@ -30,16 +31,25 @@ export class YoutubePlayer {
         this.video = video;
     }
 
-    next(){
+    next() {
         this.playerService.next()
     }
 
-    prev(){
+    setAutoplay(autoplay: boolean) {
+        this.autoplay = autoplay;
+    }
+
+    getAutoplay() {
+        return this.autoplay;
+    }
+
+    prev() {
         this.playerService.prev()
     }
 
 
-    constructor(private playerService:PlayerService) {}
+    constructor(private playerService:PlayerService) {
+    }
 
     ngAfterViewInit() {
         this.playerService.init(this.player.nativeElement, this);

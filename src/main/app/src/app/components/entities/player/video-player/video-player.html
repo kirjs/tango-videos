@@ -3,8 +3,11 @@
     <video-info class="video-info" *ngIf="player.getVideo()" [video]="player.getVideo()"
                 [readonly]="false"></video-info>
     <div class="controls">
-        <div class="prev" (click)="player.prev()">prev</div>
-        <div class="next" (click)="player.next()">next</div>
+        <div class="prev button" (click)="player.prev()">prev</div>
+        <div class="next button" (click)="player.next()">next</div>
+        <label class="next button">
+            <input #autoplayCheckbox type=checkbox [checked]="player.getAutoplay()"  (change)="player.setAutoplay(autoplayCheckbox.checked)">Autoplay
+        </label>
     </div>
     <div class="close" (click)="player.stopPlaying()">Close video player</div>
 </div>
