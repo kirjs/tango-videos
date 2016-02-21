@@ -105,43 +105,31 @@ public class Neo4jDancerServiceTest extends EasyMockSupport {
 
 
     @Test
-    public void testAddTovideo(){
-
+    public void testAddTovideo() {
         final String dancerId = "DancerId";
         final String videoId = "videoID";
 
+        final Node video = TestHelpers.addVideo(graphDb, videoId);
+        final Node dancer = neo4jDancerService.insertOrGetNode(dancerId);
+        neo4jDancerService.addToVideo(dancer, video);
 
-        try (Transaction tx = graphDb.beginTx()) {
-            final Node video = TestHelpers.addVideo(graphDb, videoId);
-            final Node dancer = neo4jDancerService.insertOrGetNode(dancerId);
-            neo4jDancerService.addToVideo(dancer, video);
-
-            assertEquals(1, neo4jDancerService.getForVideo(videoId).size());
-            assertEquals(1, IteratorUtil.count(graphDb.execute("MATCH (d:Dancer)-[:DANCES]->(v:Video) return v").columnAs("v")));    tx.success();
-            tx.success();
-        }
-
-
+        assertEquals(1, neo4jDancerService.getForVideo(videoId).size());
+        assertEquals(1, IteratorUtil.count(graphDb.execute("MATCH (d:Dancer)-[:DANCES]->(v:Video) return v").columnAs("v")));
     }
+
     @Test
     public void testRemoveFromVideo() throws Exception {
         final String dancerId = "DancerId";
         final String videoId = "videoID";
 
-
-        try (Transaction tx = graphDb.beginTx()) {
-            final Node video = TestHelpers.addVideo(graphDb, videoId);
-            final Node dancer = neo4jDancerService.insertOrGetNode(dancerId);
-            neo4jDancerService.addToVideo(dancer, video);
+        final Node video = TestHelpers.addVideo(graphDb, videoId);
+        final Node dancer = neo4jDancerService.insertOrGetNode(dancerId);
+        neo4jDancerService.addToVideo(dancer, video);
 
 
-            assertEquals(1, neo4jDancerService.getForVideo(videoId).size());
-            neo4jDancerService.removeFromVideo(dancer, video);
-            assertEquals(0, neo4jDancerService.getForVideo(videoId).size());
-            tx.success();
-        }
-
-
+        assertEquals(1, neo4jDancerService.getForVideo(videoId).size());
+        neo4jDancerService.removeFromVideo(dancer, video);
+        assertEquals(0, neo4jDancerService.getForVideo(videoId).size());
     }
 
     @Test

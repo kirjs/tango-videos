@@ -4,7 +4,6 @@ import com.google.api.client.util.Sets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.tangovideos.data.Labels;
-import com.tangovideos.data.Relationships;
 import com.tangovideos.models.Dancer;
 import com.tangovideos.models.VideoResponse;
 import com.tangovideos.services.Interfaces.DancerService;
@@ -41,7 +40,7 @@ public class Neo4jDancerService implements DancerService {
 
     @Override
     public List<Dancer> list() {
-        List<Dancer> dancers = Lists.newArrayList();
+        List<Dancer> dancers;
 
         try (Transaction tx = this.graphDb.beginTx()) {
             final String query = "MATCH (d:Dancer)-[:DANCES]->(v:Video) " +
@@ -86,13 +85,16 @@ public class Neo4jDancerService implements DancerService {
 
     @Override
     public void addToVideo(Node dancer, Node video) {
-
         String query = "MATCH (d:Dancer {id: {dancerId}}) " +
                 "MATCH (v:Video {id: {videoId}}) " +
                 "MERGE (d)-[r:DANCES]->(v) " +
                 "RETURN d, v,r";
 
+        this.addOrRemoveDancer(query, dancer, video);
+    }
 
+
+    public void addOrRemoveDancer(String query, Node dancer, Node video){
         try (Transaction tx = this.graphDb.beginTx()) {
             if(!dancer.hasLabel(Labels.DANCER.label)){
                 throw new RuntimeException("Expected dancer node, got: " + dancer.getLabels());
@@ -105,17 +107,13 @@ public class Neo4jDancerService implements DancerService {
             tx.success();
         }
     }
-
     @Override
     public void removeFromVideo(Node dancer, Node video) {
-        try(Transaction tx = graphDb.beginTx()) {
-            for (Relationship relationship : video.getRelationships(Relationships.DANCES, Direction.INCOMING)) {
-                if (relationship.getOtherNode(video).equals(dancer)) {
-                    relationship.delete();
-                }
-            }
-            tx.success();
-        }
+        String query = "MATCH (d:Dancer {id: {dancerId}})-[r:DANCES]->(v:Video {id: {videoId}}) " +
+                "DELETE r " +
+                "RETURN d, v,r";
+
+        this.addOrRemoveDancer(query, dancer, video);
 
     }
 
