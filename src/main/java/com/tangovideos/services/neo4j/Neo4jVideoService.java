@@ -154,20 +154,44 @@ public class Neo4jVideoService implements VideoService {
         return IteratorUtil.asSet(result.columnAs("id"));
     }
 
+    private ImmutableMap<Object, Object> paramQueries =
+            ImmutableMap.builder()
+                    .put("dancers", "NOT (:Dancer)-[:DANCES]->(v)")
+                    .put("songname", "NOT (:Song)-[:PLAYS_IN]->(v) OR NOT exists(s.name)")
+                    .put("orquestra", "NOT (:Song)-[:PLAYS_IN]->(v) OR NOT exists(s.orquestra)")
+                    .put("genre", "NOT (:Song)-[:PLAYS_IN]->(v) OR NOT exists(s.genre)")
+                    .put("year", "NOT (:Song)-[:PLAYS_IN]->(v) OR NOT exists(s.year)")
+                    .build();
+    ;
+
+
     /**
      * Find videos that don't have any dancers assigned.
      *
-     * @param params
      * @return list of videos
      */
     @Override
     public List<VideoResponse> needsReview(Map<String, Boolean> params) {
 
+        String queryParams = params.entrySet()
+                .stream()
+                .filter(Map.Entry::getValue)
+                .map(Map.Entry::getKey)
+                .filter(paramQueries::containsKey)
+                .map(paramQueries::get)
+                .map(Object::toString)
+                .collect(Collectors.joining(" OR "));
+
+        if (queryParams.length() > 0) {
+            queryParams = "WHERE " + queryParams + " ";
+        }
+
+
         final String query = "MATCH (v:Video) " +
                 "OPTIONAL MATCH (d:Dancer)-[:DANCES]->(v) " +
                 "OPTIONAL MATCH (v)<-[:PLAYS_IN]-(s:Song) " +
                 "WITH d, v, s " +
-                "WHERE NOT (:Dancer)-[:DANCES]->(v) " +
+                queryParams +
                 "RETURN v, collect(d.id) as dancers, collect(s) as songs";
 
         return getMultipleVideos(query, ImmutableMap.of());
@@ -219,7 +243,7 @@ public class Neo4jVideoService implements VideoService {
         List<VideoResponse> videos = Lists.newArrayList();
         try (Transaction tx = this.graphDb.beginTx()) {
             final Result result = this.graphDb.execute(query, params);
-            System.out.println(this.graphDb.execute(query, params).resultAsString());
+
             while (result.hasNext()) {
                 final Map<String, Object> next = result.next();
                 final Node videoNode = (Node) next.get("v");
