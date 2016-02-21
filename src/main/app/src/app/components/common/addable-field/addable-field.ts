@@ -2,6 +2,7 @@ import {Component, Output, EventEmitter, Input} from 'angular2/core';
 import {Focus} from "../focus/focus";
 import {NgAutocompleteContainer} from "../autocomplete/ng2-autocomplete";
 import {NgAutocompleteInput} from "../autocomplete/ng2-autocomplete";
+import {Observable} from "rxjs";
 
 @Component({
     selector: 'addable-field',
@@ -11,9 +12,9 @@ import {NgAutocompleteInput} from "../autocomplete/ng2-autocomplete";
     directives: [Focus, NgAutocompleteContainer, NgAutocompleteInput],
     pipes: []
 })
-export class AddableFIeld {
+export class AddableField {
     @Output() onAdd;
-    @Input() autocompleteSource;
+    @Input() autocompleteSource = Observable.from([[]]);
 
     addMode:boolean = false;
 
