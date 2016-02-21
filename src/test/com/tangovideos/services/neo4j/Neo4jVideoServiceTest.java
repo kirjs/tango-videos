@@ -41,26 +41,6 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
 
 
     @Test
-    public void testVideoExists() throws Exception {
-
-    }
-
-    @Test
-    public void testAddVideo() throws Exception {
-
-    }
-
-    @Test
-    public void testGet() throws Exception {
-
-    }
-
-    @Test
-    public void testVideoResponseFromNode() throws Exception {
-
-    }
-
-    @Test
     public void testList() throws Exception {
         final String videoId = "videoId";
         final String dancerId = "dancerId";
@@ -69,18 +49,16 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
         song.setYear(year);
         song.setName("name");
 
-        try (Transaction tx = graphDb.beginTx()) {
-            TestHelpers.addVideoAndDancer(graphDb, videoId, dancerId);
-            TestHelpers.addSongToVideo(graphDb, videoId, song);
-            final List<VideoResponse> list = videoService.list();
-            assertEquals(list.size(), 1);
-            final VideoResponse video = list.get(0);
-            assertEquals(video.getId(), videoId);
-            assertEquals(video.getSongs().get(0).getYear(), year);
-            assertEquals(video.getDancers().iterator().next(), dancerId);
 
-            tx.success();
-        }
+        TestHelpers.addVideoAndDancer(graphDb, videoId, dancerId);
+        TestHelpers.addSongToVideo(graphDb, videoId, song);
+        final List<VideoResponse> list = videoService.list();
+        assertEquals(list.size(), 1);
+        final VideoResponse video = list.get(0);
+        assertEquals(video.getId(), videoId);
+        assertEquals(video.getSongs().get(0).getYear(), year);
+        assertEquals(video.getDancers().iterator().next(), dancerId);
+
 
     }
 
@@ -92,36 +70,29 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
         final String otherDancer = "otherDancer";
         final String thirdDancerId = "thirdDancer";
 
-        try (Transaction tx = graphDb.beginTx()) {
 
-            // Add a two videos with two dancers
-            TestHelpers.addVideoAndDancer(graphDb, videoId, dancerId);
-            TestHelpers.addVideoAndDancer(graphDb, "otherVideo", otherDancer);
+        // Add a two videos with two dancers
+        TestHelpers.addVideoAndDancer(graphDb, videoId, dancerId);
+        TestHelpers.addVideoAndDancer(graphDb, "otherVideo", otherDancer);
 
-            // Add another dancer to the first video
-            final Neo4jDancerService neo4jDancerService = new Neo4jDancerService(graphDb);
+        // Add another dancer to the first video
+        final Neo4jDancerService neo4jDancerService = new Neo4jDancerService(graphDb);
 
-            neo4jDancerService.addToVideo(
-                    neo4jDancerService.insertOrGetNode(thirdDancerId),
-                    videoService.get(videoId)
-            );
-
-
-            final List<VideoResponse> list = videoService.listByDancer(dancerId);
-            assertEquals(list.size(), 1);
-            final VideoResponse video = list.get(0);
-            assertEquals(video.getId(), videoId);
-            assertEquals(video.getDancers().size(), 2);
-            assertEquals(video.getDancers().iterator().next(), dancerId);
-            tx.success();
-        }
-    }
+        neo4jDancerService.addToVideo(
+                neo4jDancerService.insertOrGetNode(thirdDancerId),
+                videoService.get(videoId)
+        );
 
 
-    @Test
-    public void testAddDancer() throws Exception {
+        final List<VideoResponse> list = videoService.listByDancer(dancerId);
+        assertEquals(list.size(), 1);
+        final VideoResponse video = list.get(0);
+        assertEquals(video.getId(), videoId);
+        assertEquals(video.getDancers().size(), 2);
+        assertEquals(video.getDancers().iterator().next(), dancerId);
 
     }
+
 
     @Test
     public void testExist() throws Exception {
@@ -148,112 +119,110 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
         final String noGenreId = "videoId4";
         final String noYearId = "videoId5";
 
-        try (Transaction tx = graphDb.beginTx()) {
 
-            final Node video0 = TestHelpers.addVideo(graphDb, videoId0);
-            songService.updateField(videoId0, 0, "name", "name");
-            songService.updateField(videoId0, 0, "genre", "genre");
-            songService.updateField(videoId0, 0, "year", "2000");
-            songService.updateField(videoId0, 0, "orquestra", "orquestra");
-            dancerService.addToVideo(dancerService.insertOrGetNode("SuperDancer"), video0);
-            dancerService.addToVideo(dancerService.insertOrGetNode("OtherDancer"), video0);
-
-
-            // No dancer
-            final Node video1 = TestHelpers.addVideo(graphDb, noDancersId);
-            songService.updateField(noDancersId, 0, "name", "name");
-            songService.updateField(noDancersId, 0, "genre", "genre");
-            songService.updateField(noDancersId, 0, "year", "2000");
-            songService.updateField(noDancersId, 0, "orquestra", "orquestra");
-
-            // No song name
-            final Node video2 = TestHelpers.addVideo(graphDb, noSongId);
-            songService.updateField(noSongId, 0, "genre", "genre");
-            songService.updateField(noSongId, 0, "year", "2000");
-            songService.updateField(noSongId, 0, "orquestra", "orquestra");
-            dancerService.addToVideo(dancerService.insertOrGetNode("SuperDancer"), video2);
-            dancerService.addToVideo(dancerService.insertOrGetNode("OtherDancer"), video2);
-
-            // No orquestra
-            final Node video3 = TestHelpers.addVideo(graphDb, noOrquestraId);
-            songService.updateField(noOrquestraId, 0, "name", "name");
-            songService.updateField(noOrquestraId, 0, "genre", "genre");
-            songService.updateField(noOrquestraId, 0, "year", "2000");
-            dancerService.addToVideo(dancerService.insertOrGetNode("SuperDancer"), video3);
-            dancerService.addToVideo(dancerService.insertOrGetNode("OtherDancer"), video3);
+        final Node video0 = TestHelpers.addVideo(graphDb, videoId0);
+        songService.updateField(videoId0, 0, "name", "name");
+        songService.updateField(videoId0, 0, "genre", "genre");
+        songService.updateField(videoId0, 0, "year", "2000");
+        songService.updateField(videoId0, 0, "orquestra", "orquestra");
+        dancerService.addToVideo(dancerService.insertOrGetNode("SuperDancer"), video0);
+        dancerService.addToVideo(dancerService.insertOrGetNode("OtherDancer"), video0);
 
 
-            // No genre
-            final Node video4 = TestHelpers.addVideo(graphDb, noGenreId);
-            songService.updateField(noGenreId, 0, "name", "name");
-            songService.updateField(noGenreId, 0, "year", "2000");
-            songService.updateField(noGenreId, 0, "orquestra", "orquestra");
-            dancerService.addToVideo(dancerService.insertOrGetNode("SuperDancer"), video4);
-            dancerService.addToVideo(dancerService.insertOrGetNode("OtherDancer"), video4);
+        // No dancer
+        final Node video1 = TestHelpers.addVideo(graphDb, noDancersId);
+        songService.updateField(noDancersId, 0, "name", "name");
+        songService.updateField(noDancersId, 0, "genre", "genre");
+        songService.updateField(noDancersId, 0, "year", "2000");
+        songService.updateField(noDancersId, 0, "orquestra", "orquestra");
 
-            // No year
-            final Node video5 = TestHelpers.addVideo(graphDb, noYearId);
-            songService.updateField(noYearId, 0, "genre", "genre");
-            songService.updateField(noYearId, 0, "name", "name");
-            songService.updateField(noYearId, 0, "orquestra", "orquestra");
-            dancerService.addToVideo(dancerService.insertOrGetNode("SuperDancer"), video5);
-            dancerService.addToVideo(dancerService.insertOrGetNode("OtherDancer"), video5);
+        // No song name
+        final Node video2 = TestHelpers.addVideo(graphDb, noSongId);
+        songService.updateField(noSongId, 0, "genre", "genre");
+        songService.updateField(noSongId, 0, "year", "2000");
+        songService.updateField(noSongId, 0, "orquestra", "orquestra");
+        dancerService.addToVideo(dancerService.insertOrGetNode("SuperDancer"), video2);
+        dancerService.addToVideo(dancerService.insertOrGetNode("OtherDancer"), video2);
+
+        // No orquestra
+        final Node video3 = TestHelpers.addVideo(graphDb, noOrquestraId);
+        songService.updateField(noOrquestraId, 0, "name", "name");
+        songService.updateField(noOrquestraId, 0, "genre", "genre");
+        songService.updateField(noOrquestraId, 0, "year", "2000");
+        dancerService.addToVideo(dancerService.insertOrGetNode("SuperDancer"), video3);
+        dancerService.addToVideo(dancerService.insertOrGetNode("OtherDancer"), video3);
 
 
-            final ImmutableMap<String, Boolean> needsDancers =
-                    of("dancers", true, "songname", false, "orquestra", false, "genre", false, "year", false);
-            final ImmutableMap<String, Boolean> needsSong =
-                    of("dancers", false, "songname", true, "orquestra", false, "genre", false, "year", false);
-            final ImmutableMap<String, Boolean> needsOrquestra =
-                    of("dancers", false, "songname", false, "orquestra", true, "genre", false, "year", false);
-            final ImmutableMap<String, Boolean> needsGenre =
-                    of("dancers", false, "songname", false, "orquestra", false, "genre", true, "year", false);
-            final ImmutableMap<String, Boolean> needsYear =
-                    of("dancers", false, "songname", false, "orquestra", false, "genre", false, "year", true);
-            final ImmutableMap<String, Boolean> needsYearAndGenreAndSong =
-                    of("dancers", false, "songname", true, "orquestra", false, "genre", true, "year", true);
+        // No genre
+        final Node video4 = TestHelpers.addVideo(graphDb, noGenreId);
+        songService.updateField(noGenreId, 0, "name", "name");
+        songService.updateField(noGenreId, 0, "year", "2000");
+        songService.updateField(noGenreId, 0, "orquestra", "orquestra");
+        dancerService.addToVideo(dancerService.insertOrGetNode("SuperDancer"), video4);
+        dancerService.addToVideo(dancerService.insertOrGetNode("OtherDancer"), video4);
 
-                                                                                                                  // Find videos which need dancers
-            final List<VideoResponse> listNoDancers = videoService.needsReview(needsDancers);
-            assertEquals(listNoDancers.size(), 1);
-            final VideoResponse videoNoDancers = listNoDancers.get(0);
-            assertEquals(videoNoDancers.getId(), noDancersId);
-            assertEquals(videoNoDancers.getDancers().size(), 0);
+        // No year
+        final Node video5 = TestHelpers.addVideo(graphDb, noYearId);
+        songService.updateField(noYearId, 0, "genre", "genre");
+        songService.updateField(noYearId, 0, "name", "name");
+        songService.updateField(noYearId, 0, "orquestra", "orquestra");
+        dancerService.addToVideo(dancerService.insertOrGetNode("SuperDancer"), video5);
+        dancerService.addToVideo(dancerService.insertOrGetNode("OtherDancer"), video5);
 
-            // Find videos which need song names
-            final List<VideoResponse> listNoSong = videoService.needsReview(needsSong);
-            assertEquals(listNoSong.size(), 1);
-            final VideoResponse videoNoSong = listNoSong.get(0);
-            assertEquals(videoNoSong.getId(), noSongId);
-            assertEquals(videoNoSong.getDancers().size(), 2);
 
-            // Find videos which need song names
-            final List<VideoResponse> listNoOrquestra = videoService.needsReview(needsOrquestra);
-            assertEquals(listNoOrquestra.size(), 1);
-            final VideoResponse videoNoOrquestra = listNoOrquestra.get(0);
-            assertEquals(videoNoOrquestra.getId(), noOrquestraId);
-            assertEquals(videoNoOrquestra.getDancers().size(), 2);
+        final ImmutableMap<String, Boolean> needsDancers =
+                of("dancers", true, "songname", false, "orquestra", false, "genre", false, "year", false);
+        final ImmutableMap<String, Boolean> needsSong =
+                of("dancers", false, "songname", true, "orquestra", false, "genre", false, "year", false);
+        final ImmutableMap<String, Boolean> needsOrquestra =
+                of("dancers", false, "songname", false, "orquestra", true, "genre", false, "year", false);
+        final ImmutableMap<String, Boolean> needsGenre =
+                of("dancers", false, "songname", false, "orquestra", false, "genre", true, "year", false);
+        final ImmutableMap<String, Boolean> needsYear =
+                of("dancers", false, "songname", false, "orquestra", false, "genre", false, "year", true);
+        final ImmutableMap<String, Boolean> needsYearAndGenreAndSong =
+                of("dancers", false, "songname", true, "orquestra", false, "genre", true, "year", true);
 
-            // Find videos which need song names
-            final List<VideoResponse> listNoGenre = videoService.needsReview(needsGenre);
-            assertEquals(listNoGenre.size(), 1);
-            final VideoResponse videoNoGenre = listNoGenre.get(0);
-            assertEquals(videoNoGenre.getId(), noGenreId);
-            assertEquals(videoNoGenre.getDancers().size(), 2);
+        // Find videos which need dancers
+        final List<VideoResponse> listNoDancers = videoService.needsReview(needsDancers);
+        assertEquals(listNoDancers.size(), 1);
+        final VideoResponse videoNoDancers = listNoDancers.get(0);
+        assertEquals(videoNoDancers.getId(), noDancersId);
+        assertEquals(videoNoDancers.getDancers().size(), 0);
 
-            // Find videos which need song names
-            final List<VideoResponse> listNoYear = videoService.needsReview(needsYear);
-            assertEquals(listNoYear.size(), 1);
-            final VideoResponse videoNoYear = listNoYear.get(0);
-            assertEquals(videoNoYear.getId(), noYearId);
-            assertEquals(videoNoYear.getDancers().size(), 2);
+        // Find videos which need song names
+        final List<VideoResponse> listNoSong = videoService.needsReview(needsSong);
+        assertEquals(listNoSong.size(), 1);
+        final VideoResponse videoNoSong = listNoSong.get(0);
+        assertEquals(videoNoSong.getId(), noSongId);
+        assertEquals(videoNoSong.getDancers().size(), 2);
 
-            // Find videos which need song names
-            final List<VideoResponse> listNoYearGenreSong = videoService.needsReview(needsYearAndGenreAndSong);
-            assertEquals(listNoYearGenreSong.size(), 3);
+        // Find videos which need song names
+        final List<VideoResponse> listNoOrquestra = videoService.needsReview(needsOrquestra);
+        assertEquals(listNoOrquestra.size(), 1);
+        final VideoResponse videoNoOrquestra = listNoOrquestra.get(0);
+        assertEquals(videoNoOrquestra.getId(), noOrquestraId);
+        assertEquals(videoNoOrquestra.getDancers().size(), 2);
 
-            tx.success();
-        }
+        // Find videos which need song names
+        final List<VideoResponse> listNoGenre = videoService.needsReview(needsGenre);
+        assertEquals(listNoGenre.size(), 1);
+        final VideoResponse videoNoGenre = listNoGenre.get(0);
+        assertEquals(videoNoGenre.getId(), noGenreId);
+        assertEquals(videoNoGenre.getDancers().size(), 2);
+
+        // Find videos which need song names
+        final List<VideoResponse> listNoYear = videoService.needsReview(needsYear);
+        assertEquals(listNoYear.size(), 1);
+        final VideoResponse videoNoYear = listNoYear.get(0);
+        assertEquals(videoNoYear.getId(), noYearId);
+        assertEquals(videoNoYear.getDancers().size(), 2);
+
+        // Find videos which need song names
+        final List<VideoResponse> listNoYearGenreSong = videoService.needsReview(needsYearAndGenreAndSong);
+        assertEquals(listNoYearGenreSong.size(), 3);
+
+
     }
 
 
@@ -309,9 +278,10 @@ public class Neo4jVideoServiceTest extends EasyMockSupport {
     public void testUpdateField() throws Exception {
         final String videoId = "videoId0";
         final String newValue = "12345";
-        try (Transaction tx = graphDb.beginTx()) {
-            final Node node = TestHelpers.addVideo(graphDb, videoId);
-            videoService.updateField(videoId, "recordedAt", newValue);
+
+        final Node node = TestHelpers.addVideo(graphDb, videoId);
+        videoService.updateField(videoId, "recordedAt", newValue);
+        try(Transaction tx = graphDb.beginTx()){
             assertEquals(node.getProperty("recordedAt"), newValue);
             tx.success();
         }
