@@ -59,7 +59,7 @@ public class VideoResource {
     ) {
         final String result = new JSONArray(videoService.needsReview(
                 ImmutableMap.of("dancers", dancers,
-                        "song", song,
+                        "songname", song,
                         "orquestra", orquestra,
                         "genre", genre,
                         "year", year)

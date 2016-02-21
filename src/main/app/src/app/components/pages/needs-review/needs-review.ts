@@ -40,7 +40,7 @@ export class NeedsReview {
             defaultValue: true
         },
         {
-            name: 'Orequestra',
+            name: 'Orquestra',
             key: 'orquestra',
             defaultValue: true
         },
