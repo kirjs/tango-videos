@@ -15,6 +15,7 @@ import {Observable} from "rxjs";
 export class AddableField {
     @Output() onAdd;
     @Input() autocompleteSource = Observable.from([[]]);
+    @Input() addButtonLabel: string = "+";
 
     addMode:boolean = false;
 
