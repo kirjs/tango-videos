@@ -11,6 +11,7 @@ import javax.ws.rs.ext.Provider;
 public class AnyExceptionMapper implements ExceptionMapper<Exception> {
     public Response toResponse(Exception ex) {
         final ErrorMessage entity = new ErrorMessage(ex);
+        ex.printStackTrace();
         return Response.status(entity.getStatus()).
                 entity(new JSONObject(entity).toString()).
                 type(MediaType.APPLICATION_JSON).
