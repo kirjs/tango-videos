@@ -86,17 +86,21 @@ public class Neo4jDancerService implements DancerService {
 
     @Override
     public void addToVideo(Node dancer, Node video) {
-        if(!dancer.hasLabel(Labels.DANCER.label)){
-            throw new RuntimeException("Expected dancer node, got: " + dancer.getLabels());
-        }
+
         String query = "MATCH (d:Dancer {id: {dancerId}}) " +
                 "MATCH (v:Video {id: {videoId}}) " +
                 "MERGE (d)-[r:DANCES]->(v) " +
                 "RETURN d, v,r";
 
-        final ImmutableMap<String, Object> params = of("videoId", video.getProperty("id"), "dancerId", dancer.getProperty("id"));
 
-        try (Transaction tx = this.graphDb.beginTx(); Result result = graphDb.execute(query, params)) {
+        try (Transaction tx = this.graphDb.beginTx()) {
+            if(!dancer.hasLabel(Labels.DANCER.label)){
+                throw new RuntimeException("Expected dancer node, got: " + dancer.getLabels());
+            }
+            final ImmutableMap<String, Object> params = of("videoId", video.getProperty("id"), "dancerId", dancer.getProperty("id"));
+
+            Result result = graphDb.execute(query, params);
+
             result.close();
             tx.success();
         }
@@ -124,7 +128,6 @@ public class Neo4jDancerService implements DancerService {
 
         try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params)) {
             dancer = result.<Node>columnAs("dancer").next();
-            result.close();
             tx.success();
         }
 
