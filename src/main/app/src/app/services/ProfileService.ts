@@ -1,6 +1,6 @@
 import {Injectable} from 'angular2/core';
 import {BackendService} from "./BackendService";
-import {Observable, Subject} from "rxjs";
+import {Observable, Subject, BehaviorSubject} from "rxjs";
 
 
 export interface Credentials {
@@ -12,11 +12,12 @@ export interface Credentials {
 export class CurrentUserService {
 
     private permissions:Subject<any>;
-    public permissionObservable:Observable<any>;
+    public permissionObservable:BehaviorSubject<any>;
 
     constructor(private backendService:BackendService) {
+        this.permissionObservable = new BehaviorSubject({});
         this.permissions = new Subject();
-        this.permissionObservable = this.permissions
+        this.permissions
             .startWith('')
             .flatMap(() => this.fetchPermissions())
             .map((permissions:Array<string>)=>permissions.reduce((result, permission)=> {
@@ -24,7 +25,10 @@ export class CurrentUserService {
                     return result;
                 }, {})
             )
-            .share();
+            .subscribe((data)=> {
+                this.permissionObservable.next(data);
+            });
+
     }
 
     refreshPermissions() {
