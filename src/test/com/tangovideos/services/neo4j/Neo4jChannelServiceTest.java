@@ -54,6 +54,11 @@ public class Neo4jChannelServiceTest {
             assertEquals(channel.get("uploadPlaylistId"), uploadPlaylistId);
             tx.success();
         }
+
+        // Make sure adding the same channel doesn't duplicate it
+        neo4jChannelService.addChannel(fakeChannel);
+        assertEquals(neo4jChannelService.list().size(), 1);
+
     }
 
     @Test
