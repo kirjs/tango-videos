@@ -76,5 +76,7 @@ public class Neo4jChannelServiceTest {
         final List<Channel> list = neo4jChannelService.list();
         assertEquals(list.size(), 2);
         assertEquals(list.get(0).getId(), "one");
+        assertEquals(list.get(0).getTitle(), "title");
+        assertEquals(list.get(0).getUploadPlaylistId(), "id");
     }
 }
