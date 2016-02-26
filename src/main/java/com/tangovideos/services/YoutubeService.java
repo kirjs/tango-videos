@@ -1,7 +1,6 @@
 package com.tangovideos.services;
 
 import com.tangovideos.models.Video;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,22 +21,19 @@ public class YoutubeService {
                 .queryParam("part", "snippet");
         String response = target.request("application/json").get(new GenericType<>(String.class));
         try {
-            JSONObject jsonObject = new JSONObject(response);
-            JSONArray items = (JSONArray) jsonObject.get("items");
-            JSONObject video = (JSONObject) items.get(0);
-            JSONObject snippet = (JSONObject) video.get("snippet");
+            JSONObject snippet = new JSONObject(response)
+                    .getJSONArray("items")
+                    .getJSONObject(0)
+                    .getJSONObject("snippet");
 
             final Video result = new Video(
                     id,
-                    snippet.get("title").toString(),
-                    snippet.get("publishedAt").toString()
+                    snippet.getString("title"),
+                    snippet.getString("publishedAt")
             );
-            result.setDescription(snippet.get("description").toString());
+            result.setDescription(snippet.getString("description"));
             result.setDancers(BasicNameParser.extractNames(result.getTitle(), result.getDescription()));
             return result;
-
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
