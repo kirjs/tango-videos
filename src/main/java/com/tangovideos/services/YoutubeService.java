@@ -1,6 +1,8 @@
 package com.tangovideos.services;
 
+import com.tangovideos.models.Channel;
 import com.tangovideos.models.Video;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,7 +20,7 @@ public class YoutubeService {
         WebTarget target = client.target(BASE_URL).path("videos")
                 .queryParam("key", API_TOKEN)
                 .queryParam("id", id)
-                .queryParam("part", "snippet");
+                .queryParam("part", "contentDetails");
         String response = target.request("application/json").get(new GenericType<>(String.class));
         try {
             JSONObject snippet = new JSONObject(response)
@@ -39,5 +41,42 @@ public class YoutubeService {
         }
 
         return null;
+    }
+
+
+//    public Channel getChannelInfoByName(String id) {
+//        return extractChannelInfo(fetchData(id, "channels", "forName", "contentDetails"));
+//    }
+
+    public Channel getChannelInfoById(String id) {
+        return extractChannelInfo(fetchData(id, "id", "channels", "contentDetails,snippet"), id);
+    }
+
+    private JSONArray fetchData(String id, String filter, String path, String part) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(BASE_URL).path(path)
+                .queryParam("key", API_TOKEN)
+                .queryParam(filter, id)
+                .queryParam("part", part);
+
+        String response = target.request("application/json").get(new GenericType<>(String.class));
+        try {
+            return new JSONObject(response).getJSONArray("items");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Channel extractChannelInfo(JSONArray items, String id) {
+        String uploadPlaylistId = items.getJSONObject(0)
+                .getJSONObject("contentDetails")
+                .getJSONObject("relatedPlaylists")
+                .getString("uploads");
+
+        String title = items.getJSONObject(0).getJSONObject("snippet").getString("title");
+        Channel channel = new Channel(id);
+        channel.setUploadPlaylistId(uploadPlaylistId);
+        channel.setTitle(title);
+        return channel;
     }
 }
