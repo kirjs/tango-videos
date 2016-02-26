@@ -20,6 +20,7 @@ public class Neo4JServiceFactory implements ServiceFactory {
     private DancerService dancerService;
     private SongService songService;
     private AdminToolsService adminToolsService;
+    private ChannelService channelService;
 
 
     public Neo4JServiceFactory() {
@@ -27,13 +28,13 @@ public class Neo4JServiceFactory implements ServiceFactory {
     }
 
     public Neo4JServiceFactory(boolean b) {
-        if(b){
+        if (b) {
             fillDb();
         }
     }
 
 
-    public  void fillDb() {
+    public void fillDb() {
         try (Transaction tx = this.graphDb.beginTx()) {
             if (!this.getUserService().userExists("admin")) {
                 final HashSet<Node> nodes = this.getPermissionService()
@@ -96,13 +97,23 @@ public class Neo4JServiceFactory implements ServiceFactory {
 
     @Override
     public AdminToolsService getAdminToolsService() {
-        if(adminToolsService == null){
+        if (adminToolsService == null) {
             adminToolsService = new Neo4jAdminToolsService(graphDb);
         }
 
         return adminToolsService;
     }
 
+    @Override
+    public ChannelService getChannelService() {
+        if (channelService == null) {
+            channelService = new Neo4jChannelService(graphDb);
+        }
+
+        return channelService;
+    }
+
+    @Override
     public DancerService getDancerService() {
         if (dancerService == null) {
             dancerService = new Neo4jDancerService(graphDb);

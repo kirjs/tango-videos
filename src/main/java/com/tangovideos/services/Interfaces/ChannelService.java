@@ -6,7 +6,7 @@ import org.neo4j.graphdb.Node;
 import java.util.List;
 
 public interface ChannelService {
-    Node addChannel(Channel channelId);
+    Node addChannel(Channel channel);
 
     List<Channel> list();
 }

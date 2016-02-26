@@ -9,4 +9,5 @@ public interface ServiceFactory {
     YoutubeService getYoutubeService();
     SongService getSongService();
     AdminToolsService getAdminToolsService();
+    ChannelService getChannelService();
 }

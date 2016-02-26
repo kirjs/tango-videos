@@ -19,23 +19,31 @@ import static com.google.common.collect.ImmutableMap.of;
 public class Neo4jChannelService implements ChannelService {
     private final GraphDatabaseService graphDb;
 
+
     public Neo4jChannelService(GraphDatabaseService graphDb) {
         this.graphDb = graphDb;
     }
 
     @Override
-    public Node addChannel(String channelId) {
-        final String query = "MERGE (c:Channel {id:{channelId}, addedAt:{addedAt}}) RETURN c";
+    public Node addChannel(Channel channel) {
+        final String query = "MERGE (c:Channel {" +
+                "   id: {channelId}, " +
+                "   addedAt: {addedAt}, " +
+                "   title: {title}, " +
+                "   uploadPlaylistId: {uploadPlaylistId}" +
+                "}) RETURN c";
         final ImmutableMap<String, Object> params = of(
-                "channelId", channelId,
-                "addedAt", Instant.now().getEpochSecond()
+                "channelId", channel.getId(),
+                "addedAt", Instant.now().getEpochSecond(),
+                "title", channel.getTitle(),
+                "uploadPlaylistId", channel.getUploadPlaylistId()
         );
         Node result;
         try (Transaction tx = graphDb.beginTx(); Result queryResult = graphDb.execute(query, params)) {
-            result = (Node)queryResult.columnAs("c").next();tx.success();
+            result = (Node)queryResult.columnAs("c").next();
+            tx.success();
         }
         return result;
-
     }
 
     @Override
