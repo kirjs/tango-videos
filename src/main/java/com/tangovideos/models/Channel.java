@@ -4,8 +4,8 @@ public class Channel {
 
 
     private String id;
-    private String uploadPlaylistId = "";
-    private String title = "No title";
+    private String uploadPlaylistId;
+    private String title;
 
     public Channel(String id) {
         this.id = id;

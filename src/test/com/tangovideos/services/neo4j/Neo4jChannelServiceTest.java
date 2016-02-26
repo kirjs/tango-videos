@@ -63,8 +63,15 @@ public class Neo4jChannelServiceTest {
 
     @Test
     public void testList() throws Exception {
-        neo4jChannelService.addChannel(new Channel("one"));
-        neo4jChannelService.addChannel(new Channel("two"));
+        final Channel one = new Channel("one");
+        one.setTitle("title");
+        one.setUploadPlaylistId("id");
+        neo4jChannelService.addChannel(one);
+
+        final Channel two = new Channel("two");
+        two.setTitle("title");
+        two.setUploadPlaylistId("title");
+        neo4jChannelService.addChannel(two);
 
         final List<Channel> list = neo4jChannelService.list();
         assertEquals(list.size(), 2);
