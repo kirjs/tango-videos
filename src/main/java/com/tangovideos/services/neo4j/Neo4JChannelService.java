@@ -87,7 +87,35 @@ public class Neo4jChannelService implements ChannelService {
     }
 
     @Override
-    public int update(YoutubeService youtubeService, String channelId) {
+    public void update(Channel channel) {
+        final String query = "MERGE (c:Channel {id: {channelId}}) " +
+                "ON MATCH SET c.addedAt = {addedAt}, " +
+                "c.lastUpdated = 0, " +
+                "c.title = {title}, " +
+                "c.uploadPlaylistId = {uploadPlaylistId}, " +
+                "c.lastUpdated = {lastUpdated} " +
+                "RETURN c";
+
+        final ImmutableMap<String, Object> params = ImmutableMap.<String, Object>builder()
+                .put("channelId", channel.getId())
+                .put("addedAt", Instant.now().getEpochSecond())
+                .put("title", channel.getTitle())
+                .put("uploadPlaylistId", channel.getUploadPlaylistId())
+                .put("lastUpdated", channel.getLastUpdated())
+                .build();
+
+
+        try (Transaction tx = graphDb.beginTx(); Result queryResult = graphDb.execute(query, params)) {
+            tx.success();
+        }
+
+    }
+
+
+    @Override
+    public int fetchAllVideos(YoutubeService youtubeService, String channelId) {
+        Channel channel = get(channelId);
+
 
         return 0;
     }
