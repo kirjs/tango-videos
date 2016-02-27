@@ -64,6 +64,16 @@ public class Video {
     String date;
     String url;
 
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
+    }
+
+    String channelId;
+
     public Video(String id, String title, String publishedAt) {
         this.id = id;
         this.title = title;

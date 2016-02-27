@@ -22,7 +22,6 @@ public class Neo4jChannelServiceTest {
     private GraphDatabaseService graphDb;
     private Neo4jChannelService neo4jChannelService;
 
-
     @Before
     public void setUp() throws Exception {
         graphDb = new TestGraphDatabaseFactory().newImpermanentDatabase();
@@ -61,11 +60,22 @@ public class Neo4jChannelServiceTest {
 
     }
 
+
+    @Test
+    public void testGet() {
+        final String id = "one";
+        final Channel one = generateFakeChannel(id);
+        neo4jChannelService.addChannel(one);
+
+        final Channel channel = neo4jChannelService.get(id);
+        assertEquals(channel.getId(), one.getId());
+        assertEquals(channel.getTitle(), one.getTitle());
+        assertEquals(channel.getUploadPlaylistId(), one.getUploadPlaylistId());
+    }
+
     @Test
     public void testList() throws Exception {
-        final Channel one = new Channel("one");
-        one.setTitle("title");
-        one.setUploadPlaylistId("id");
+        final Channel one = generateFakeChannel("one");
         neo4jChannelService.addChannel(one);
 
         final Channel two = new Channel("two");
@@ -78,5 +88,12 @@ public class Neo4jChannelServiceTest {
         assertEquals(list.get(0).getId(), "one");
         assertEquals(list.get(0).getTitle(), "title");
         assertEquals(list.get(0).getUploadPlaylistId(), "id");
+    }
+
+    private Channel generateFakeChannel(String id) {
+        final Channel one = new Channel(id);
+        one.setTitle("title");
+        one.setUploadPlaylistId("id");
+        return one;
     }
 }
