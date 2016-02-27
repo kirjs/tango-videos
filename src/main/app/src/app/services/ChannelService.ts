@@ -15,6 +15,6 @@ export class ChannelService {
     }
 
     fetchLatestVideos(id:String):Observable<any> {
-        return this.backendService.write('channels/fetchLatestVideos', {id: id});
+        return this.backendService.write('channels/fetch', {id: id});
     }
 }
