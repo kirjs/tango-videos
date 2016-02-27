@@ -20,12 +20,12 @@ public class Neo4jChannelServiceTest {
 
 
     private GraphDatabaseService graphDb;
-    private Neo4jChannelService neo4jChannelService;
+    private Neo4jChannelService channelService;
 
     @Before
     public void setUp() throws Exception {
         graphDb = new TestGraphDatabaseFactory().newImpermanentDatabase();
-        neo4jChannelService = new Neo4jChannelService(graphDb);
+        channelService = new Neo4jChannelService(graphDb);
     }
 
     @After
@@ -42,7 +42,7 @@ public class Neo4jChannelServiceTest {
         final Channel fakeChannel = new Channel(id);
         fakeChannel.setTitle(title);
         fakeChannel.setUploadPlaylistId(uploadPlaylistId);
-        neo4jChannelService.addChannel(fakeChannel);
+        channelService.addChannel(fakeChannel);
 
         final String query = "MATCH (c:Channel {id: {id}}) RETURN c";
         final ImmutableMap<String, Object> params = ImmutableMap.of("id", id);
@@ -55,8 +55,8 @@ public class Neo4jChannelServiceTest {
         }
 
         // Make sure adding the same channel doesn't duplicate it
-        neo4jChannelService.addChannel(fakeChannel);
-        assertEquals(neo4jChannelService.list().size(), 1);
+        channelService.addChannel(fakeChannel);
+        assertEquals(channelService.list().size(), 1);
 
     }
 
@@ -65,9 +65,9 @@ public class Neo4jChannelServiceTest {
     public void testGet() {
         final String id = "one";
         final Channel one = generateFakeChannel(id);
-        neo4jChannelService.addChannel(one);
+        channelService.addChannel(one);
 
-        final Channel channel = neo4jChannelService.get(id);
+        final Channel channel = channelService.get(id);
 
         assertEquals(channel.getId(), one.getId());
         assertEquals(channel.getTitle(), one.getTitle());
@@ -78,14 +78,14 @@ public class Neo4jChannelServiceTest {
     @Test
     public void testList() throws Exception {
         final Channel one = generateFakeChannel("one");
-        neo4jChannelService.addChannel(one);
+        channelService.addChannel(one);
 
         final Channel two = new Channel("two");
         two.setTitle("title");
         two.setUploadPlaylistId("title");
-        neo4jChannelService.addChannel(two);
+        channelService.addChannel(two);
 
-        final List<Channel> list = neo4jChannelService.list();
+        final List<Channel> list = channelService.list();
         assertEquals(list.size(), 2);
         assertEquals(list.get(0).getId(), "one");
         assertEquals(list.get(0).getTitle(), "title");
@@ -97,5 +97,23 @@ public class Neo4jChannelServiceTest {
         one.setTitle("title");
         one.setUploadPlaylistId("id");
         return one;
+    }
+
+    @Test
+    public void testUpdate() throws Exception {
+        final String id = "test";
+        final Channel channel = generateFakeChannel(id);
+        channelService.addChannel(channel);
+        channel.setLastUpdated(123L);
+        channelService.update(channel);
+
+        final Channel savedChannel = channelService.get("test");
+
+        assertEquals(savedChannel.getLastUpdated(), channel.getLastUpdated());
+    }
+
+    @Test
+    public void testUpdate1() throws Exception {
+
     }
 }

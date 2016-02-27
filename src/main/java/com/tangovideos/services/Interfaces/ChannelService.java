@@ -13,5 +13,7 @@ public interface ChannelService {
 
     Channel get(String id);
 
-    int update(YoutubeService youtubeService, String channelId);
+    void update(Channel channel);
+
+    int fetchAllVideos(YoutubeService youtubeService, String channelId);
 }
