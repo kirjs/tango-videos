@@ -3,6 +3,7 @@ package com.tangovideos.services.neo4j;
 import com.google.common.collect.ImmutableSet;
 import com.tangovideos.services.Interfaces.*;
 import com.tangovideos.services.YoutubeService;
+import com.tangovideos.services.combined.CombinedVideoService;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
@@ -21,6 +22,7 @@ public class Neo4JServiceFactory implements ServiceFactory {
     private SongService songService;
     private AdminToolsService adminToolsService;
     private ChannelService channelService;
+    private CombinedVideoService combinedVideoService;
 
 
     public Neo4JServiceFactory() {
@@ -111,6 +113,20 @@ public class Neo4JServiceFactory implements ServiceFactory {
         }
 
         return channelService;
+    }
+
+    @Override
+    public CombinedVideoService getCombinedVideoService() {
+        if (combinedVideoService == null) {
+            combinedVideoService = new CombinedVideoService(
+                    getDancerService(),
+                    getVideoService(),
+                    getChannelService(),
+                    getYoutubeService()
+            );
+        }
+
+        return combinedVideoService;
     }
 
     @Override

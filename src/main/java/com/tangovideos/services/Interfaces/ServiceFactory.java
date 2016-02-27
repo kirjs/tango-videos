@@ -1,6 +1,7 @@
 package com.tangovideos.services.Interfaces;
 
 import com.tangovideos.services.YoutubeService;
+import com.tangovideos.services.combined.CombinedVideoService;
 
 public interface ServiceFactory {
     UserService getUserService();
@@ -10,4 +11,5 @@ public interface ServiceFactory {
     SongService getSongService();
     AdminToolsService getAdminToolsService();
     ChannelService getChannelService();
+    CombinedVideoService getCombinedVideoService();
 }

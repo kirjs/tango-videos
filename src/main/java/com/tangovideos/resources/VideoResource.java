@@ -2,15 +2,14 @@ package com.tangovideos.resources;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.tangovideos.models.Channel;
 import com.tangovideos.models.Song;
 import com.tangovideos.models.Video;
 import com.tangovideos.resources.inputs.*;
-import com.tangovideos.services.Interfaces.ChannelService;
 import com.tangovideos.services.Interfaces.DancerService;
 import com.tangovideos.services.Interfaces.VideoService;
 import com.tangovideos.services.TangoVideosServiceFactory;
 import com.tangovideos.services.YoutubeService;
+import com.tangovideos.services.combined.CombinedVideoService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -29,24 +28,26 @@ import java.util.Set;
 public class VideoResource {
     final DancerService dancerService;
     final VideoService videoService;
-    final ChannelService channelService;
     final YoutubeService youtubeService;
+    final CombinedVideoService combinedVideoService;
 
 
     // TODO: this is used for testing, but it would be nice to use some dependency injection mechanism.
-    public VideoResource(DancerService dancerService, VideoService videoService, ChannelService channelService, YoutubeService youtubeService) {
+    public VideoResource(DancerService dancerService,
+                         VideoService videoService,
+                         YoutubeService youtubeService,
+                         CombinedVideoService combinedVideoService) {
         this.dancerService = dancerService;
         this.videoService = videoService;
-        this.channelService = channelService;
         this.youtubeService = youtubeService;
+        this.combinedVideoService = combinedVideoService;
     }
 
     public VideoResource() {
         dancerService = TangoVideosServiceFactory.getDancerService();
         videoService = TangoVideosServiceFactory.getVideoService();
-        channelService = TangoVideosServiceFactory.getChannelService();
         youtubeService = TangoVideosServiceFactory.getYoutubeService();
-
+        combinedVideoService = TangoVideosServiceFactory.getCombinedVideoService();
     }
 
     @GET
@@ -97,6 +98,7 @@ public class VideoResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("add")
     public Response add(JustId id) {
+
         final Video videoInfo = youtubeService.getVideoInfo(id.getId());
         add(videoInfo);
         return Response.status(200)
@@ -106,18 +108,7 @@ public class VideoResource {
     }
 
     public void add(Video video) {
-        final Node videoNode = videoService.addVideo(video);
-        video.getDancers().stream()
-                .map(dancerService::insertOrGetNode)
-                .forEach(d -> dancerService.addToVideo(d, videoNode));
-
-        final String channelId = video.getChannelId();
-        if (!channelService.exists(channelId)) {
-            final Channel channel = youtubeService.getChannelInfoById(channelId);
-            channelService.addChannel(channel);
-        }
-
-        channelService.addVideoToChannel(video.getId(), channelId);
+        combinedVideoService.addVideo(video);
     }
 
     @POST

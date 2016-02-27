@@ -1,6 +1,8 @@
 package com.tangovideos.services.neo4j;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
+import com.tangovideos.data.Labels;
 import com.tangovideos.models.Channel;
 import com.tangovideos.services.Interfaces.ChannelService;
 import com.tangovideos.services.Interfaces.VideoService;
@@ -161,5 +163,15 @@ public class Neo4jChannelService implements ChannelService {
         update(channel);
         return count;
 
+    }
+
+    @Override
+    public boolean exists(String channelId) {
+        try (Transaction tx = graphDb.beginTx()) {
+            tx.success();
+            return Optional
+                    .fromNullable(graphDb.findNode(Labels.CHANNEL.label, "id", channelId))
+                    .isPresent();
+        }
     }
 }
