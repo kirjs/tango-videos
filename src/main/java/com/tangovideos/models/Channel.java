@@ -6,6 +6,7 @@ public class Channel {
     private String id;
     private String uploadPlaylistId;
     private String title;
+    private long lastUpdated;
 
     public Channel(String id) {
         this.id = id;
@@ -33,5 +34,13 @@ public class Channel {
 
     public String getTitle() {
         return title;
+    }
+
+    public void setLastUpdated(long lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    public long getLastUpdated() {
+        return lastUpdated;
     }
 }

@@ -68,9 +68,11 @@ public class Neo4jChannelServiceTest {
         neo4jChannelService.addChannel(one);
 
         final Channel channel = neo4jChannelService.get(id);
+
         assertEquals(channel.getId(), one.getId());
         assertEquals(channel.getTitle(), one.getTitle());
         assertEquals(channel.getUploadPlaylistId(), one.getUploadPlaylistId());
+        assertEquals(channel.getLastUpdated(), 0);
     }
 
     @Test
