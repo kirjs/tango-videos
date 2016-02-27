@@ -7,6 +7,7 @@ public class Channel {
     private String uploadPlaylistId;
     private String title;
     private long lastUpdated;
+    private Long videosCount;
 
     public Channel(String id) {
         this.id = id;
@@ -42,5 +43,13 @@ public class Channel {
 
     public long getLastUpdated() {
         return lastUpdated;
+    }
+
+    public Long getVideosCount() {
+        return videosCount;
+    }
+
+    public void setVideosCount(Long videosCount) {
+        this.videosCount = videosCount;
     }
 }

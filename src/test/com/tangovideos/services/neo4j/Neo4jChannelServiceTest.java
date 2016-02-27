@@ -31,6 +31,7 @@ public class Neo4jChannelServiceTest extends EasyMockSupport {
     private GraphDatabaseService graphDb;
     private Neo4jChannelService channelService;
 
+
     @Before
     public void setUp() throws Exception {
         graphDb = new TestGraphDatabaseFactory().newImpermanentDatabase();
@@ -86,19 +87,21 @@ public class Neo4jChannelServiceTest extends EasyMockSupport {
 
     @Test
     public void testList() throws Exception {
-        final Channel one = generateFakeChannel("one");
+        final String oneId = "one";
+        final Channel one = generateFakeChannel(oneId);
+        final Channel two = generateFakeChannel("two");
         channelService.addChannel(one);
 
-        final Channel two = new Channel("two");
         two.setTitle("title");
-        two.setUploadPlaylistId("title");
+        two.setUploadPlaylistId("uploadedPlaylist");
         channelService.addChannel(two);
 
         final List<Channel> list = channelService.list();
         assertEquals(list.size(), 2);
-        assertEquals(list.get(0).getId(), "one");
-        assertEquals(list.get(0).getTitle(), "title");
-        assertEquals(list.get(0).getUploadPlaylistId(), "id");
+        final Channel channel = list.get(0).getId().equals(oneId) ? list.get(0) : list.get(1);
+        assertEquals(channel.getId(), "one");
+        assertEquals(channel.getTitle(), "title");
+        assertEquals(channel.getUploadPlaylistId(), "id");
     }
 
     private Channel generateFakeChannel(String id) {
@@ -132,6 +135,7 @@ public class Neo4jChannelServiceTest extends EasyMockSupport {
     public void testFetchAllVideos() throws Exception {
         VideoService videoService = new Neo4jVideoService(graphDb);
 
+
         final String channelId = "channelId";
         channelService.addChannel(generateFakeChannel(channelId));
 
@@ -153,7 +157,22 @@ public class Neo4jChannelServiceTest extends EasyMockSupport {
         assertEquals(newVideos, 2);
         assertTrue(videoService.exists(videoId));
         final Channel channel = channelService.get(channelId);
-        assertEquals(channel.getLastUpdated(), Instant.now().getEpochSecond());
+        assertTrue(Instant.now().getEpochSecond()-channel.getLastUpdated() < 10);
 
+    }
+
+    @Test
+    public void testAddVideoToChannel() throws Exception {
+        VideoService videoService = new Neo4jVideoService(graphDb);
+        final String videoId = "videoId";
+        final String channelId = "channelId";
+        videoService.addVideo(TestHelpers.generateFakeVideo(videoId));
+        channelService.addChannel(generateFakeChannel(channelId));
+
+        channelService.addVideoToChannel(videoId, channelId);
+
+        final long videosCount = channelService.get(channelId).getVideosCount();
+        final long l = 1L;
+        assertEquals(videosCount, l);
     }
 }
