@@ -98,7 +98,6 @@ public class VideoResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("add")
     public Response add(JustId id) {
-
         final Video videoInfo = youtubeService.getVideoInfo(id.getId());
         add(videoInfo);
         return Response.status(200)
