@@ -2,6 +2,7 @@ package com.tangovideos.resources;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.tangovideos.models.Channel;
 import com.tangovideos.models.Song;
 import com.tangovideos.models.Video;
 import com.tangovideos.resources.inputs.*;
@@ -9,6 +10,7 @@ import com.tangovideos.services.Interfaces.ChannelService;
 import com.tangovideos.services.Interfaces.DancerService;
 import com.tangovideos.services.Interfaces.VideoService;
 import com.tangovideos.services.TangoVideosServiceFactory;
+import com.tangovideos.services.YoutubeService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,18 +30,22 @@ public class VideoResource {
     final DancerService dancerService;
     final VideoService videoService;
     final ChannelService channelService;
+    final YoutubeService youtubeService;
+
 
     // TODO: this is used for testing, but it would be nice to use some dependency injection mechanism.
-    public VideoResource(DancerService dancerService, VideoService videoService, ChannelService channelService){
+    public VideoResource(DancerService dancerService, VideoService videoService, ChannelService channelService, YoutubeService youtubeService) {
         this.dancerService = dancerService;
         this.videoService = videoService;
         this.channelService = channelService;
+        this.youtubeService = youtubeService;
     }
 
-    public  VideoResource(){
+    public VideoResource() {
         dancerService = TangoVideosServiceFactory.getDancerService();
         videoService = TangoVideosServiceFactory.getVideoService();
         channelService = TangoVideosServiceFactory.getChannelService();
+        youtubeService = TangoVideosServiceFactory.getYoutubeService();
 
     }
 
@@ -91,7 +97,7 @@ public class VideoResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("add")
     public Response add(JustId id) {
-        final Video videoInfo = TangoVideosServiceFactory.getYoutubeService().getVideoInfo(id.getId());
+        final Video videoInfo = youtubeService.getVideoInfo(id.getId());
         add(videoInfo);
         return Response.status(200)
                 .entity("true")
@@ -104,7 +110,14 @@ public class VideoResource {
         video.getDancers().stream()
                 .map(dancerService::insertOrGetNode)
                 .forEach(d -> dancerService.addToVideo(d, videoNode));
-        channelService.addVideoToChannel(video.getId(), video.getChannelId());
+
+        final String channelId = video.getChannelId();
+        if (!channelService.exists(channelId)) {
+            final Channel channel = youtubeService.getChannelInfoById(channelId);
+            channelService.addChannel(channel);
+        }
+
+        channelService.addVideoToChannel(video.getId(), channelId);
     }
 
     @POST

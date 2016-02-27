@@ -61,6 +61,7 @@ public class TestHelpers {
         Video video = new Video(id, "title", "publishedAt");
         video.setDescription("Description");
         video.setDancers(ImmutableSet.of("fakeDancer"));
+        video.setChannelId("FakeChannelId");
         return video;
     }
 

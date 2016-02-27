@@ -59,7 +59,7 @@ public class YoutubeService {
         WebTarget target = client.target(BASE_URL).path("videos")
                 .queryParam("key", API_TOKEN)
                 .queryParam("id", id)
-                .queryParam("part", "contentDetails");
+                .queryParam("part", "snippet,contentDetails");
 
         String response = target.request("application/json").get(new GenericType<>(String.class));
 
@@ -83,6 +83,8 @@ public class YoutubeService {
                 snippet.getString("title"),
                 snippet.getString("publishedAt")
         );
+
+        result.setChannelId(snippet.getString("channelId"));
         result.setDescription(snippet.getString("description"));
         result.setDancers(BasicNameParser.extractNames(result.getTitle(), result.getDescription()));
         return result;

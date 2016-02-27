@@ -1,10 +1,10 @@
 package com.tangovideos.resources;
 
+import com.google.common.collect.ImmutableSet;
+import com.tangovideos.models.Channel;
 import com.tangovideos.models.Video;
-import com.tangovideos.services.neo4j.Neo4jChannelService;
-import com.tangovideos.services.neo4j.Neo4jDancerService;
-import com.tangovideos.services.neo4j.Neo4jVideoService;
-import com.tangovideos.services.neo4j.TestHelpers;
+import com.tangovideos.services.YoutubeService;
+import com.tangovideos.services.neo4j.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +13,9 @@ import org.neo4j.test.TestGraphDatabaseFactory;
 
 import java.util.List;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
 
 public class VideoResourceTest {
@@ -21,6 +24,7 @@ public class VideoResourceTest {
     private Neo4jChannelService channelService;
     private Neo4jVideoService videoService;
     private Neo4jDancerService dancerService;
+    private YoutubeService youtubeService;
     private VideoResource videoResource;
 
     @Before
@@ -29,7 +33,8 @@ public class VideoResourceTest {
         channelService = new Neo4jChannelService(graphDb);
         dancerService = new Neo4jDancerService(graphDb);
         videoService = new Neo4jVideoService(graphDb);
-        videoResource = new VideoResource(dancerService, videoService, channelService);
+        youtubeService = createMock(YoutubeService.class);
+        videoResource = new VideoResource(dancerService, videoService, channelService, youtubeService);
     }
 
     @After
@@ -38,15 +43,26 @@ public class VideoResourceTest {
     }
 
 
-
     @Test
     public void testAdd() throws Exception {
         final String videoId = "testVideo";
         final Video testVideo = TestHelpers.generateFakeVideo(videoId);
-        videoService.addVideo(testVideo);
+
+        expect(youtubeService.getChannelInfoById(testVideo.getChannelId())).andReturn(
+                Neo4jChannelServiceTest.generateFakeChannel(testVideo.getChannelId())
+        );
+
+        replay(youtubeService);
+
+        videoResource.add(testVideo);
 
         final List<Video> list = videoService.list();
         final Video video = list.get(0);
         assertEquals(videoId, video.getId());
+        assertEquals(ImmutableSet.of("fakeDancer"), video.getDancers());
+
+        final Channel channel = channelService.get(testVideo.getChannelId());
+        assertEquals(1L, channel.getVideosCount());
+
     }
 }

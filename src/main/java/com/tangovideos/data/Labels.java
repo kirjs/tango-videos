@@ -8,14 +8,16 @@ public enum Labels {
     USER(DynamicLabel.label("User")),
     ROLE(DynamicLabel.label("Role")),
     VIDEO(DynamicLabel.label("Video")),
-    PERMISSION(DynamicLabel.label("Permission"));
+    PERMISSION(DynamicLabel.label("Permission")),
+    CHANNEL(DynamicLabel.label("Channel"));
 
 
     public final Label label;
 
-    public Label valueOf(){
+    public Label valueOf() {
         return label;
     }
+
     Labels(Label label) {
         this.label = label;
     }

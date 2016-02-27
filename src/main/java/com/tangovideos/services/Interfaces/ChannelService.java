@@ -18,4 +18,6 @@ public interface ChannelService {
     boolean addVideoToChannel(String videoId, String channelId);
 
     long fetchAllVideos(YoutubeService youtubeService, VideoService videoService, String channelId);
+
+    boolean exists(String channelId);
 }

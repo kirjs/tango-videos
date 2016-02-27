@@ -23,6 +23,7 @@ import java.util.Map;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class Neo4jChannelServiceTest extends EasyMockSupport {
@@ -104,7 +105,7 @@ public class Neo4jChannelServiceTest extends EasyMockSupport {
         assertEquals(channel.getUploadPlaylistId(), "id");
     }
 
-    private Channel generateFakeChannel(String id) {
+    public static Channel generateFakeChannel(String id) {
         final Channel one = new Channel(id);
         one.setTitle("title");
         one.setUploadPlaylistId("id");
@@ -167,11 +168,20 @@ public class Neo4jChannelServiceTest extends EasyMockSupport {
         final String channelId = "channelId";
         videoService.addVideo(TestHelpers.generateFakeVideo(videoId));
         channelService.addChannel(generateFakeChannel(channelId));
-
         channelService.addVideoToChannel(videoId, channelId);
 
         final long videosCount = channelService.get(channelId).getVideosCount();
         final long l = 1L;
         assertEquals(videosCount, l);
+    }
+
+    @Test
+    public void testExists() throws Exception {
+        final String id = "test";
+        final Channel channel = generateFakeChannel(id);
+        channelService.addChannel(channel);
+
+        assertTrue(channelService.exists(id));
+        assertFalse(channelService.exists("IDontExist"));
     }
 }
