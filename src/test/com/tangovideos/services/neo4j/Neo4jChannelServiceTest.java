@@ -130,14 +130,14 @@ public class Neo4jChannelServiceTest extends EasyMockSupport {
     }
 
 
-
     @Test
     public void testFetchAllVideos() throws Exception {
         VideoService videoService = new Neo4jVideoService(graphDb);
 
 
         final String channelId = "channelId";
-        channelService.addChannel(generateFakeChannel(channelId));
+        final Channel fakeChannel = generateFakeChannel(channelId);
+        channelService.addChannel(fakeChannel);
 
         YoutubeService youtubeService = createMock(YoutubeService.class);
 
@@ -147,9 +147,8 @@ public class Neo4jChannelServiceTest extends EasyMockSupport {
         final Video existingVideo = TestHelpers.generateFakeVideo("IExist");
         videoService.addVideo(existingVideo);
 
-        expect(youtubeService.fetchChannelVideos(channelId, 0L))
+        expect(youtubeService.fetchChannelVideos(fakeChannel.getUploadPlaylistId(), 0L))
                 .andReturn(ImmutableList.of(video, video2, existingVideo));
-
 
 
         replay(youtubeService);
@@ -157,7 +156,7 @@ public class Neo4jChannelServiceTest extends EasyMockSupport {
         assertEquals(newVideos, 2);
         assertTrue(videoService.exists(videoId));
         final Channel channel = channelService.get(channelId);
-        assertTrue(Instant.now().getEpochSecond()-channel.getLastUpdated() < 10);
+        assertTrue(Instant.now().getEpochSecond() - channel.getLastUpdated() < 10);
 
     }
 

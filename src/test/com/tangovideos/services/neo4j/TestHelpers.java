@@ -60,7 +60,7 @@ public class TestHelpers {
     public static Video generateFakeVideo(String id) {
         Video video = new Video(id, "title", "publishedAt");
         video.setDescription("Description");
-        video.setDancers(ImmutableSet.of());
+        video.setDancers(ImmutableSet.of("fakeDancer"));
         return video;
     }
 

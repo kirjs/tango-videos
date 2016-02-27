@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableSet;
 import com.tangovideos.models.Song;
 import com.tangovideos.models.Video;
 import com.tangovideos.resources.inputs.*;
+import com.tangovideos.services.Interfaces.ChannelService;
 import com.tangovideos.services.Interfaces.DancerService;
 import com.tangovideos.services.Interfaces.VideoService;
 import com.tangovideos.services.TangoVideosServiceFactory;
@@ -24,8 +25,23 @@ import java.util.Set;
 @Path("api/videos")
 @Produces(MediaType.APPLICATION_JSON)
 public class VideoResource {
-    final DancerService dancerService = TangoVideosServiceFactory.getDancerService();
-    final VideoService videoService = TangoVideosServiceFactory.getVideoService();
+    final DancerService dancerService;
+    final VideoService videoService;
+    final ChannelService channelService;
+
+    // TODO: this is used for testing, but it would be nice to use some dependency injection mechanism.
+    public VideoResource(DancerService dancerService, VideoService videoService, ChannelService channelService){
+        this.dancerService = dancerService;
+        this.videoService = videoService;
+        this.channelService = channelService;
+    }
+
+    public  VideoResource(){
+        dancerService = TangoVideosServiceFactory.getDancerService();
+        videoService = TangoVideosServiceFactory.getVideoService();
+        channelService = TangoVideosServiceFactory.getChannelService();
+
+    }
 
     @GET
     @Path("list")
@@ -76,15 +92,19 @@ public class VideoResource {
     @Path("add")
     public Response add(JustId id) {
         final Video videoInfo = TangoVideosServiceFactory.getYoutubeService().getVideoInfo(id.getId());
-        final Node video = videoService.addVideo(videoInfo);
-        videoInfo.getDancers().stream()
-                .map(dancerService::insertOrGetNode)
-                .forEach(d -> dancerService.addToVideo(d, video));
-
+        add(videoInfo);
         return Response.status(200)
                 .entity("true")
                 .type(MediaType.APPLICATION_JSON)
                 .build();
+    }
+
+    public void add(Video video) {
+        final Node videoNode = videoService.addVideo(video);
+        video.getDancers().stream()
+                .map(dancerService::insertOrGetNode)
+                .forEach(d -> dancerService.addToVideo(d, videoNode));
+        channelService.addVideoToChannel(video.getId(), video.getChannelId());
     }
 
     @POST

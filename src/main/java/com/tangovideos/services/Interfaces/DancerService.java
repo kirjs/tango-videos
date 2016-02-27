@@ -9,9 +9,11 @@ import java.util.Set;
 
 public interface DancerService {
     List<Dancer> list();
+
     List<Dancer> list(int skip, int limit, Neo4jDancerService.SortBy sortBy);
 
     void addToVideo(Node dancer, Node video);
+
     void removeFromVideo(Node dancer, Node video);
 
     Node insertOrGetNode(String dancerId);

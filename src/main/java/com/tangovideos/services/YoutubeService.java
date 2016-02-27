@@ -77,7 +77,7 @@ public class YoutubeService {
         return null;
     }
 
-    private Video snippetToVideo(String id, JSONObject snippet) {
+    public Video snippetToVideo(String id, JSONObject snippet) {
         final Video result = new Video(
                 id,
                 snippet.getString("title"),
