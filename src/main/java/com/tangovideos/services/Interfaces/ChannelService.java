@@ -15,5 +15,5 @@ public interface ChannelService {
 
     void update(Channel channel);
 
-    int fetchAllVideos(YoutubeService youtubeService, String channelId);
+    long fetchAllVideos(YoutubeService youtubeService, VideoService videoService, String channelId);
 }

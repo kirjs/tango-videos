@@ -6,5 +6,5 @@ public enum Relationships implements RelationshipType
 {
     IS,
     ADDED,
-    DANCES, CAN
+    DANCES, IS_ON, CAN
 }

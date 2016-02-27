@@ -57,6 +57,12 @@ public class TestHelpers {
     }
 
 
+    public static Video generateFakeVideo(String id) {
+        Video video = new Video(id, "title", "publishedAt");
+        video.setDescription("Description");
+        video.setDancers(ImmutableSet.of());
+        return video;
+    }
 
     private static Node addVideo(GraphDatabaseService graphDb, String videoId, int i) {
         final Video video = new Video(videoId, "Title", "Date");

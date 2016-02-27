@@ -1,7 +1,12 @@
 package com.tangovideos.services.neo4j;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.tangovideos.models.Channel;
+import com.tangovideos.models.Video;
+import com.tangovideos.services.Interfaces.VideoService;
+import com.tangovideos.services.YoutubeService;
+import org.easymock.EasyMockSupport;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,12 +16,16 @@ import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.test.TestGraphDatabaseFactory;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-public class Neo4jChannelServiceTest {
+public class Neo4jChannelServiceTest extends EasyMockSupport {
 
 
     private GraphDatabaseService graphDb;
@@ -114,6 +123,37 @@ public class Neo4jChannelServiceTest {
 
     @Test
     public void testUpdate1() throws Exception {
+
+    }
+
+
+
+    @Test
+    public void testFetchAllVideos() throws Exception {
+        VideoService videoService = new Neo4jVideoService(graphDb);
+
+        final String channelId = "channelId";
+        channelService.addChannel(generateFakeChannel(channelId));
+
+        YoutubeService youtubeService = createMock(YoutubeService.class);
+
+        final String videoId = "videoId";
+        final Video video = TestHelpers.generateFakeVideo(videoId);
+        final Video video2 = TestHelpers.generateFakeVideo("videoId2");
+        final Video existingVideo = TestHelpers.generateFakeVideo("IExist");
+        videoService.addVideo(existingVideo);
+
+        expect(youtubeService.fetchChannelVideos(channelId, 0L))
+                .andReturn(ImmutableList.of(video, video2, existingVideo));
+
+
+
+        replay(youtubeService);
+        final long newVideos = channelService.fetchAllVideos(youtubeService, videoService, channelId);
+        assertEquals(newVideos, 2);
+        assertTrue(videoService.exists(videoId));
+        final Channel channel = channelService.get(channelId);
+        assertEquals(channel.getLastUpdated(), Instant.now().getEpochSecond());
 
     }
 }
