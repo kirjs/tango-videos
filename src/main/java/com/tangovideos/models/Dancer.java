@@ -12,7 +12,7 @@ public class Dancer {
     String name;
 
     @XmlElement
-    private List<VideoResponse> videos = Lists.newArrayList();
+    private List<Video> videos = Lists.newArrayList();
 
     public void setName(String name) {
         this.name = name;
@@ -22,11 +22,11 @@ public class Dancer {
         return name;
     }
 
-    public List<VideoResponse> getVideos() {
+    public List<Video> getVideos() {
         return videos;
     }
 
-    public void setVideos(List<VideoResponse> videos) {
+    public void setVideos(List<Video> videos) {
         this.videos = videos;
     }
 }

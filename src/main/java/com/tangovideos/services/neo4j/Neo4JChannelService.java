@@ -128,6 +128,7 @@ public class Neo4jChannelService implements ChannelService {
         }
     }
 
+    @Override
     public boolean addVideoToChannel(String videoId, String channelId) {
         final String query = "MATCH (c:Channel {id: {channelId}}) " +
                 "MATCH (v:Video {id: {videoId}}) " +
@@ -145,7 +146,7 @@ public class Neo4jChannelService implements ChannelService {
     public long fetchAllVideos(YoutubeService youtubeService, VideoService videoService, String channelId) {
         Channel channel = get(channelId);
         final long lastUpdated = channel.getLastUpdated();
-        long count = youtubeService.fetchChannelVideos(channelId, lastUpdated)
+        long count = youtubeService.fetchChannelVideos(channel.getUploadPlaylistId(), lastUpdated)
                 .stream().filter(v -> !videoService.exists(v.getId()))
                 .map(videoService::addVideo)
                 .map(v -> {

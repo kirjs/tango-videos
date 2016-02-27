@@ -1,7 +1,7 @@
 package com.tangovideos.services.Interfaces;
 
 import com.tangovideos.models.Video;
-import com.tangovideos.models.VideoResponse;
+
 import org.neo4j.graphdb.Node;
 
 import javax.validation.constraints.NotNull;
@@ -16,15 +16,15 @@ public interface VideoService {
 
     Node get(String videoId);
 
-    List<VideoResponse> list();
-    List<VideoResponse> list(int skip, int limit);
+    List<Video> list();
+    List<Video> list(int skip, int limit);
     boolean hide(String id, Boolean value);
 
-    List<VideoResponse> listByDancer(String dancerId);
+    List<Video> listByDancer(String dancerId);
 
     Set<String> exist(Set<String> ids);
 
-    List<VideoResponse> needsReview(Map<String, Boolean> of);
+    List<Video> needsReview(Map<String, Boolean> of);
 
     void updateField(String id, String field, String value);
 

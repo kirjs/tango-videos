@@ -6,8 +6,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.tangovideos.data.Labels;
+import com.tangovideos.models.Song;
 import com.tangovideos.models.Video;
-import com.tangovideos.models.VideoResponse;
 import com.tangovideos.services.Interfaces.VideoService;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -70,21 +70,23 @@ public class Neo4jVideoService implements VideoService {
         return video;
     }
 
-    public static VideoResponse videoResponseFromNode(Node node) {
-        VideoResponse video = new VideoResponse();
-        video.setId(node.getProperty("id").toString());
-        video.setPublishedAt(node.getProperty("publishedAt").toString());
+    public static Video mapNodeToVideo(Node node) {
+        Video video = new Video(
+                node.getProperty("id").toString(),
+                node.getProperty("title").toString(),
+                node.getProperty("publishedAt").toString()
+        );
+
         if (node.hasProperty("recordedAt")) {
             video.setRecordedAt(node.getProperty("recordedAt").toString());
         }
-        video.setTitle(node.getProperty("title").toString());
         video.setAddedAt(node.getProperty("addedAt").toString());
         video.setComplete(node.hasProperty("complete") && node.getProperty("complete").toString().equals("true"));
         return video;
     }
 
     @Override
-    public List<VideoResponse> list() {
+    public List<Video> list() {
         final String query =
                 "MATCH (v:Video) " +
                         "OPTIONAL MATCH (v)<-[:DANCES]-(d:Dancer) " +
@@ -96,7 +98,7 @@ public class Neo4jVideoService implements VideoService {
     }
 
     @Override
-    public List<VideoResponse> list(int skip, int limit) {
+    public List<Video> list(int skip, int limit) {
         final String query =
                 "MATCH (v:Video) " +
                         "OPTIONAL MATCH (v)<-[:DANCES]-(d:Dancer) " +
@@ -132,7 +134,7 @@ public class Neo4jVideoService implements VideoService {
     }
 
     @Override
-    public List<VideoResponse> listByDancer(String dancerId) {
+    public List<Video> listByDancer(String dancerId) {
         final String query =
                 "MATCH (v:Video) " +
                         "MATCH (v)<-[:DANCES]-(d:Dancer) " +
@@ -171,7 +173,7 @@ public class Neo4jVideoService implements VideoService {
      * @return list of videos
      */
     @Override
-    public List<VideoResponse> needsReview(Map<String, Boolean> params) {
+    public List<Video> needsReview(Map<String, Boolean> params) {
 
         String queryParams = params.entrySet()
                 .stream()
@@ -239,21 +241,22 @@ public class Neo4jVideoService implements VideoService {
     }
 
     @SuppressWarnings("unchecked")
-    private List<VideoResponse> getMultipleVideos(String query, Map<String, Object> params) {
-        List<VideoResponse> videos = Lists.newArrayList();
+    private List<Video> getMultipleVideos(String query, Map<String, Object> params) {
+        List<Video> videos = Lists.newArrayList();
         try (Transaction tx = this.graphDb.beginTx()) {
             final Result result = this.graphDb.execute(query, params);
 
             while (result.hasNext()) {
                 final Map<String, Object> next = result.next();
                 final Node videoNode = (Node) next.get("v");
-                final VideoResponse video = videoResponseFromNode(videoNode);
+                final Video video = mapNodeToVideo(videoNode);
                 video.setDancers(Sets.newHashSet((Iterable<String>) next.get("dancers")));
-                video.setSongs(Sets.newHashSet((Iterable<Node>) next.get("songs"))
+                final List<Song> songs = Sets.newHashSet((Iterable<Node>) next.get("songs"))
                         .stream()
                         .map(Neo4jSongService::mapNode)
-                        .collect(Collectors.toList())
-                );
+                        .collect(Collectors.toList());
+                video.setSongs(songs);
+
                 videos.add(video);
             }
             tx.success();

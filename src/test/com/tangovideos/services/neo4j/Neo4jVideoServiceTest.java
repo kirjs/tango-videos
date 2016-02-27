@@ -3,7 +3,7 @@ package com.tangovideos.services.neo4j;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.tangovideos.models.Song;
-import com.tangovideos.models.VideoResponse;
+import com.tangovideos.models.Video;
 import com.tangovideos.services.Interfaces.VideoService;
 import org.junit.After;
 import org.junit.Before;
@@ -51,9 +51,9 @@ public class Neo4jVideoServiceTest {
 
         TestHelpers.addVideoAndDancer(graphDb, videoId, dancerId);
         TestHelpers.addSongToVideo(graphDb, videoId, song);
-        final List<VideoResponse> list = videoService.list();
+        final List<Video> list = videoService.list();
         assertEquals(list.size(), 1);
-        final VideoResponse video = list.get(0);
+        final Video video = list.get(0);
         assertEquals(video.getId(), videoId);
         assertEquals(video.getSongs().get(0).getYear(), year);
         assertEquals(video.getDancers().iterator().next(), dancerId);
@@ -83,9 +83,9 @@ public class Neo4jVideoServiceTest {
         );
 
 
-        final List<VideoResponse> list = videoService.listByDancer(dancerId);
+        final List<Video> list = videoService.listByDancer(dancerId);
         assertEquals(list.size(), 1);
-        final VideoResponse video = list.get(0);
+        final Video video = list.get(0);
         assertEquals(video.getId(), videoId);
         assertEquals(video.getDancers().size(), 2);
         assertEquals(video.getDancers().iterator().next(), dancerId);
@@ -183,42 +183,42 @@ public class Neo4jVideoServiceTest {
                 of("dancers", false, "songname", true, "orquestra", false, "genre", true, "year", true);
 
         // Find videos which need dancers
-        final List<VideoResponse> listNoDancers = videoService.needsReview(needsDancers);
+        final List<Video> listNoDancers = videoService.needsReview(needsDancers);
         assertEquals(listNoDancers.size(), 1);
-        final VideoResponse videoNoDancers = listNoDancers.get(0);
+        final Video videoNoDancers = listNoDancers.get(0);
         assertEquals(videoNoDancers.getId(), noDancersId);
         assertEquals(videoNoDancers.getDancers().size(), 0);
 
         // Find videos which need song names
-        final List<VideoResponse> listNoSong = videoService.needsReview(needsSong);
+        final List<Video> listNoSong = videoService.needsReview(needsSong);
         assertEquals(listNoSong.size(), 1);
-        final VideoResponse videoNoSong = listNoSong.get(0);
+        final Video videoNoSong = listNoSong.get(0);
         assertEquals(videoNoSong.getId(), noSongId);
         assertEquals(videoNoSong.getDancers().size(), 2);
 
         // Find videos which need song names
-        final List<VideoResponse> listNoOrquestra = videoService.needsReview(needsOrquestra);
+        final List<Video> listNoOrquestra = videoService.needsReview(needsOrquestra);
         assertEquals(listNoOrquestra.size(), 1);
-        final VideoResponse videoNoOrquestra = listNoOrquestra.get(0);
+        final Video videoNoOrquestra = listNoOrquestra.get(0);
         assertEquals(videoNoOrquestra.getId(), noOrquestraId);
         assertEquals(videoNoOrquestra.getDancers().size(), 2);
 
         // Find videos which need song names
-        final List<VideoResponse> listNoGenre = videoService.needsReview(needsGenre);
+        final List<Video> listNoGenre = videoService.needsReview(needsGenre);
         assertEquals(listNoGenre.size(), 1);
-        final VideoResponse videoNoGenre = listNoGenre.get(0);
+        final Video videoNoGenre = listNoGenre.get(0);
         assertEquals(videoNoGenre.getId(), noGenreId);
         assertEquals(videoNoGenre.getDancers().size(), 2);
 
         // Find videos which need song names
-        final List<VideoResponse> listNoYear = videoService.needsReview(needsYear);
+        final List<Video> listNoYear = videoService.needsReview(needsYear);
         assertEquals(listNoYear.size(), 1);
-        final VideoResponse videoNoYear = listNoYear.get(0);
+        final Video videoNoYear = listNoYear.get(0);
         assertEquals(videoNoYear.getId(), noYearId);
         assertEquals(videoNoYear.getDancers().size(), 2);
 
         // Find videos which need song names
-        final List<VideoResponse> listNoYearGenreSong = videoService.needsReview(needsYearAndGenreAndSong);
+        final List<Video> listNoYearGenreSong = videoService.needsReview(needsYearAndGenreAndSong);
         assertEquals(listNoYearGenreSong.size(), 3);
 
 
@@ -239,7 +239,7 @@ public class Neo4jVideoServiceTest {
             TestHelpers.addVideoAndDancer(graphDb, videoId2, dancerId);
             TestHelpers.addVideoAndDancer(graphDb, videoId3, dancerId);
 
-            List<VideoResponse> list = videoService.list(0, 1);
+            List<Video> list = videoService.list(0, 1);
             assertEquals(list.size(), 1);
             assertEquals(list.get(0).getId(), videoId3);
 

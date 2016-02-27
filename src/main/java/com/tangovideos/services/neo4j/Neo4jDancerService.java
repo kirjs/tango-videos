@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.tangovideos.data.Labels;
 import com.tangovideos.models.Dancer;
-import com.tangovideos.models.VideoResponse;
+import com.tangovideos.models.Video;
 import com.tangovideos.services.Interfaces.DancerService;
 import org.neo4j.graphdb.*;
 import org.neo4j.helpers.collection.IteratorUtil;
@@ -71,7 +71,8 @@ public class Neo4jDancerService implements DancerService {
                 final Map<String, Object> next = result.next();
                 final Dancer dancer = this.mapNode((Node) next.get("dancer"));
                 final List<String> videos = IteratorUtil.asList((Iterable<String>) next.get("videos"));
-                final List<VideoResponse> collect = videos.stream().map(v -> new VideoResponse()).collect(Collectors.toList());
+                // TODO
+                final List<Video> collect = videos.stream().map(v -> new Video("TODO", "TODO", "TODO")).collect(Collectors.toList());
                 dancer.setVideos(collect);
                 dancers.add(dancer);
             }

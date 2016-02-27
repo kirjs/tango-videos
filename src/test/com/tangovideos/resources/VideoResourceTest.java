@@ -1,7 +1,6 @@
 package com.tangovideos.resources;
 
 import com.tangovideos.models.Video;
-import com.tangovideos.models.VideoResponse;
 import com.tangovideos.services.neo4j.Neo4jChannelService;
 import com.tangovideos.services.neo4j.Neo4jDancerService;
 import com.tangovideos.services.neo4j.Neo4jVideoService;
@@ -46,8 +45,8 @@ public class VideoResourceTest {
         final Video testVideo = TestHelpers.generateFakeVideo(videoId);
         videoService.addVideo(testVideo);
 
-        final List<VideoResponse> list = videoService.list();
-        final VideoResponse videoResponse = list.get(0);
-        assertEquals(videoId, videoResponse.getId());
+        final List<Video> list = videoService.list();
+        final Video video = list.get(0);
+        assertEquals(videoId, video.getId());
     }
 }

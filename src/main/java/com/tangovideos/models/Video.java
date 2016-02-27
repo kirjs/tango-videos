@@ -2,11 +2,14 @@ package com.tangovideos.models;
 
 import com.google.api.client.util.Lists;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class Video {
     private String description;
+    private String recordedAt;
+    private String addedAt;
+    private boolean complete;
 
     public String getTitle() {
         return title;
@@ -32,11 +35,11 @@ public class Video {
         this.dancers = dancers;
     }
 
-    public ArrayList<Song> getSongs() {
+    public List<Song> getSongs() {
         return songs;
     }
 
-    public void setSongs(ArrayList<Song> songs) {
+    public void setSongs(List<Song> songs) {
         this.songs = songs;
     }
 
@@ -60,7 +63,7 @@ public class Video {
     String title;
     private final Object publishedAt;
     Set<String> dancers;
-    ArrayList<Song> songs = Lists.newArrayList();
+    List<Song> songs = Lists.newArrayList();
     String date;
     String url;
 
@@ -86,5 +89,29 @@ public class Video {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setRecordedAt(String recordedAt) {
+        this.recordedAt = recordedAt;
+    }
+
+    public String getRecordedAt() {
+        return recordedAt;
+    }
+
+    public void setAddedAt(String addedAt) {
+        this.addedAt = addedAt;
+    }
+
+    public String getAddedAt() {
+        return addedAt;
+    }
+
+    public void setComplete(boolean complete) {
+        this.complete = complete;
+    }
+
+    public boolean isComplete() {
+        return complete;
     }
 }
