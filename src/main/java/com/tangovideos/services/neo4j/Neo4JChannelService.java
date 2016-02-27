@@ -3,10 +3,8 @@ package com.tangovideos.services.neo4j;
 import com.google.common.collect.ImmutableMap;
 import com.tangovideos.models.Channel;
 import com.tangovideos.services.Interfaces.ChannelService;
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Result;
-import org.neo4j.graphdb.Transaction;
+import com.tangovideos.services.YoutubeService;
+import org.neo4j.graphdb.*;
 import org.neo4j.helpers.collection.IteratorUtil;
 
 import java.time.Instant;
@@ -26,12 +24,11 @@ public class Neo4jChannelService implements ChannelService {
 
     @Override
     public Node addChannel(Channel channel) {
-        final String query = "MERGE (c:Channel {" +
-                "   id: {channelId}, " +
-                "   title: {title}, " +
-                "   uploadPlaylistId: {uploadPlaylistId}" +
-                "}) " +
-                "ON CREATE SET c.addedAt = {addedAt} " +
+        final String query = "MERGE (c:Channel {id: {channelId}}) " +
+                "ON CREATE SET c.addedAt = {addedAt}, " +
+                "c.lastUpdated = 0, " +
+                "c.title = {title}, " +
+                "c.uploadPlaylistId = {uploadPlaylistId} " +
                 "RETURN c";
 
         final ImmutableMap<String, Object> params = of(
@@ -48,6 +45,7 @@ public class Neo4jChannelService implements ChannelService {
         return result;
     }
 
+
     @Override
     public List<Channel> list() {
         final String query = "MATCH (c:Channel) RETURN c ";
@@ -56,15 +54,41 @@ public class Neo4jChannelService implements ChannelService {
         try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query)) {
             channels = IteratorUtil.<Node>asList(result.columnAs("c"))
                     .stream()
-                    .map(a -> {
-                        final Channel channel = new Channel(a.getProperty("id").toString());
-                        channel.setTitle(a.getProperty("title").toString());
-                        channel.setUploadPlaylistId(a.getProperty("uploadPlaylistId").toString());
-                        return channel;
-                    })
+                    .map(this::mapNodeToChannel)
                     .collect(Collectors.toList());
             tx.success();
         }
         return channels;
+    }
+
+    private Channel mapNodeToChannel(Node a) {
+        final Channel channel = new Channel(a.getProperty("id").toString());
+        channel.setTitle(a.getProperty("title").toString());
+        channel.setUploadPlaylistId(a.getProperty("uploadPlaylistId").toString());
+        channel.setLastUpdated(
+                Long.parseLong(a.getProperty("lastUpdated", "0").toString(), 10)
+        );
+        return channel;
+    }
+
+    @Override
+    public Channel get(String id) {
+        final String query = "MATCH (c:Channel {id: {id}}) return c";
+        final ImmutableMap<String, Object> params = of("id", id);
+
+        try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params)) {
+            final ResourceIterator<Node> nodes = result.<Node>columnAs("c");
+            if (nodes.hasNext()) {
+                return this.mapNodeToChannel(nodes.next());
+            }
+            tx.success();
+        }
+        return null;
+    }
+
+    @Override
+    public int update(YoutubeService youtubeService, String channelId) {
+
+        return 0;
     }
 }
