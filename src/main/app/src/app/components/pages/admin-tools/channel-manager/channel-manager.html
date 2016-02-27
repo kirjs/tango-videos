@@ -5,7 +5,7 @@
         <div *ngFor="#channel of channels">
             <a href="https://www.youtube.com/channel/{{channel.id}}"><icon name = "youtube"></icon></a>
             <span>{{channel.title}} [{{channel.videosCount}}]</span>
-            <span (click)="updatePlaylist(channel.uploadPlaylistId)">Update channel</span>
+            <span (click)="fetchLatestVideos(channel.id)">Update channel</span>
         </div>
     </div>
     <div class="data"></div>
