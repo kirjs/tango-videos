@@ -24,7 +24,6 @@ export class ChannelManager {
     }
 
     setChannels(channels) {
-        debugger
         this.channels = channels;
     }
 

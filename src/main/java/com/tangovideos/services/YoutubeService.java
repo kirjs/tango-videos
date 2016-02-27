@@ -1,5 +1,6 @@
 package com.tangovideos.services;
 
+import com.google.api.client.util.Lists;
 import com.tangovideos.models.Channel;
 import com.tangovideos.models.Video;
 import org.json.JSONArray;
@@ -10,18 +11,34 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
+import java.util.List;
 
 public class YoutubeService {
     final String BASE_URL = "https://www.googleapis.com/youtube/v3/";
     final String API_TOKEN = "AIzaSyCW22iBpph-9DMs3rpHa3iXZDpTV0qsLCU";
 
+    public List<Video> fetchChannelVideos(String id){
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(BASE_URL).path("playlistItems")
+                .queryParam("key", API_TOKEN)
+                .queryParam("playlistId", id)
+                .queryParam("part", "snippet");
+
+        String response = target.request("application/json").get(new GenericType<>(String.class));
+
+
+
+        return Lists.newArrayList();
+    }
     public Video getVideoInfo(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(BASE_URL).path("videos")
                 .queryParam("key", API_TOKEN)
                 .queryParam("id", id)
                 .queryParam("part", "contentDetails");
+
         String response = target.request("application/json").get(new GenericType<>(String.class));
+
         try {
             JSONObject snippet = new JSONObject(response)
                     .getJSONArray("items")
@@ -42,11 +59,6 @@ public class YoutubeService {
 
         return null;
     }
-
-
-//    public Channel getChannelInfoByName(String id) {
-//        return extractChannelInfo(fetchData(id, "channels", "forName", "contentDetails"));
-//    }
 
     public Channel getChannelInfoById(String id) {
         return extractChannelInfo(fetchData(id, "id", "channels", "contentDetails,snippet"), id);
