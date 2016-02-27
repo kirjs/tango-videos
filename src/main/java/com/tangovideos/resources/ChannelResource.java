@@ -3,6 +3,7 @@ package com.tangovideos.resources;
 import com.tangovideos.models.Channel;
 import com.tangovideos.resources.inputs.JustId;
 import com.tangovideos.services.Interfaces.ChannelService;
+import com.tangovideos.services.Interfaces.VideoService;
 import com.tangovideos.services.TangoVideosServiceFactory;
 import com.tangovideos.services.YoutubeService;
 import org.json.JSONArray;
@@ -17,6 +18,7 @@ public class ChannelResource {
 
     private ChannelService channelService = TangoVideosServiceFactory.getChannelService();
     private YoutubeService youtubeService = TangoVideosServiceFactory.getYoutubeService();
+    private VideoService videoService= TangoVideosServiceFactory.getVideoService();
 
 
     @POST
@@ -27,6 +29,14 @@ public class ChannelResource {
 
         channelService.addChannel(channel);
 
+        return list();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("fetch")
+    public Response fetchLatestVideos(JustId payload) {
+        channelService.fetchAllVideos(youtubeService, videoService, payload.getId());
         return list();
     }
 
