@@ -23,6 +23,10 @@ export class ChannelManager {
         this.channelService.add(channelId.trim()).subscribe(this.setChannels.bind(this))
     }
 
+    fetchLatestVideos(channelId){
+        this.channelService.fetchLatestVideos(channelId.trim()).subscribe(this.setChannels.bind(this))
+    }
+
     setChannels(channels) {
         this.channels = channels;
     }

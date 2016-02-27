@@ -13,4 +13,8 @@ export class ChannelService {
     list():Observable<any> {
         return this.backendService.read('channels/list');
     }
+
+    fetchLatestVideos(id:String):Observable<any> {
+        return this.backendService.write('channels/fetchLatestVideos', {id: id});
+    }
 }
