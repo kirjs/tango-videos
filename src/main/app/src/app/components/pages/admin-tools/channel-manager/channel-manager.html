@@ -1,4 +1,10 @@
-<div class="side-panel">
-    <addable-field></addable-field>
+<div class="channels">
+    <h2>Channels</h2>
+    <div class="side-panel">
+        <addable-field addButtonLabel="Add channel" (onAdd)="addChannel($event)"></addable-field>
+        <div *ngFor="#channel of channels">
+            <a href="https://www.youtube.com/channel/{{channel.id}}"><icon name = "youtube"></icon></a>{{channel.title}}
+        </div>
+    </div>
+    <div class="data"></div>
 </div>
-<div class="data"></div>

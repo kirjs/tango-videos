@@ -28,10 +28,12 @@ public class Neo4jChannelService implements ChannelService {
     public Node addChannel(Channel channel) {
         final String query = "MERGE (c:Channel {" +
                 "   id: {channelId}, " +
-                "   addedAt: {addedAt}, " +
                 "   title: {title}, " +
                 "   uploadPlaylistId: {uploadPlaylistId}" +
-                "}) RETURN c";
+                "}) " +
+                "ON CREATE SET c.addedAt = {addedAt} " +
+                "RETURN c";
+
         final ImmutableMap<String, Object> params = of(
                 "channelId", channel.getId(),
                 "addedAt", Instant.now().getEpochSecond(),
@@ -40,7 +42,7 @@ public class Neo4jChannelService implements ChannelService {
         );
         Node result;
         try (Transaction tx = graphDb.beginTx(); Result queryResult = graphDb.execute(query, params)) {
-            result = (Node)queryResult.columnAs("c").next();
+            result = (Node) queryResult.columnAs("c").next();
             tx.success();
         }
         return result;
@@ -54,7 +56,12 @@ public class Neo4jChannelService implements ChannelService {
         try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query)) {
             channels = IteratorUtil.<Node>asList(result.columnAs("c"))
                     .stream()
-                    .map(a -> new Channel(a.getProperty("id").toString()))
+                    .map(a -> {
+                        final Channel channel = new Channel(a.getProperty("id").toString());
+                        channel.setTitle(a.getProperty("title").toString());
+                        channel.setUploadPlaylistId(a.getProperty("uploadPlaylistId").toString());
+                        return channel;
+                    })
                     .collect(Collectors.toList());
             tx.success();
         }

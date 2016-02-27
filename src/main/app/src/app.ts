@@ -9,6 +9,7 @@ import {DancerService} from "./app/services/DancerService";
 import {SongService} from "./app/services/SongService";
 import {PlayerService} from "./app/services/PlayerService";
 import {BackendService} from "./app/services/BackendService";
+import {ChannelService} from "./app/services/ChannelService";
 
 bootstrap(TangoVideos, [
     HTTP_PROVIDERS,
@@ -18,6 +19,7 @@ bootstrap(TangoVideos, [
     VideoService,
     DancerService,
     SongService,
-    PlayerService
+    PlayerService,
+    ChannelService
 ])
     .catch(err => console.error(err));
