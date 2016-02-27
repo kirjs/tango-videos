@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableSet;
 import com.tangovideos.models.Song;
 import com.tangovideos.models.VideoResponse;
 import com.tangovideos.services.Interfaces.VideoService;
-import org.easymock.EasyMockSupport;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +19,7 @@ import java.util.NoSuchElementException;
 import static com.google.common.collect.ImmutableMap.of;
 import static org.junit.Assert.assertEquals;
 
-public class Neo4jVideoServiceTest extends EasyMockSupport {
+public class Neo4jVideoServiceTest {
 
     private GraphDatabaseService graphDb;
     private Neo4jVideoService neo4jVideoService;

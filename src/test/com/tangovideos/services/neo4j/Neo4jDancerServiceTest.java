@@ -2,7 +2,6 @@ package com.tangovideos.services.neo4j;
 
 import com.tangovideos.data.Labels;
 import com.tangovideos.models.Dancer;
-import org.easymock.EasyMockSupport;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +15,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class Neo4jDancerServiceTest extends EasyMockSupport {
+public class Neo4jDancerServiceTest {
 
     private GraphDatabaseService graphDb;
     private Neo4jDancerService neo4jDancerService;
