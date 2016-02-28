@@ -20,9 +20,9 @@ public class AdminToolsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("renameDancer")
     public Response renameDancer(RenameDancer payload) {
-        adminToolsService.renameDancer(payload.getOldName(), payload.getNewName());
+        final long count = adminToolsService.renameDancer(payload.getOldName(), payload.getNewName());
         return Response.status(200)
-                .entity("true")
+                .entity(String.valueOf(count))
                 .type(MediaType.APPLICATION_JSON).build();
     }
 

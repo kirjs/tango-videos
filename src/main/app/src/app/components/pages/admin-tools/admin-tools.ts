@@ -29,8 +29,8 @@ export class AdminTools {
 
     renameDancer(oldName, newName) {
         this.renameDancerStatus = 'In progress';
-        this.adminToolsService.renameDancer(oldName, newName).subscribe(()=> {
-            this.renameDancerStatus = 'Done renaming ' + oldName + ' to ' + newName;
+        this.adminToolsService.renameDancer(oldName, newName).subscribe((count)=> {
+            this.renameDancerStatus = 'Done renaming ' + oldName + ' to ' + newName + '. ['+count+' instances]';
         });
     }
 }
