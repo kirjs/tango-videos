@@ -1,13 +1,17 @@
-<div needs-permission = "video:write">
+<div needs-permission="video:write">
 
     <channel-manager></channel-manager>
     <div class="block">
         <h2>Rename dancers</h2>
         <span>Old name</span>
-        <input type="text" #oldName>
+        <ng2-autocomplete [source]="dancersSource">
+            <input type="text" #oldName>
+        </ng2-autocomplete>
         <span>New name</span>
-        <input type="text" #newName>
-        <input value = "rename" type="button" (click)="renameDancer(oldName.value, newName.value)">
+        <ng2-autocomplete [source]="dancersSource">
+            <input type="text" #newName>
+        </ng2-autocomplete>
+        <input value="rename" type="button" (click)="renameDancer(oldName.value, newName.value)">
         <div>{{renameDancerStatus}}</div>
     </div>
     <div class="block">
