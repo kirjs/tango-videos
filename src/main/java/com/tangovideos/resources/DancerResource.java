@@ -6,6 +6,7 @@ import com.tangovideos.services.Interfaces.VideoService;
 import com.tangovideos.services.TangoVideosServiceFactory;
 import com.tangovideos.services.neo4j.Neo4jDancerService;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -44,7 +45,7 @@ public class DancerResource {
         dancer.setVideos(videoService.listByDancer(id));
 
         return Response.status(200)
-                .entity(dancer)
+                .entity(new JSONObject(dancer).toString())
                 .type(MediaType.APPLICATION_JSON).build();
     }
 }
