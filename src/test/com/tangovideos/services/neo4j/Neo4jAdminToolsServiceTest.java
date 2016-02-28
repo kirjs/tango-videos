@@ -56,13 +56,15 @@ public class Neo4jAdminToolsServiceTest {
             TestHelpers.addVideoAndDancer(graphDb, "anyVideo", oldName);
             TestHelpers.addVideoAndDancer(graphDb, "otherVideo", oldName);
 
-            // Assert there is just one dancer node initially
+            // Assert there is just one dancer node initially connected with 2 videos
             final Result initialOldDancers = graphDb.execute(dancersQuery, oldDancerParams);
             assertEquals(1, IteratorUtil.count(initialOldDancers));
 
-            adminService.renameDancer(oldName, betterName);
+            // Assert that renaming the dancer return number of videos
+            assertEquals(2,adminService.renameDancer(oldName, betterName));
 
 
+            // Assert that there are 0 videos for old and 2 for new dancers
             final Result oldDancers = graphDb.execute(videosWithDancersQuery, oldDancerParams);
             assertEquals(0, IteratorUtil.count(oldDancers));
             final Result newDancers = graphDb.execute(videosWithDancersQuery, newDancerParams);
@@ -71,6 +73,7 @@ public class Neo4jAdminToolsServiceTest {
             // Assert there is just one new  dancer node eventually
             final Result eventuallyOldDancers = graphDb.execute(dancersQuery, newDancerParams);
             assertEquals(1, IteratorUtil.count(eventuallyOldDancers));
+
             // Assert that the old node was removed
             final Result eventuallylOldDancers = graphDb.execute(dancersQuery, oldDancerParams);
             assertEquals(0, IteratorUtil.count(eventuallylOldDancers ));

@@ -7,6 +7,7 @@ import com.tangovideos.models.Channel;
 import com.tangovideos.services.Interfaces.ChannelService;
 import com.tangovideos.services.Interfaces.VideoService;
 import com.tangovideos.services.YoutubeService;
+import com.tangovideos.services.combined.CombinedVideoService;
 import org.neo4j.graphdb.*;
 import org.neo4j.helpers.collection.IteratorUtil;
 
@@ -145,19 +146,12 @@ public class Neo4jChannelService implements ChannelService {
     }
 
     @Override
-    public long fetchAllVideos(YoutubeService youtubeService, VideoService videoService, String channelId) {
+    public long fetchAllVideos(YoutubeService youtubeService, CombinedVideoService combinedVideoService, String channelId) {
         Channel channel = get(channelId);
-        final long lastUpdated = channel.getLastUpdated();
+            final long lastUpdated = 0L; //channel.getLastUpdated();
         long count = youtubeService.fetchChannelVideos(channel.getUploadPlaylistId(), lastUpdated)
-                .stream().filter(v -> !videoService.exists(v.getId()))
-                .map(videoService::addVideo)
-                .map(v -> {
-                    try (Transaction tx = graphDb.beginTx()) {
-                        addVideoToChannel(v.getProperty("id").toString(), channelId);
-                        tx.success();
-                    }
-                    return true;
-                })
+                .stream().filter(v -> !combinedVideoService.videoExists(v.getId()))
+                .peek(combinedVideoService::addVideo)
                 .count();
         channel.setLastUpdated(Instant.now().getEpochSecond());
         update(channel);

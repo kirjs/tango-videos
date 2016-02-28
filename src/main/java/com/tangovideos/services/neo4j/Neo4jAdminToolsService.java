@@ -7,6 +7,7 @@ import com.tangovideos.services.Interfaces.AdminToolsService;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
+import org.neo4j.helpers.collection.IteratorUtil;
 
 import java.util.List;
 
@@ -21,18 +22,19 @@ public class Neo4jAdminToolsService implements AdminToolsService {
     }
 
     @Override
-    public void renameDancer(String oldName, String newName) {
+    public long renameDancer(String oldName, String newName) {
         final String query = "" +
                 "MATCH (od:Dancer {id: {oldName}})-[r:DANCES]->(v:Video) " +
                 "MERGE (nd:Dancer {id: {newName}}) " +
                 "MERGE (nd)-[:DANCES]->(v) " +
                 "DELETE od " +
                 "DELETE r " +
-                "RETURN v";
+                "RETURN r";
         final ImmutableMap<String, Object> params = of("oldName", oldName, "newName", newName);
 
         try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params)) {
             tx.success();
+            return IteratorUtil.count(result);
         }
     }
 

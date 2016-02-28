@@ -7,7 +7,7 @@ import java.util.List;
 public interface AdminToolsService {
 
 
-    void renameDancer(String oldName, String newName);
+    long renameDancer(String oldName, String newName);
 
     List<KeyValue> stats();
 }
