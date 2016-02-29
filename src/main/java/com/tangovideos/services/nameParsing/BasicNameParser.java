@@ -1,7 +1,6 @@
 package com.tangovideos.services.nameParsing;
 
 import com.google.common.collect.ImmutableSet;
-import com.tangovideos.models.VideoAndDancer;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Set;
@@ -14,9 +13,6 @@ public class BasicNameParser {
 
     private static Pattern dancer = Pattern.compile("([A-Z][a-z]+ )?([A-Za-z]+? |[\"“][A-Za-z ]+[\"”] )?([A-Za-z]+? |[\"“][A-Za-z ]+[\"”] )?([A-Z][a-z]+) (and|y|&|e|et|Y) ([A-Z][a-z]+)( [\"]?[A-Z][a-z]+[\"]?)?( [A-Z][a-z]+)?");
 
-    public BasicNameParser(Set<Set<String>> knownCouples) {
-
-    }
 
     public Set<String> parseString(String string) {
         final Matcher matcher = dancer.matcher(string);
@@ -63,9 +59,6 @@ public class BasicNameParser {
             return ImmutableSet.of();
         }
 
-    }
-    public Set<String> extractNames(VideoAndDancer videoAndDancer) {
-        return extractNames(videoAndDancer.getTitle(), videoAndDancer.getDescription());
     }
 
 

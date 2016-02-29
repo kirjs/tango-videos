@@ -17,11 +17,11 @@ public class NameAwareNameParser implements NameExtractor {
 
 
     private final Set<String> knownDancers;
-
-    private final Set<String> ands = ImmutableSet.of("&", "and", "y", "et", "e");
     private final Map<Set<String>, Pattern> knownCouplesNamesPatterns;
     private final BasicNameParser basicNameParser;
 
+
+    // Currently hardcoded, but this will come from the DB.
     private final Map<String, Set<String>> pseudonyms = ImmutableMap.<String, Set<String>>builder()
             .put("Chicho Frumboli", ImmutableSet.of("Mariano Frumboli"))
             .put("MARIANO \"CHICHO\" FRÚMBOLI", ImmutableSet.of("Mariano Frumboli"))
@@ -48,7 +48,7 @@ public class NameAwareNameParser implements NameExtractor {
 
     public NameAwareNameParser(Set<Set<String>> knownCouples) {
 
-        this.basicNameParser = new BasicNameParser(knownCouples);
+        this.basicNameParser = new BasicNameParser();
         knownDancers = knownCouples.stream()
                 .flatMap(Set::stream)
                 .collect(Collectors.toSet());

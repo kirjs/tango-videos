@@ -1,5 +1,6 @@
 package com.tangovideos.services.neo4j;
 
+import com.google.common.collect.ImmutableSet;
 import com.tangovideos.data.Labels;
 import com.tangovideos.models.Dancer;
 import org.junit.After;
@@ -18,13 +19,13 @@ import static org.junit.Assert.assertEquals;
 public class Neo4jDancerServiceTest {
 
     private GraphDatabaseService graphDb;
-    private Neo4jDancerService neo4jDancerService;
+    private Neo4jDancerService dancerService;
 
 
     @Before
     public void setUp() throws Exception {
         graphDb = new TestGraphDatabaseFactory().newImpermanentDatabase();
-        neo4jDancerService = new Neo4jDancerService(graphDb);
+        dancerService = new Neo4jDancerService(graphDb);
     }
 
     @After
@@ -40,7 +41,7 @@ public class Neo4jDancerServiceTest {
             assertEquals(0, IteratorUtil.count(graphDb.findNodes(Labels.DANCER.label)));
 
             // If node does not exist inserts a copy and returns
-            Node node = neo4jDancerService.insertOrGetNode(id);
+            Node node = dancerService.insertOrGetNode(id);
             assertEquals(node.getProperty("id"), id);
 
             List<Node> nodes = IteratorUtil.asList(graphDb.findNodes(Labels.DANCER.label));
@@ -48,7 +49,7 @@ public class Neo4jDancerServiceTest {
             assertEquals(nodes.get(0).getProperty("id"), id);
 
             // If node exists, returns existing node
-            node = neo4jDancerService.insertOrGetNode(id);
+            node = dancerService.insertOrGetNode(id);
             assertEquals(node.getProperty("id"), id);
 
 
@@ -67,7 +68,7 @@ public class Neo4jDancerServiceTest {
 
         try (Transaction tx = graphDb.beginTx()) {
             TestHelpers.addVideoAndDancer(graphDb, videoID, dancerId);
-            final Dancer dancer = this.neo4jDancerService.get(dancerId);
+            final Dancer dancer = this.dancerService.get(dancerId);
             assertEquals(dancer.getName(), dancerId);
             tx.success();
         }
@@ -76,8 +77,8 @@ public class Neo4jDancerServiceTest {
     @Test
     public void testGet() {
         try (Transaction tx = graphDb.beginTx()) {
-            this.neo4jDancerService.insertOrGetNode("one");
-            final Dancer dancer = this.neo4jDancerService.get("one");
+            this.dancerService.insertOrGetNode("one");
+            final Dancer dancer = this.dancerService.get("one");
             assertEquals(dancer.getName(), "one");
             assertEquals(dancer.getVideos().size(), 0);
             tx.success();
@@ -88,12 +89,12 @@ public class Neo4jDancerServiceTest {
     public void testList() throws Exception {
         final String dancerId = "dancerId";
         // If a dancer have no videsh, they should not be in the list
-        neo4jDancerService.insertOrGetNode("A random dude with no videos");
+        dancerService.insertOrGetNode("A random dude with no videos");
         try (Transaction tx = graphDb.beginTx()) {
             TestHelpers.addVideoAndDancer(graphDb, "videoId", dancerId);
             TestHelpers.addVideoAndDancer(graphDb, "video2Id", dancerId);
 
-            final List<Dancer> list = neo4jDancerService.list();
+            final List<Dancer> list = dancerService.list();
 
             assertEquals(1, list.size());
             assertEquals(dancerId, list.get(0).getName());
@@ -109,10 +110,10 @@ public class Neo4jDancerServiceTest {
         final String videoId = "videoID";
 
         final Node video = TestHelpers.addVideo(graphDb, videoId);
-        final Node dancer = neo4jDancerService.insertOrGetNode(dancerId);
-        neo4jDancerService.addToVideo(dancer, video);
+        final Node dancer = dancerService.insertOrGetNode(dancerId);
+        dancerService.addToVideo(dancer, video);
 
-        assertEquals(1, neo4jDancerService.getForVideo(videoId).size());
+        assertEquals(1, dancerService.getForVideo(videoId).size());
         assertEquals(1, IteratorUtil.count(graphDb.execute("MATCH (d:Dancer)-[:DANCES]->(v:Video) return v").columnAs("v")));
     }
 
@@ -122,13 +123,13 @@ public class Neo4jDancerServiceTest {
         final String videoId = "videoID";
 
         final Node video = TestHelpers.addVideo(graphDb, videoId);
-        final Node dancer = neo4jDancerService.insertOrGetNode(dancerId);
-        neo4jDancerService.addToVideo(dancer, video);
+        final Node dancer = dancerService.insertOrGetNode(dancerId);
+        dancerService.addToVideo(dancer, video);
 
 
-        assertEquals(1, neo4jDancerService.getForVideo(videoId).size());
-        neo4jDancerService.removeFromVideo(dancer, video);
-        assertEquals(0, neo4jDancerService.getForVideo(videoId).size());
+        assertEquals(1, dancerService.getForVideo(videoId).size());
+        dancerService.removeFromVideo(dancer, video);
+        assertEquals(0, dancerService.getForVideo(videoId).size());
     }
 
     @Test
@@ -140,14 +141,13 @@ public class Neo4jDancerServiceTest {
         try (Transaction tx = graphDb.beginTx()) {
             TestHelpers.addVideoAndDancer(graphDb, "video-1", "dancer0");
             TestHelpers.addVideoAndDancer(graphDb, "video-0", "dancer0");
-
             TestHelpers.addVideoAndDancer(graphDb, "video", dancerId);
             TestHelpers.addVideoAndDancer(graphDb, "video1", dancerId);
             TestHelpers.addVideoAndDancer(graphDb, "video2", dancerId);
             TestHelpers.addVideoAndDancer(graphDb, "video3", dancerId);
             TestHelpers.addVideoAndDancer(graphDb, "video4", "dancer2");
 
-            final List<Dancer> list = neo4jDancerService.list(0, 100, Neo4jDancerService.SortBy.VIDEO_COUNT);
+            final List<Dancer> list = dancerService.list(0, 100, Neo4jDancerService.SortBy.VIDEO_COUNT);
 
 
             assertEquals(3, list.size());
@@ -165,6 +165,15 @@ public class Neo4jDancerServiceTest {
 
     @Test
     public void testInsertOrGetNode() throws Exception {
+
+    }
+
+    @Test
+    public void testGetaAllDancersByVideo() throws Exception {
+        TestHelpers.addVideoAndDancer(graphDb, "video-1", "dancer0");
+        TestHelpers.addVideoAndDancer(graphDb, "video-2", "dancer0");
+        assertEquals(ImmutableSet.of(ImmutableSet.of("dancer0")),
+                dancerService.getaAllDancersByVideo());
 
     }
 }

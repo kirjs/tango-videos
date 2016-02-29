@@ -14,6 +14,8 @@ public interface DancerService {
 
     void addToVideo(Node dancer, Node video);
 
+    Set<Set<String>> getaAllDancersByVideo();
+
     void removeFromVideo(Node dancer, Node video);
 
     Node insertOrGetNode(String dancerId);

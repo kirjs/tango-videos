@@ -22,9 +22,11 @@ import static com.google.common.collect.ImmutableMap.of;
 public class Neo4jDancerService implements DancerService {
     private final GraphDatabaseService graphDb;
     private Label label = Labels.DANCER.label;
+
     public enum SortBy {
         VIDEO_COUNT
     }
+
     public Neo4jDancerService(GraphDatabaseService graphDb) {
         this.graphDb = graphDb;
 
@@ -67,7 +69,7 @@ public class Neo4jDancerService implements DancerService {
             final Result result = this.graphDb.execute(query);
 
 
-            while(result.hasNext()){
+            while (result.hasNext()) {
                 final Map<String, Object> next = result.next();
                 final Dancer dancer = this.mapNode((Node) next.get("dancer"));
                 final List<String> videos = IteratorUtil.asList((Iterable<String>) next.get("videos"));
@@ -94,10 +96,29 @@ public class Neo4jDancerService implements DancerService {
         this.addOrRemoveDancer(query, dancer, video);
     }
 
+    @Override
+    public Set<Set<String>> getaAllDancersByVideo() {
+        final String query = "MATCH (d:Dancer)-[:DANCES]->(v:Video) " +
+                "WITH v, collect(d) as dancers " +
+                "RETURN DISTINCT dancers";
 
-    public void addOrRemoveDancer(String query, Node dancer, Node video){
+
+        try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query)) {
+            tx.success();
+
+            return IteratorUtil.<Iterable<Node>>asSet(result.columnAs("dancers"))
+                    .stream()
+                    .map(IteratorUtil::asSet)
+                    .map(s -> s.stream()
+                            .map(n -> n.getProperty("id").toString()).collect(Collectors.toSet()))
+                    .collect(Collectors.toSet());
+        }
+    }
+
+
+    public void addOrRemoveDancer(String query, Node dancer, Node video) {
         try (Transaction tx = this.graphDb.beginTx()) {
-            if(!dancer.hasLabel(Labels.DANCER.label)){
+            if (!dancer.hasLabel(Labels.DANCER.label)) {
                 throw new RuntimeException("Expected dancer node, got: " + dancer.getLabels());
             }
             final ImmutableMap<String, Object> params = of("videoId", video.getProperty("id"), "dancerId", dancer.getProperty("id"));
@@ -108,6 +129,7 @@ public class Neo4jDancerService implements DancerService {
             tx.success();
         }
     }
+
     @Override
     public void removeFromVideo(Node dancer, Node video) {
         String query = "MATCH (d:Dancer {id: {dancerId}})-[r:DANCES]->(v:Video {id: {videoId}}) " +
