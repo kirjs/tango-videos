@@ -36,4 +36,14 @@ public class AdminToolsResource {
     }
 
 
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("videos-and-dancers.json")
+    public Response videosAndDancers() {
+        return Response.status(200)
+                .entity(new JSONArray(adminToolsService.getVideosAndDancers()).toString())
+                .type(MediaType.APPLICATION_JSON).build();
+    }
+
+
 }

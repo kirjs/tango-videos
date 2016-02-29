@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.tangovideos.services.Interfaces.*;
 import com.tangovideos.services.YoutubeService;
 import com.tangovideos.services.combined.CombinedVideoService;
+import com.tangovideos.services.nameParsing.NameAwareNameParser;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
@@ -83,7 +84,8 @@ public class Neo4JServiceFactory implements ServiceFactory {
 
     public YoutubeService getYoutubeService() {
         if (youtubeService == null) {
-            youtubeService = new YoutubeService();
+            final NameAwareNameParser nameAwareNameParser = new NameAwareNameParser(ImmutableSet.of(ImmutableSet.of("")));
+            youtubeService = new YoutubeService(nameAwareNameParser);
         }
 
         return youtubeService;

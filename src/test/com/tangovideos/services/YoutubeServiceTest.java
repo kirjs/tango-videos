@@ -3,7 +3,9 @@ package com.tangovideos.services;
 import com.google.common.collect.ImmutableSet;
 import com.tangovideos.models.Channel;
 import com.tangovideos.models.Video;
+import com.tangovideos.services.nameParsing.NameAwareNameParser;
 import org.json.JSONObject;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -14,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 
 public class YoutubeServiceTest {
 
-    YoutubeService youtubeService = new YoutubeService();
+    YoutubeService youtubeService;
 
     @Ignore
     @Test
@@ -23,6 +25,14 @@ public class YoutubeServiceTest {
         final Video video = youtubeService.getVideoInfo(videoId);
         assertEquals(videoId, video.getId());
         assertEquals("UCgWXMx-Pu9QcW0zepRecnqw", video.getChannelId());
+    }
+
+    @Before
+    public void before() {
+        final NameAwareNameParser nameExtractor = new NameAwareNameParser(
+                ImmutableSet.of(ImmutableSet.of("Pablo Rodriguez"))
+        );
+        youtubeService = new YoutubeService(nameExtractor);
     }
 
     @Ignore

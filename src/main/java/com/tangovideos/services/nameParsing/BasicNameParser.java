@@ -1,6 +1,7 @@
-package com.tangovideos.services;
+package com.tangovideos.services.nameParsing;
 
 import com.google.common.collect.ImmutableSet;
+import com.tangovideos.models.VideoAndDancer;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Set;
@@ -13,7 +14,11 @@ public class BasicNameParser {
 
     private static Pattern dancer = Pattern.compile("([A-Z][a-z]+ )?([A-Za-z]+? |[\"“][A-Za-z ]+[\"”] )?([A-Za-z]+? |[\"“][A-Za-z ]+[\"”] )?([A-Z][a-z]+) (and|y|&|e|et|Y) ([A-Z][a-z]+)( [\"]?[A-Z][a-z]+[\"]?)?( [A-Z][a-z]+)?");
 
-    public static Set<String> parseString(String string) {
+    public BasicNameParser(Set<Set<String>> knownCouples) {
+
+    }
+
+    public Set<String> parseString(String string) {
         final Matcher matcher = dancer.matcher(string);
         if (matcher.find()) {
             final String group = matcher.group(0);
@@ -59,10 +64,12 @@ public class BasicNameParser {
         }
 
     }
+    public Set<String> extractNames(VideoAndDancer videoAndDancer) {
+        return extractNames(videoAndDancer.getTitle(), videoAndDancer.getDescription());
+    }
 
 
-
-    public static Set<String> extractNames(String title, String description) {
+    public  Set<String> extractNames(String title, String description) {
         title = StringUtils.stripAccents(title);
         description = StringUtils.stripAccents(description);
         final Set<String> titleData = parseString(title);

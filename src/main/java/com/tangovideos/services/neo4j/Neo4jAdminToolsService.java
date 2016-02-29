@@ -2,14 +2,18 @@ package com.tangovideos.services.neo4j;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Sets;
 import com.tangovideos.models.KeyValue;
+import com.tangovideos.models.VideoAndDancer;
 import com.tangovideos.services.Interfaces.AdminToolsService;
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.helpers.collection.IteratorUtil;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.google.common.collect.ImmutableMap.of;
 
@@ -56,5 +60,24 @@ public class Neo4jAdminToolsService implements AdminToolsService {
             tx.success();
         }
         return stats;
+    }
+
+    @Override
+    public List<VideoAndDancer> getVideosAndDancers() {
+        final String query = "MATCH (d:Dancer)-[:DANCES]->(v:Video) return v, collect(d.id) as dancers";
+        try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query)) {
+            final List<VideoAndDancer> videoAndDancerStream = IteratorUtil.asList(result).stream().map(r -> {
+                final VideoAndDancer videoAndDancer = new VideoAndDancer();
+                final Node v = (Node) r.get("v");
+
+                videoAndDancer.setDancers(Sets.newHashSet((Iterable<String>) r.get("dancers")));
+                videoAndDancer.setVideoId(v.getProperty("id").toString());
+                videoAndDancer.setTitle(v.getProperty("title").toString());
+                videoAndDancer.setDescription(v.getProperty("description").toString());
+                return videoAndDancer;
+            }).collect(Collectors.toList());
+            tx.success();
+            return videoAndDancerStream;
+        }
     }
 }

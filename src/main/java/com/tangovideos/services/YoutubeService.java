@@ -3,6 +3,7 @@ package com.tangovideos.services;
 import com.google.api.client.util.Lists;
 import com.tangovideos.models.Channel;
 import com.tangovideos.models.Video;
+import com.tangovideos.services.nameParsing.NameExtractor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,6 +19,11 @@ import java.util.List;
 public class YoutubeService {
     final String BASE_URL = "https://www.googleapis.com/youtube/v3/";
     final String API_TOKEN = "AIzaSyCW22iBpph-9DMs3rpHa3iXZDpTV0qsLCU";
+    private NameExtractor nameExtractor;
+
+    public YoutubeService(NameExtractor nameExtractor){
+        this.nameExtractor = nameExtractor;
+    }
 
     public List<Video> fetchChannelVideos(String id, long startingFrom) {
         return fetchChannelVideos(id, startingFrom, "");
@@ -86,7 +92,7 @@ public class YoutubeService {
 
         result.setChannelId(snippet.getString("channelId"));
         result.setDescription(snippet.getString("description"));
-        result.setDancers(BasicNameParser.extractNames(result.getTitle(), result.getDescription()));
+        result.setDancers(nameExtractor.extractNames(result.getTitle(), result.getDescription()));
         return result;
     }
 
