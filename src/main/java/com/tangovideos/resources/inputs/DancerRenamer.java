@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 @XmlRootElement
-public class RenameDancer implements Serializable {
+public class DancerRenamer implements Serializable {
     @XmlElement
     String oldName;
 

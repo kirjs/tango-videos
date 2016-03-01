@@ -1,6 +1,6 @@
 package com.tangovideos.resources;
 
-import com.tangovideos.resources.inputs.RenameDancer;
+import com.tangovideos.resources.inputs.DancerRenamer;
 import com.tangovideos.services.Interfaces.AdminToolsService;
 import com.tangovideos.services.TangoVideosServiceFactory;
 import org.json.JSONArray;
@@ -19,7 +19,7 @@ public class AdminToolsResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("renameDancer")
-    public Response renameDancer(RenameDancer payload) {
+    public Response renameDancer(DancerRenamer payload) {
         final long count = adminToolsService.renameDancer(payload.getOldName(), payload.getNewName());
         return Response.status(200)
                 .entity(String.valueOf(count))

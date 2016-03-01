@@ -5,7 +5,7 @@ var compiler = webpack(require('./webpack.config.js'));
 var server = new WebpackDevServer(compiler, {
     inline: true,
     colors: true,
-    https: true,
+    https: true,na
     progress: true,
     displayErrorDetails: true,
     displayCached: true,
@@ -13,7 +13,7 @@ var server = new WebpackDevServer(compiler, {
     historyApiFallback: true,
     proxy: {
         '/api/*': {
-            target: 'http://localhost:8080/'
+            target: 'http://localhost:8087/'
         }
     }
 });

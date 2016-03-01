@@ -10,6 +10,7 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public class Neo4JServiceFactory implements ServiceFactory {
 
@@ -84,7 +85,8 @@ public class Neo4JServiceFactory implements ServiceFactory {
 
     public YoutubeService getYoutubeService() {
         if (youtubeService == null) {
-            final NameAwareNameParser nameAwareNameParser = new NameAwareNameParser(ImmutableSet.of(ImmutableSet.of("")));
+            final Set<Set<String>> dancers = this.getDancerService().getaAllDancersByVideo();
+            final NameAwareNameParser nameAwareNameParser = new NameAwareNameParser(dancers);
             youtubeService = new YoutubeService(nameAwareNameParser);
         }
 
