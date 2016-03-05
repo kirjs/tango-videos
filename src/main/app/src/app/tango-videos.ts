@@ -13,6 +13,7 @@ import {VideoPlayer} from './components/entities/player/video-player/video-playe
 import {RequestStatus} from './components/common/request-status/request-status';
 import {AdminTools} from './components/pages/admin-tools/admin-tools';
 import {TagSongs} from './components/pages/tag-songs/tag-songs';
+import {Songs} from "./components/pages/songs/songs";
 
 
 @Component({
@@ -26,6 +27,7 @@ import {TagSongs} from './components/pages/tag-songs/tag-songs';
     new Route({path: '/videos', component: Explore, name: 'Videos', useAsDefault: true}),
     new Route({path: '/dancers', component: Dancers, name: 'Dancers'}),
     new Route({path: '/dancers/:id', component: Dancer, name: 'Dancer'}),
+    new Route({path: '/songs', component: Songs, name: 'Songs'}),
     new Route({path: '/tag', component: TagSongs, name: 'Tag'}),
     new Route({path: '/home', component: Home, name: 'Home'}),
     new Route({path: '/new/video', component: VideoForm, name: 'AddVideo'}),
