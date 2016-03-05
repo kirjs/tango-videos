@@ -34,6 +34,6 @@ export class SongItem {
         this.yearSource = Observable.from([years]);
         this.orquestraSource = songService.listOrquestras();
         this.songSource = songService.listNames();
-        this.genreSource = Observable.from([["Milonga", "Tango", "Vals", "Nuevo", "Non tango"]]);
+        this.genreSource = Observable.from([["Milonga", "Tango", "Vals", "Nuevo", "Non tango", "Chacarera"]]);
     }
 }
