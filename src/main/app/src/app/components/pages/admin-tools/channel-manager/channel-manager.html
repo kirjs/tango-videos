@@ -1,12 +1,16 @@
 <div class="channels">
     <h2>Channels</h2>
-    <div class="side-panel">
+    <tr class="side-panel">
         <addable-field addButtonLabel="Add channel" (onAdd)="addChannel($event)"></addable-field>
-        <div *ngFor="#channel of channels">
-            <a href="https://www.youtube.com/channel/{{channel.id}}"><icon name = "youtube"></icon></a>
-            <span>{{channel.title}} [{{channel.videosCount}}]</span>
-            <span (click)="fetchLatestVideos(channel.id)">Update channel</span>
-        </div>
-    </div>
-    <div class="data"></div>
+        <table>
+            <tr *ngFor="#channel of channels">
+                <td>
+                    <a href="https://www.youtube.com/channel/{{channel.id}}"><icon name="youtube"></icon></a>
+                </td>
+                <td>{{channel.title}}</td>
+                <td>{{channel.videosCount}}</td>
+                <td>{{channel.lastUpdated * 1000 | date}}</td>
+                <td (click)="fetchLatestVideos(channel.id)">Update channel</td>
+            </tr>
+        </table>
 </div>
