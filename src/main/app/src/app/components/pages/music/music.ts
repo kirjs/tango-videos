@@ -5,13 +5,13 @@ import {SongService} from "../../../services/SongService";
 
 @Component({
     selector: 'songs',
-    template: require('./songs.html'),
-    styles: [require('./songs.css')],
+    template: require('./music.html'),
+    styles: [require('./music.css')],
     providers: [],
     directives: [ROUTER_DIRECTIVES],
     pipes: []
 })
-export class Songs {
+export class Music {
     songs:Array<any> = [];
 
     fetch() {
