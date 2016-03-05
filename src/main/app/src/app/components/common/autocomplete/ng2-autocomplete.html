@@ -1,10 +1,11 @@
-<span class = "wrapper">
+<span class="wrapper">
     <ng-content></ng-content>
-    <span class="dropdown" *ngIf = "dropdownOpen">
+    <span class="dropdown" *ngIf="dropdownOpen">
         <div class="item"
              *ngFor="#item of items; #i = index"
              [class.selected]="i === selectedIndex"
              (mousedown)="selectItem(i)"
-        >{{item.value}}</div>
+        >{{item.value}}
+        </div>
     </span>
 </span>
