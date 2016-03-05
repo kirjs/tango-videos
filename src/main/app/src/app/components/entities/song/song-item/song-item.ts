@@ -14,7 +14,7 @@ import {SongService} from "../../../../services/SongService";
 })
 export class SongItem {
     @Input() song = {};
-    @Input() readonly: boolean = false;
+    @Input() readonly:boolean = false;
     @Output() update = new EventEmitter();
     yearSource:Observable<Array<string>>;
     genreSource:Observable<Array<string>>;
@@ -26,10 +26,14 @@ export class SongItem {
         this.update.emit({field, data});
     }
 
-    constructor(songService: SongService) {
-        this.yearSource = Observable.from([["1900", "1934"]]);
+    constructor(songService:SongService) {
+        const years:String[] = [];
+        for (let i = 1880; i < new Date().getFullYear(); i++) {
+            years.push(i.toString());
+        }
+        this.yearSource = Observable.from([years]);
         this.orquestraSource = songService.listOrquestras();
-        this.songSource =  songService.listNames();
-        this.genreSource =  Observable.from([["Milonga", "Tango", "Vals", "Nuevo", "Non tango"]]);
+        this.songSource = songService.listNames();
+        this.genreSource = Observable.from([["Milonga", "Tango", "Vals", "Nuevo", "Non tango"]]);
     }
 }
