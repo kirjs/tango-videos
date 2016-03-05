@@ -13,7 +13,7 @@ public class TestHelpers {
     public static int videoIndex = 0;
     private static Neo4jSongService neo4jSongService;
 
-    public static void reset(){
+    public static void reset() {
         videoIndex = 0;
     }
 
@@ -36,7 +36,7 @@ public class TestHelpers {
         return node;
     }
 
-    public static Node addVideo(GraphDatabaseService graphDb, String videoId){
+    public static Node addVideo(GraphDatabaseService graphDb, String videoId) {
         return addVideo(graphDb, videoId, 0);
     }
 
@@ -68,12 +68,24 @@ public class TestHelpers {
     private static Node addVideo(GraphDatabaseService graphDb, String videoId, int i) {
         final Video video = new Video(videoId, "Title", "Date");
 
-            video.setDescription("Description");
+        video.setDescription("Description");
         final Node videoNode = new Neo4jVideoService(graphDb).addVideo(video);
-        try(Transaction tx = graphDb.beginTx()){
+        try (Transaction tx = graphDb.beginTx()) {
             videoNode.setProperty("addedAt", videoNode.getProperty("addedAt") + String.valueOf(i));
             tx.success();
         }
         return videoNode;
+    }
+
+    public static void addSong(GraphDatabaseService graphDb, String testVideo, String name, Integer index) {
+        Neo4jSongService neo4jSongService = new Neo4jSongService(graphDb);
+        neo4jSongService.updateField(testVideo, index, "year", "1937");
+        neo4jSongService.updateField(testVideo, index, "name", name);
+        neo4jSongService.updateField(testVideo, index, "orquestra", "testOrquestra");
+        neo4jSongService.updateField(testVideo, index, "genre", "Tango");
+    }
+
+    public static void addSong(GraphDatabaseService graphDb, String testVideo, String s) {
+        addSong(graphDb, testVideo, s, 0);
     }
 }

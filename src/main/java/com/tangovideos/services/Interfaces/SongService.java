@@ -10,6 +10,8 @@ public interface SongService {
     Song getSong(String videoId, Integer index);
 
 
+    List<Song> list();
+
     List<String> listNames();
 
     List<String> listOrquestras();

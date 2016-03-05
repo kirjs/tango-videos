@@ -11,6 +11,7 @@ import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.test.TestGraphDatabaseFactory;
 
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -41,7 +42,7 @@ public class Neo4jSongServiceTest {
 
         neo4jSongService.updateField(videoId, index, "year", year);
 
-        try (Transaction tx = graphDb.beginTx()){
+        try (Transaction tx = graphDb.beginTx()) {
             final Result result = graphDb.execute(
                     "MATCH (s:Song)-[:PLAYS_IN{index: {index}}]-(v:Video {id: {videoId}}) " +
                             "RETURN s.year as year",
@@ -55,7 +56,7 @@ public class Neo4jSongServiceTest {
     }
 
 
-    @Test(expected=NoSuchElementException.class)
+    @Test(expected = NoSuchElementException.class)
     public void testUpdateFieldUnexistingParameter() {
         final String videoId = "test";
         TestHelpers.addVideo(graphDb, videoId);
@@ -79,7 +80,7 @@ public class Neo4jSongServiceTest {
         assertEquals(value, song.getName());
 
 
-        try (Transaction tx = graphDb.beginTx()){
+        try (Transaction tx = graphDb.beginTx()) {
             final Result result = graphDb.execute(
                     "MATCH (s:Song)-[:PLAYS_IN{index: {index}}]-(v:Video {id: {videoId}}) " +
                             "RETURN s.name as name, s.year as year",
@@ -106,15 +107,16 @@ public class Neo4jSongServiceTest {
     }
 
 
-
     @Test
     public void testListOrquestras() throws Exception {
         final String videoId = "test";
         TestHelpers.addVideo(graphDb, videoId);
         final String orquestra1 = "Francisco Canaro";
         neo4jSongService.updateField(videoId, 0, "orquestra", orquestra1);
-        final String orquestra2  = "Juan D'Arienzo";
-        neo4jSongService.updateField(videoId, 1, "orquestra", orquestra2 );
+        final String orquestra2 = "Juan D'Arienzo";
+        neo4jSongService.updateField(videoId, 1, "orquestra", orquestra2);
+
+        neo4jSongService.updateField(videoId, 3, "orquestra", orquestra2);
         final String videoId2 = "test2";
         TestHelpers.addVideo(graphDb, videoId2);
         final String orquestra3 = "Hedgehog";
@@ -132,6 +134,27 @@ public class Neo4jSongServiceTest {
 
         neo4jSongService.updateField(videoId, 1, "name", song1);
         final ImmutableSet<String> result = ImmutableSet.copyOf(neo4jSongService.listNames());
+
         assertEquals(ImmutableSet.of(song1), result);
+    }
+
+
+    public void addSongs() {
+        final String testVideo = "testVideo";
+        final String testVideo2 = "testVideo2";
+        TestHelpers.addVideo(graphDb, testVideo);
+        TestHelpers.addVideo(graphDb, testVideo2);
+        TestHelpers.addSong(graphDb, testVideo, "song1", 1);
+        TestHelpers.addSong(graphDb, testVideo, "song2", 2);
+        TestHelpers.addSong(graphDb, testVideo, "song3", 3);
+        TestHelpers.addSong(graphDb, testVideo2, "song1", 4);
+
+    }
+
+    @Test
+    public void testList() throws Exception {
+        addSongs();
+        final List<Song> list = neo4jSongService.list();
+        assertEquals(list.get(0).getName(), "song1");
     }
 }

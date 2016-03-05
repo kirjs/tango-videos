@@ -30,6 +30,16 @@ public class SongResource {
     }
 
     @GET
+    @Path("list")
+    public Response list() {
+        final String result = new JSONArray(songService.list()).toString();
+        return Response.status(200)
+                .entity(result)
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+    }
+
+    @GET
     @Path("listOrquestras")
     public Response listOrquestras() {
         final String result = new JSONArray(songService.listOrquestras()).toString();

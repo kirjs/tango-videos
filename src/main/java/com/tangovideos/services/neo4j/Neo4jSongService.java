@@ -1,18 +1,22 @@
 package com.tangovideos.services.neo4j;
 
-import com.google.api.client.util.Lists;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.tangovideos.models.ResultWithCount;
 import com.tangovideos.models.Song;
 import com.tangovideos.services.Interfaces.SongService;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
+import org.neo4j.helpers.collection.IteratorUtil;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static com.google.common.collect.ImmutableMap.of;
 
 public class Neo4jSongService implements SongService {
     final private GraphDatabaseService graphDb;
@@ -35,7 +39,7 @@ public class Neo4jSongService implements SongService {
                     "SET s.%s = {value} " +
                     "RETURN s as song", field);
 
-            final ImmutableMap<String, Object> parameters = ImmutableMap.of(
+            final ImmutableMap<String, Object> parameters = of(
                     "videoId", videoId,
                     "index", index,
                     "value", value);
@@ -56,7 +60,7 @@ public class Neo4jSongService implements SongService {
     public Song getSong(String videoId, Integer index) {
         String query = "MATCH (song:Song)-[:PLAYS_IN{index: {index}}]->(v:Video {id: {videoId}}) " +
                 "RETURN song";
-        final ImmutableMap<String, Object> parameters = ImmutableMap.of("videoId", videoId, "index", index);
+        final ImmutableMap<String, Object> parameters = of("videoId", videoId, "index", index);
 
         Song song;
         try (Transaction transaction = graphDb.beginTx()) {
@@ -75,29 +79,60 @@ public class Neo4jSongService implements SongService {
     }
 
     @Override
+    public List<Song> list() {
+        final String query = "MATCH (s:Song) " +
+                "WITH distinct(s.name) as song " +
+                "MATCH (s:Song {name:song}) " +
+                "WITH song, count(s) as count " +
+                "MATCH (s:Song {name:song}) " +
+                "RETURN s, count " +
+                "ORDER BY count DESC";
+
+
+        try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query)) {
+            tx.success();
+            return IteratorUtil.asList(result.<Node>columnAs("s"))
+                    .stream()
+                    .map(Neo4jSongService::mapNode)
+                    .collect(Collectors.toList());
+        }
+    }
+
+    @Override
     public List<String> listNames() {
-        return listByField("name");
+        return listByField("name")
+                .stream()
+                .map(ResultWithCount::getResult)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<String> listOrquestras() {
-        return listByField("orquestra");
+        return listByField("orquestra").stream()
+                .map(ResultWithCount::getResult)
+                .collect(Collectors.toList());
     }
 
-    private List<String> listByField(String field) {
-        List<String> names;
+    private List<ResultWithCount<String>> listByField(String field) {
         final String query = String.format(
                 "MATCH (s:Song) " +
                         "WHERE exists(s.%s) " +
-                        "RETURN DISTINCT s.%s as result", field, field);
+                        "RETURN s.%s as result, count(s.%s) as count", field, field, field);
         try (
                 final Transaction tx = graphDb.beginTx();
                 final Result result = graphDb.execute(query)
         ) {
-            names = Lists.newArrayList(result.<String>columnAs("result"));
             tx.success();
+            return IteratorUtil.asList(result)
+                    .stream()
+                    .map(r -> new ResultWithCount<>(
+                            r.get("result").toString(),
+                            (Long) r.get("count")
+                    ))
+                    .collect(Collectors.toList());
+
         }
-        return names;
+
     }
 
     public static Song mapNode(Node songNode) {
