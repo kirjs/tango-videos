@@ -2,9 +2,9 @@ import {Component} from 'angular2/core';
 
 import {ROUTER_DIRECTIVES} from 'angular2/router';
 import {SongService} from "../../../services/SongService";
-
+import {Observable} from "rxjs";
 @Component({
-    selector: 'songs',
+    selector: 'music',
     template: require('./music.html'),
     styles: [require('./music.css')],
     providers: [],
@@ -12,12 +12,13 @@ import {SongService} from "../../../services/SongService";
     pipes: []
 })
 export class Music {
-    songs:Array<any> = [];
+
+    orquestras:Observable<Array<any>>;
+    songs:Observable<Array<any>>;
 
     fetch() {
-        this.songService.list().subscribe((songs)=> {
-            this.songs = songs;
-        });
+        this.orquestras = this.songService.listOrquestras().map(a=>a.slice(0, 10));
+        this.songs = this.songService.listNames().map(a=>a.slice(0, 10));
     }
 
     constructor(private songService:SongService) {
