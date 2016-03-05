@@ -2,7 +2,7 @@ package com.tangovideos.services.neo4j;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.tangovideos.models.ResultWithCount;
+import com.tangovideos.models.ValueWithCount;
 import com.tangovideos.models.Song;
 import com.tangovideos.services.Interfaces.SongService;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -102,20 +102,21 @@ public class Neo4jSongService implements SongService {
     public List<String> listNames() {
         return listByField("name")
                 .stream()
-                .map(ResultWithCount::getResult)
+                .map(ValueWithCount::getValue)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ResultWithCount<String>> listOrquestras() {
+    public List<ValueWithCount<String>> listOrquestras() {
         return listByField("orquestra");
     }
 
-    private List<ResultWithCount<String>> listByField(String field) {
+    private List<ValueWithCount<String>> listByField(String field) {
         final String query = String.format(
                 "MATCH (s:Song) " +
                         "WHERE exists(s.%s) " +
-                        "RETURN s.%s as result, count(s.%s) as count", field, field, field);
+                        "RETURN s.%s as result, count(s.%s) as count " +
+                        "ORDER BY count desc", field, field, field);
         try (
                 final Transaction tx = graphDb.beginTx();
                 final Result result = graphDb.execute(query)
@@ -123,7 +124,7 @@ public class Neo4jSongService implements SongService {
             tx.success();
             return IteratorUtil.asList(result)
                     .stream()
-                    .map(r -> new ResultWithCount<>(
+                    .map(r -> new ValueWithCount<>(
                             r.get("result").toString(),
                             (Long) r.get("count")
                     ))

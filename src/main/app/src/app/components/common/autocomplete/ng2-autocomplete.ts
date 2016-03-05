@@ -95,11 +95,17 @@ export class NgAutocompleteContainer {
 
     ngOnInit() {
         this.source.map((items) => {
-            return items.map((item) => {
-                return {
-                    key: removeDiacritics(item),
-                    value: item
+            return items.map((item:any) => {
+                if (typeof item === 'string') {
+                    return {
+                        key: removeDiacritics(item),
+                        value: item
+                    }
                 }
+                if (('value' in item) && !('key' in item)) {
+                    item.key = removeDiacritics(item.value);
+                }
+                return item;
             });
         }).subscribe((data)=> {
             this.sourceData = data;

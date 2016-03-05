@@ -1,6 +1,6 @@
 package com.tangovideos.services.Interfaces;
 
-import com.tangovideos.models.ResultWithCount;
+import com.tangovideos.models.ValueWithCount;
 import com.tangovideos.models.Song;
 
 import java.util.List;
@@ -15,5 +15,5 @@ public interface SongService {
 
     List<String> listNames();
 
-    List<ResultWithCount<String>> listOrquestras();
+    List<ValueWithCount<String>> listOrquestras();
 }

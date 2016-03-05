@@ -20,7 +20,6 @@ export class SongItem {
     genreSource:Observable<Array<string>>;
     songSource:Observable<Array<string>>;
     orquestraSource:Observable<Array<string>>;
-    autocompleteSource:any = {};
 
     handleUpdate(field, data) {
         this.update.emit({field, data});
