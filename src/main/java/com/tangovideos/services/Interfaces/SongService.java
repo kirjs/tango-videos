@@ -16,4 +16,6 @@ public interface SongService {
     List<ValueWithCount<String>> listNames();
 
     List<ValueWithCount<String>> listOrquestras();
+
+    List<ValueWithCount<String>>  listGenres();
 }

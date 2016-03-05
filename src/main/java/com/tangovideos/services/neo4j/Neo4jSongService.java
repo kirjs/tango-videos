@@ -108,6 +108,11 @@ public class Neo4jSongService implements SongService {
         return listByField("orquestra");
     }
 
+    @Override
+    public List<ValueWithCount<String>> listGenres() {
+        return listByField("genre");
+    }
+
     private List<ValueWithCount<String>> listByField(String field) {
         final String query = String.format(
                 "MATCH (s:Song) " +

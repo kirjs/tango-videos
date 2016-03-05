@@ -15,10 +15,14 @@ export class Music {
 
     orquestras:Observable<Array<any>>;
     songs:Observable<Array<any>>;
+    genres:Observable<Array<any>>;
 
     fetch() {
-        this.orquestras = this.songService.listOrquestras().map(a=>a.slice(0, 10));
-        this.songs = this.songService.listNames().map(a=>a.slice(0, 10));
+        var tenItems = a=>a.slice(0, 10).filter(i=>i.value);
+
+        this.orquestras = this.songService.listOrquestras().map(tenItems);
+        this.songs = this.songService.listNames().map(tenItems);
+        this.genres = this.songService.listGenres().map(tenItems);
     }
 
     constructor(private songService:SongService) {

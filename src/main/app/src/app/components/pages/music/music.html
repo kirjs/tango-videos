@@ -14,4 +14,14 @@
             <span>{{song.count}}</span>
         </div>
     </div>
+
+    <h2>Most popular genres</h2>
+    <div *ngFor="#genre of genres | async">
+        <div>
+            <span>{{genre.value}}</span>:
+            <span>{{genre.count}}</span>
+        </div>
+    </div>
+
+
 </div>

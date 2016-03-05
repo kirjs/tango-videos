@@ -19,4 +19,8 @@ export class SongService {
     list():any {
         return this.backendService.read('songs/list');
     }
+
+    listGenres():any {
+        return this.backendService.read('songs/listGenres');
+    }
 }
