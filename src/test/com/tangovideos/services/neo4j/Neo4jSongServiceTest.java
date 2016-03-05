@@ -2,6 +2,7 @@ package com.tangovideos.services.neo4j;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.tangovideos.models.ResultWithCount;
 import com.tangovideos.models.Song;
 import org.junit.After;
 import org.junit.Before;
@@ -122,8 +123,9 @@ public class Neo4jSongServiceTest {
         final String orquestra3 = "Hedgehog";
         neo4jSongService.updateField(videoId2, 0, "orquestra", orquestra3);
         neo4jSongService.updateField(videoId2, 1, "name", "some name");
-        final ImmutableSet<String> result = ImmutableSet.copyOf(neo4jSongService.listOrquestras());
-        assertEquals(ImmutableSet.of(orquestra1, orquestra2, orquestra3), result);
+        final List<ResultWithCount<String>> resultWithCounts = neo4jSongService.listOrquestras();
+        assertEquals(resultWithCounts.get(0).getResult(), orquestra2);
+        assertEquals(resultWithCounts.get(0).getCount(), 2);
     }
 
     @Test

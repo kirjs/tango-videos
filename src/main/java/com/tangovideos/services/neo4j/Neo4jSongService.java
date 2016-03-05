@@ -107,10 +107,8 @@ public class Neo4jSongService implements SongService {
     }
 
     @Override
-    public List<String> listOrquestras() {
-        return listByField("orquestra").stream()
-                .map(ResultWithCount::getResult)
-                .collect(Collectors.toList());
+    public List<ResultWithCount<String>> listOrquestras() {
+        return listByField("orquestra");
     }
 
     private List<ResultWithCount<String>> listByField(String field) {
