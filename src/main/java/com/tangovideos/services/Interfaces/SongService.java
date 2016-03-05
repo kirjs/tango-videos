@@ -13,7 +13,7 @@ public interface SongService {
 
     List<Song> list();
 
-    List<String> listNames();
+    List<ValueWithCount<String>> listNames();
 
     List<ValueWithCount<String>> listOrquestras();
 }

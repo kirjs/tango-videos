@@ -99,11 +99,8 @@ public class Neo4jSongService implements SongService {
     }
 
     @Override
-    public List<String> listNames() {
-        return listByField("name")
-                .stream()
-                .map(ValueWithCount::getValue)
-                .collect(Collectors.toList());
+    public List<ValueWithCount<String>> listNames() {
+        return listByField("name");
     }
 
     @Override
