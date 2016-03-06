@@ -19,7 +19,11 @@ export class DancerService {
         return this.backendService.read('dancers/list');
     }
 
-    addDancer(id:any, name:any):any {
-        return this.backendService.write('dancers/{id}/addPseudonym', {name})
+    addPseudonym(id:string, name:string):any {
+        return this.backendService.write(`dancers/${id}/addPseudonym`, {name})
+    }
+
+    removePseudonym(id:string, name:string):any {
+        return this.backendService.write(`dancers/${id}/removePseudonym`, {name})
     }
 }

@@ -53,7 +53,7 @@ public class DancerResource {
         TangoVideosServiceFactory.getDancerService().addPseudonym(id, payload.getName());
 
         return Response.status(200)
-                .entity(new JSONObject(dancerService.get(id).getPseudonyms()).toString())
+                .entity(new JSONArray(dancerService.get(id).getPseudonyms()).toString())
                 .type(MediaType.APPLICATION_JSON).build();
     }
 
@@ -63,7 +63,7 @@ public class DancerResource {
         TangoVideosServiceFactory.getDancerService().removePseudonym(id, payload.getName());
 
         return Response.status(200)
-                .entity(new JSONObject(dancerService.get(id).getPseudonyms()).toString())
+                .entity(new JSONArray(dancerService.get(id).getPseudonyms()).toString())
                 .type(MediaType.APPLICATION_JSON).build();
     }
 }

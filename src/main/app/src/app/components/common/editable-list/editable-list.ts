@@ -19,7 +19,7 @@ export class EditableList {
     @Output() removeItem:EventEmitter<any>;
     @Output() selectItem:EventEmitter<any>;
     @Input() items:Array<any> = [];
-    @Input() readonly:boolean;
+    @Input() readonly:boolean = false;
     @Input() autocompleteSource = Observable.from([[]]);
 
 

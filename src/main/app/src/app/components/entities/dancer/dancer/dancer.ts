@@ -4,13 +4,14 @@ import {Observable} from "rxjs";
 import {Videos} from "../../video/videos/videos";
 import {DancerService} from "../../../../services/DancerService";
 import {AddableField} from "../../../common/addable-field/addable-field";
+import {EditableList} from "../../../common/editable-list/editable-list";
 
 @Component({
     selector: 'dancer',
     template: require('./dancer.html'),
     styles: [require('./dancer.css')],
     providers: [],
-    directives: [Videos, AddableField],
+    directives: [Videos, EditableList],
     pipes: []
 })
 export class Dancer {
@@ -18,10 +19,16 @@ export class Dancer {
     dancer:any;
 
     addPseudonym(name){
-        this.dancerService.addDancer(this.dancer.id, name).subscribe((data)=> {
-            this.dancer.pseudonyms = data;
+        this.dancerService.addPseudonym(this.dancer.name, name).subscribe((pseudonyms)=> {
+            debugger
+            this.dancer.pseudonyms = pseudonyms;
         });
+    }
 
+    removePseudonym(name){
+        this.dancerService.removePseudonym(this.dancer.name, name).subscribe((pseudonyms)=> {
+            this.dancer.pseudonyms = pseudonyms;
+        });
     }
 
     constructor(private dancerService:DancerService, params:RouteParams) {
