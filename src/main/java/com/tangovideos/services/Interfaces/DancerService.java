@@ -5,6 +5,7 @@ import com.tangovideos.services.neo4j.Neo4jDancerService;
 import org.neo4j.graphdb.Node;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface DancerService {
@@ -27,4 +28,6 @@ public interface DancerService {
     Dancer addPseudonym(String id, String name);
 
     Dancer removePseudonym(String id, String name);
+
+    Map<String,Set<String>> getPseudonyms();
 }

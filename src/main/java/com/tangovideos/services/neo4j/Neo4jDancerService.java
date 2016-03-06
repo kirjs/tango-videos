@@ -180,7 +180,7 @@ public class Neo4jDancerService implements DancerService {
         final String query = "MATCH (d:Dancer {id:{id}})" +
                 "OPTIONAL MATCH (d)-[:IS_ALSO]-(p) " +
                 "RETURN d, collect(p.id) as p";
-        final ImmutableMap<String, Object> params = ImmutableMap.of("id", id);
+        final ImmutableMap<String, Object> params = of("id", id);
 
         try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params)) {
             final Map<String, Object> next = result.next();
@@ -216,10 +216,26 @@ public class Neo4jDancerService implements DancerService {
                 "RETURN d";
         final ImmutableMap<String, Object> params = of("id", id, "name", name);
 
-
         try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params)) {
             tx.success();
             return mapNode(result.<Node>columnAs("d").next());
         }
+    }
+
+    @Override
+    public Map<String, Set<String>> getPseudonyms() {
+        final String query = "MATCH (p:Pseudonym)<-[:IS_ALSO]-(d:Dancer) " +
+                "return p.id as name, collect(d.id) as dancers";
+
+        try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query)) {
+
+            tx.success();
+            return IteratorUtil.asList(result).stream()
+                    .collect(Collectors.toMap(
+                            r -> r.get("name").toString(),
+                            r -> Sets.newHashSet((Iterable<String>) r.get("dancers"))
+                    ));
+        }
+
     }
 }

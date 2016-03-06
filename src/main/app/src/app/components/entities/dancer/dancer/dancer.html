@@ -1,11 +1,14 @@
 <div *ngIf="dancer">
     <h1>{{dancer.name}}</h1>
-    [
-    <editable-list
-            [items]="dancer.pseudonyms"
-            (removeItem)="removePseudonym($event, dancer.id)"
-            (addItem)="addPseudonym($event)"
-    ></editable-list>
-    ]
+
+    <div>
+        Pseudonyms:
+        <editable-list
+                [items]="dancer.pseudonyms"
+                (removeItem)="removePseudonym($event, dancer.id)"
+                (addItem)="addPseudonym($event)"
+        ></editable-list>
+    </div>
+
     <videos [videos]="dancer.videos"></videos>
 </div>

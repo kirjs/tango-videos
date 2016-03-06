@@ -1,5 +1,6 @@
 package com.tangovideos.services.neo4j;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.tangovideos.data.Labels;
 import com.tangovideos.models.Dancer;
@@ -205,6 +206,22 @@ public class Neo4jDancerServiceTest {
         dancerService.removePseudonym(dancerId, pseudonym);
 
         final Dancer dancer = dancerService.get(dancerId);
-        assertEquals(dancer.getPseudonyms(), ImmutableSet.of());
+        assertEquals(ImmutableSet.of(), dancer.getPseudonyms());
+    }
+
+    @Test
+    public void testGetPseudonyms() throws Exception {
+        final String dancer0 = "dancer0";
+        final String dancer1 = "dancer1";
+        final String pseudonym = "name";
+
+        TestHelpers.addVideoAndDancer(graphDb, "video-1", dancer0);
+        TestHelpers.addVideoAndDancer(graphDb, "video-2", dancer1);
+        
+        dancerService.addPseudonym(dancer0, "name");
+        assertEquals(ImmutableMap.of(pseudonym, ImmutableSet.of(dancer0)), dancerService.getPseudonyms());
+
+        dancerService.addPseudonym(dancer1, "name");
+        assertEquals(ImmutableMap.of(pseudonym, ImmutableSet.of(dancer0, dancer1)), dancerService.getPseudonyms());
     }
 }

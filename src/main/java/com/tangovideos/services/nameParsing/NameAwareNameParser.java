@@ -1,6 +1,5 @@
 package com.tangovideos.services.nameParsing;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.tangovideos.models.VideoAndDancer;
@@ -22,21 +21,7 @@ public class NameAwareNameParser implements NameExtractor {
 
 
     // Currently hardcoded, but this will come from the DB.
-    private final Map<String, Set<String>> pseudonyms = ImmutableMap.<String, Set<String>>builder()
-            .put("Chicho Frumboli", ImmutableSet.of("Mariano Frumboli"))
-            .put("MARIANO \"CHICHO\" FRÚMBOLI", ImmutableSet.of("Mariano Frumboli"))
-            .put("Kalganova Eleonora", ImmutableSet.of("Eleonora Kalganova"))
-            .put("Hermanos Macana", ImmutableSet.of("Guillermo De Fazio", "Enrique De Fazio"))
-            .put("Carlitos Espinoza", ImmutableSet.of("Carlos Espinoza"))
-            .put("Сергей Сиротюк", ImmutableSet.of("Sergey Sirotyuk"))
-            .put("Kalganova Eoelonora", ImmutableSet.of("Eleonora Kalganova"))
-            .put("Анна Зеленова", ImmutableSet.of("Anna Zelenova"))
-            .put("Елена Кузнецова", ImmutableSet.of("Elena Kuznetsova"))
-            .put("Максим Извеков", ImmutableSet.of("Maxim Izvekov"))
-            .put("Александр Манясев", ImmutableSet.of("Alexander Manyasev"))
-            .put("Новикова Анна", ImmutableSet.of("Anna Novikova"))
-
-            .build();
+    private final Map<String, Set<String>> pseudonyms;
 
 
     private final Set<String> notDancers = ImmutableSet.<String>builder()
@@ -46,7 +31,8 @@ public class NameAwareNameParser implements NameExtractor {
             .add("Viginia Pandolfi")
             .build();
 
-    public NameAwareNameParser(Set<Set<String>> knownCouples) {
+    public NameAwareNameParser(Set<Set<String>> knownCouples, Map<String, Set<String>> pseudonyms) {
+        this.pseudonyms = pseudonyms;
 
         this.basicNameParser = new BasicNameParser();
         knownDancers = knownCouples.stream()

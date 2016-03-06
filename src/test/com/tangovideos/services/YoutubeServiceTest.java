@@ -1,5 +1,6 @@
 package com.tangovideos.services;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.tangovideos.models.Channel;
 import com.tangovideos.models.Video;
@@ -30,8 +31,8 @@ public class YoutubeServiceTest {
     @Before
     public void before() {
         final NameAwareNameParser nameExtractor = new NameAwareNameParser(
-                ImmutableSet.of(ImmutableSet.of("Pablo Rodriguez"))
-        );
+                ImmutableSet.of(ImmutableSet.of("Pablo Rodriguez")),
+                ImmutableMap.of());
         youtubeService = new YoutubeService(nameExtractor);
     }
 
