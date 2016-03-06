@@ -20,6 +20,6 @@ export class DancerService {
     }
 
     addDancer(id:any, name:any):any {
-        return this.backendService.write('dancers/addPseudonym', {id, name})
+        return this.backendService.write('dancers/{id}/addPseudonym', {name})
     }
 }

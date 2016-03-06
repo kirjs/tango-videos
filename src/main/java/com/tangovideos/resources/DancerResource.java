@@ -1,6 +1,7 @@
 package com.tangovideos.resources;
 
 import com.tangovideos.models.Dancer;
+import com.tangovideos.resources.inputs.JustName;
 import com.tangovideos.services.Interfaces.DancerService;
 import com.tangovideos.services.Interfaces.VideoService;
 import com.tangovideos.services.TangoVideosServiceFactory;
@@ -8,10 +9,7 @@ import com.tangovideos.services.neo4j.Neo4jDancerService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -42,6 +40,17 @@ public class DancerResource {
     @Path("{id}")
     public Response getVideo(@PathParam("id") String id) {
         final Dancer dancer = TangoVideosServiceFactory.getDancerService().get(id);
+        dancer.setVideos(videoService.listByDancer(id));
+
+        return Response.status(200)
+                .entity(new JSONObject(dancer).toString())
+                .type(MediaType.APPLICATION_JSON).build();
+    }
+
+    @POST
+    @Path("{id}/addPseudonym")
+    public Response addPseudonym(@PathParam("id") String id, JustName payload) {
+        final Dancer dancer = TangoVideosServiceFactory.getDancerService().addPseudonym(id, payload.getName());
         dancer.setVideos(videoService.listByDancer(id));
 
         return Response.status(200)

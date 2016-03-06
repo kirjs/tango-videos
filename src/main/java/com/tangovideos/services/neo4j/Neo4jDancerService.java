@@ -1,8 +1,8 @@
 package com.tangovideos.services.neo4j;
 
-import com.google.api.client.util.Sets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.tangovideos.data.Labels;
 import com.tangovideos.models.Dancer;
 import com.tangovideos.models.Video;
@@ -21,7 +21,6 @@ import static com.google.common.collect.ImmutableMap.of;
 
 public class Neo4jDancerService implements DancerService {
     private final GraphDatabaseService graphDb;
-    private Label label = Labels.DANCER.label;
 
     public enum SortBy {
         VIDEO_COUNT
@@ -178,12 +177,34 @@ public class Neo4jDancerService implements DancerService {
 
     @Override
     public Dancer get(String id) {
-        Dancer dancer;
-        try (final Transaction tx = this.graphDb.beginTx()) {
-            dancer = mapNode(graphDb.findNode(label, "id", id));
+        final String query = "MATCH (d:Dancer {id:{id}})" +
+                "OPTIONAL MATCH (d)-[:IS_ALSO]-(p) " +
+                "RETURN d, collect(p.id) as p";
+        final ImmutableMap<String, Object> params = ImmutableMap.of("id", id);
+
+        try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params)) {
+            final Map<String, Object> next = result.next();
+            final Dancer dancer = this.mapNode((Node) next.get("d"));
+
+            dancer.setPseudonyms(Sets.newHashSet((Iterable<String>) next.get("p")));
             tx.success();
+
+            return dancer;
         }
-        return dancer;
     }
 
+    @Override
+    public Dancer addPseudonym(String id, String name) {
+        final String query = "MERGE (d:Dancer {id: {id}}) " +
+                "MERGE (p:Pseudonym {id: {name}}) " +
+                "MERGE (d)-[:IS_ALSO]->(p) " +
+                "RETURN d";
+        final ImmutableMap<String, Object> params = of("id", id, "name", name);
+
+
+        try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params)) {
+            tx.success();
+            return mapNode(result.<Node>columnAs("d").next());
+        }
+    }
 }

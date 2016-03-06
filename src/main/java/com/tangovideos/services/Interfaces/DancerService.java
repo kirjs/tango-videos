@@ -23,4 +23,6 @@ public interface DancerService {
     Set<String> getForVideo(String videoId);
 
     Dancer get(String id);
+
+    Dancer addPseudonym(String id, String name);
 }
