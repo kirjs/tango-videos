@@ -20,7 +20,6 @@ export class Dancer {
 
     addPseudonym(name){
         this.dancerService.addPseudonym(this.dancer.name, name).subscribe((pseudonyms)=> {
-            debugger
             this.dancer.pseudonyms = pseudonyms;
         });
     }
