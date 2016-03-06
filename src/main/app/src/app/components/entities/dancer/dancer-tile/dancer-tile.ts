@@ -1,5 +1,5 @@
 import {Component, Input, ViewChildren, Output, EventEmitter} from 'angular2/core';
-import {ROUTER_DIRECTIVES} from 'angular2/router';
+import {Router} from 'angular2/router';
 
 import {Observable} from "rxjs";
 import {NgAutocompleteContainer} from "../../../common/autocomplete/ng2-autocomplete";
@@ -15,7 +15,7 @@ import {EditableList} from "../../../common/editable-list/editable-list";
     template: require('./dancer-tile.html'),
     styles: [require('./dancer-tile.css'), require('../../../common/list.css')],
     providers: [],
-    directives: [ROUTER_DIRECTIVES, NgAutocompleteContainer, NgAutocompleteInput, AddableField, Icon, EditableList],
+    directives: [NgAutocompleteContainer, NgAutocompleteInput, AddableField, Icon, EditableList],
     pipes: []
 })
 export class DancerTile {
@@ -25,10 +25,14 @@ export class DancerTile {
     @Output() remove = new EventEmitter();
     private dancersSource:Observable<String>;
 
-    constructor(dancers:DancerService) {
+    constructor(dancers:DancerService, private router:Router) {
         this.dancersSource = dancers.listNames().map(result=> {
             return result.map((dancer)=> dancer.name);
         });
+    }
+
+    selectDancer(dancer) {
+        this.router.navigate(['Dancer', {id: dancer}])
     }
 
     addDancer(dancer:String) {
