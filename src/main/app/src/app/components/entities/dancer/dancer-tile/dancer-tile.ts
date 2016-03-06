@@ -7,6 +7,7 @@ import {NgAutocompleteInput} from "../../../common/autocomplete/ng2-autocomplete
 import {AddableField} from "../../../common/addable-field/addable-field";
 import {Icon} from "../../../common/icon/icon";
 import {DancerService} from "../../../../services/DancerService";
+import {EditableList} from "../../../common/editable-list/editable-list";
 
 
 @Component({
@@ -14,7 +15,7 @@ import {DancerService} from "../../../../services/DancerService";
     template: require('./dancer-tile.html'),
     styles: [require('./dancer-tile.css'), require('../../../common/list.css')],
     providers: [],
-    directives: [ROUTER_DIRECTIVES, NgAutocompleteContainer, NgAutocompleteInput, AddableField, Icon],
+    directives: [ROUTER_DIRECTIVES, NgAutocompleteContainer, NgAutocompleteInput, AddableField, Icon, EditableList],
     pipes: []
 })
 export class DancerTile {
@@ -31,15 +32,10 @@ export class DancerTile {
     }
 
     addDancer(dancer:String) {
-        // TODO: Proper escaping
-        dancer = dancer.replace('/', ' ').trim();
-        this.add.emit(dancer);
+        this.add.emit(dancer.replace('/', ' '));
     }
 
-    removeDancer(event, dancer) {
-        event.preventDefault();
-        event.stopPropagation();
+    removeDancer(dancer) {
         this.remove.emit(dancer);
-
     }
 }

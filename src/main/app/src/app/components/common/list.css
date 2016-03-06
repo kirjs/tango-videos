@@ -8,6 +8,7 @@
 
 .tile:hover {
     cursor: pointer;
+
     text-decoration: underline;
 }
 
@@ -17,8 +18,11 @@
     visibility: visible;
 }
 
-.tile:hover .remove:hover {
-    box-shadow: 2px 2px 2px #ddd;
+.tile .remove {
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    border-radius: 50%;
     background-color: #ddd;
 }
 

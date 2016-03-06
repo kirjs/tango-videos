@@ -1,0 +1,12 @@
+<span *ngIf="saving">
+    Please wait, saving your changes.
+</span>
+<span *ngIf="!saving">
+    <span *ngFor="#item of items" class="item">
+        <span class="tile" (click)="handleSelectItem(item)">
+            <span class="name">{{item}}</span>
+            <span class="remove" (click)="handleRemoveItem($event, item)" *ngIf="!readonly">&times;</span>
+        </span>
+    </span>
+    <addable-field *ngIf="!readonly" [autocompleteSource]="autocompleteSource" (onAdd)="handleAddItem($event)"></addable-field>
+</span>

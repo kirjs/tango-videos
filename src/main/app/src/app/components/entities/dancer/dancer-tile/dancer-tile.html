@@ -1,13 +1,8 @@
-<div *ngIf="saving">
-    Please wait, saving your changes.
-</div>
-<div *ngIf="!saving">
-    <icon name = "dancer"></icon>
-    <div *ngFor="#dancer of dancers" class="dancer-item">
-        <div class="tile" [routerLink]="['Dancer', {id: dancer}]">
-            <div class="name">{{dancer}}</div>
-            <div class="remove" (click)="removeDancer($event, dancer)" *ngIf = "!readonly">&times;</div>
-        </div>
-    </div>
-    <addable-field *ngIf = "!readonly" [autocompleteSource] = "dancersSource" (onAdd) = "addDancer($event)"></addable-field>
-</div>
+<icon name="dancer"></icon>
+<editable-list
+        [items]="dancers"
+        [readonly]="readonly"
+        [autocompleteSource]="dancersSource"
+        (removeItem)="removeDancer($event, dancer)"
+        (addItem)="addDancer($event)"
+></editable-list>
