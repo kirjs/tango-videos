@@ -1,4 +1,5 @@
-<div *ngIf = "dancer">
+<div *ngIf="dancer">
     <h1>{{dancer.name}}</h1>
-    <videos [videos] = "dancer.videos"></videos>
+    <addable-field addButtonLabel="Add a pseudonym" (onAdd)="addPseudonym($event)"></addable-field>
+    <videos [videos]="dancer.videos"></videos>
 </div>
