@@ -194,4 +194,17 @@ public class Neo4jDancerServiceTest {
                 OtherPseudonym
         ));
     }
+
+    @Test
+    public void testRemovePseudonym() throws Exception {
+        final String dancerId = "dancer0";
+        final String pseudonym = "name";
+
+        TestHelpers.addVideoAndDancer(graphDb, "video-1", dancerId);
+        dancerService.addPseudonym(dancerId, pseudonym);
+        dancerService.removePseudonym(dancerId, pseudonym);
+
+        final Dancer dancer = dancerService.get(dancerId);
+        assertEquals(dancer.getPseudonyms(), ImmutableSet.of());
+    }
 }

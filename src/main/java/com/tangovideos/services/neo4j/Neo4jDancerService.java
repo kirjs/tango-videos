@@ -207,4 +207,19 @@ public class Neo4jDancerService implements DancerService {
             return mapNode(result.<Node>columnAs("d").next());
         }
     }
+
+    @Override
+    public Dancer removePseudonym(String id, String name) {
+        final String query = "MATCH (d:Dancer {id: {id}})-[r:IS_ALSO]->(p:Pseudonym {id: {name}}) " +
+                "DELETE r " +
+                "DELETE p " +
+                "RETURN d";
+        final ImmutableMap<String, Object> params = of("id", id, "name", name);
+
+
+        try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params)) {
+            tx.success();
+            return mapNode(result.<Node>columnAs("d").next());
+        }
+    }
 }

@@ -50,11 +50,20 @@ public class DancerResource {
     @POST
     @Path("{id}/addPseudonym")
     public Response addPseudonym(@PathParam("id") String id, JustName payload) {
-        final Dancer dancer = TangoVideosServiceFactory.getDancerService().addPseudonym(id, payload.getName());
-        dancer.setVideos(videoService.listByDancer(id));
+        TangoVideosServiceFactory.getDancerService().addPseudonym(id, payload.getName());
 
         return Response.status(200)
-                .entity(new JSONObject(dancer).toString())
+                .entity(new JSONObject(dancerService.get(id).getPseudonyms()).toString())
+                .type(MediaType.APPLICATION_JSON).build();
+    }
+
+    @POST
+    @Path("{id}/removePseudonym")
+    public Response removePseudonym(@PathParam("id") String id, JustName payload) {
+        TangoVideosServiceFactory.getDancerService().removePseudonym(id, payload.getName());
+
+        return Response.status(200)
+                .entity(new JSONObject(dancerService.get(id).getPseudonyms()).toString())
                 .type(MediaType.APPLICATION_JSON).build();
     }
 }

@@ -25,4 +25,6 @@ public interface DancerService {
     Dancer get(String id);
 
     Dancer addPseudonym(String id, String name);
+
+    Dancer removePseudonym(String id, String name);
 }
