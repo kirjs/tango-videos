@@ -32,17 +32,17 @@ export class NeedsReview {
         {
             name: 'Dancers',
             key: 'dancers',
-            defaultValue: true
+            defaultValue: false
         },
         {
             name: 'Song name',
             key: 'song',
-            defaultValue: true
+            defaultValue: false
         },
         {
             name: 'Orquestra',
             key: 'orquestra',
-            defaultValue: true
+            defaultValue: false
         },
         {
             name: 'Song genre',
@@ -52,22 +52,23 @@ export class NeedsReview {
         {
             name: 'Year',
             key: 'year',
-            defaultValue: true
+            defaultValue: false
         }
     ];
 
     filterValues:any;
 
-    updateFilter(filter, value){
+    updateFilter(filter, value) {
         this.filterValues[filter] = value;
         this.fetch();
     }
 
-    fetch(){
+    fetch() {
         this.videoService.needsReview(this.filterValues).subscribe((videos)=> {
             this.videos = videos;
         });
     }
+
     constructor(private videoService:VideoService) {
         this.filterValues = this.filters.reduce((result, filter)=> {
             result[filter.key] = filter.defaultValue;
