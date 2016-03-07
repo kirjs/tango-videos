@@ -199,6 +199,7 @@ public class Neo4jDancerService implements DancerService {
                 "MERGE (p:Pseudonym {id: {name}}) " +
                 "MERGE (d)-[:IS_ALSO]->(p) " +
                 "RETURN d";
+
         final ImmutableMap<String, Object> params = of("id", id, "name", name);
 
 

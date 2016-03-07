@@ -2,6 +2,7 @@ package com.tangovideos.resources;
 
 import com.tangovideos.models.Dancer;
 import com.tangovideos.resources.inputs.JustName;
+import com.tangovideos.services.Interfaces.AdminToolsService;
 import com.tangovideos.services.Interfaces.DancerService;
 import com.tangovideos.services.Interfaces.VideoService;
 import com.tangovideos.services.TangoVideosServiceFactory;
@@ -19,6 +20,7 @@ public class DancerResource {
 
     private DancerService dancerService = TangoVideosServiceFactory.getDancerService();
     private VideoService videoService = TangoVideosServiceFactory.getVideoService();
+    private AdminToolsService adminToolsService = TangoVideosServiceFactory.getAdminToolsService();
 
     @GET
     @Path("listNames")
@@ -51,6 +53,8 @@ public class DancerResource {
     @Path("{id}/addPseudonym")
     public Response addPseudonym(@PathParam("id") String id, JustName payload) {
         TangoVideosServiceFactory.getDancerService().addPseudonym(id, payload.getName());
+        adminToolsService.renameDancer(payload.getName(), id);
+
 
         return Response.status(200)
                 .entity(new JSONArray(dancerService.get(id).getPseudonyms()).toString())
