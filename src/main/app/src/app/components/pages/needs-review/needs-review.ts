@@ -65,7 +65,7 @@ export class NeedsReview {
 
     fetch() {
         this.videoService.needsReview(this.filterValues).subscribe((videos)=> {
-            this.videos = videos;
+            this.videos = videos.slice(0,20);
         });
     }
 
@@ -74,6 +74,6 @@ export class NeedsReview {
             result[filter.key] = filter.defaultValue;
             return result;
         }, {});
-        this.fetch();
+        this.fetch()
     }
 }
