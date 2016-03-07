@@ -77,7 +77,7 @@ public class Neo4jVideoService implements VideoService {
                 node.getProperty("publishedAt").toString()
         );
 
-        video.setDescription(node.getProperty("publishedAt").toString());
+        video.setDescription(node.getProperty("description").toString());
         if (node.hasProperty("recordedAt")) {
             video.setRecordedAt(node.getProperty("recordedAt").toString());
         }

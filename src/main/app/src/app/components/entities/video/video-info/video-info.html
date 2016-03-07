@@ -10,9 +10,11 @@
             <a class="youtube-social-icon-red-24px" href="https://www.youtube.com/watch?v={{video.id}}">
                 <icon name="youtube"></icon>
             </a>
+            {{video.title}}
         </h2>
     </div>
-    {{video.description}}
+    <div class="line">{{video.description}}</div>
+
     <div class="line">
         <icon name="date"></icon>
         <editable-field (update)="handleUpdate('recordedAt', $event)"
