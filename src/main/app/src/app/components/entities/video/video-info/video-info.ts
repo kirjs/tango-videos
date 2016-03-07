@@ -5,6 +5,8 @@ import {EditableField} from "../../../common/editable-field/editable-field";
 import {Icon} from "../../../common/icon/icon";
 import {NeedsPermission} from "../../../common/needs-permission/needs-permission";
 import {VideoService} from "../../../../services/VideoService";
+import {ClickableSuggestion} from "../../../common/clickable-suggestion/clickable-suggestion";
+import {SongService} from "../../../../services/SongService";
 
 
 @Component({
@@ -12,12 +14,14 @@ import {VideoService} from "../../../../services/VideoService";
     template: require('./video-info.html'),
     styles: [require('./video-info.css')],
     providers: [],
-    directives: [DancerTile, SongList, EditableField, Icon, NeedsPermission],
+    directives: [DancerTile, SongList, EditableField, Icon, NeedsPermission, ClickableSuggestion],
     pipes: []
 })
 export class VideoInfo {
     @Input() video:any;
     @Input() readonly:boolean = true;
+    private orquestras = [];
+    private existingOrquestras: Array<String> = [];
 
     // TODO: We have 2 different date formats here, need to standardize
     // TODO: Ugly hack
@@ -44,9 +48,18 @@ export class VideoInfo {
         });
     }
 
+    ngOnChanges(){
+        this.updateExistingOrquestras(this.video.songs);
+    }
+
+    updateExistingOrquestras(songs){
+       this.existingOrquestras = songs.map(song=>song.orquestra);
+
+    }
     updateSong(info) {
         this.videoService.updateSongInfo(this.video.id, info.index, info.field, info.data).subscribe((song)=> {
             this.video.songs[info.index] = song;
+            this.updateExistingOrquestras(this.video.songs);
         });
     }
 
@@ -78,8 +91,10 @@ export class VideoInfo {
         });
     }
 
-    constructor(private videoService:VideoService) {
-
+    constructor(private videoService:VideoService, private songService:SongService) {
+        songService.listOrquestras().subscribe((orquestras)=> {
+            this.orquestras = orquestras.map(r=>r.value);
+        });
 
     }
 }

@@ -34,6 +34,14 @@
         <div (click)="hide()" class="hide admin-control">&times;</div>
         <div (click)="markComplete(true)" class="complete admin-control">✓</div>
     </div>
+
+
+    <clickable-suggestion [text]="video.title+video.description"
+                          [options]="orquestras"
+                          (addSuggestion)="updateSong({index: 0, field: 'orquestra',data: $event})"
+                          [exclude]="existingOrquestras"
+                          label="Suggested orquestras"
+    ></clickable-suggestion>
 </div>
 
 

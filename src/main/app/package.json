@@ -13,6 +13,7 @@
   "author": "Kirill Cherkashin <kirill@kcherkashin.org>",
   "license": "MIT",
   "devDependencies": {
+    "diacritics": "^1.2.3",
     "raw-loader": "^0.5.1",
     "ts-loader": "^0.7.2",
     "typescript": "^1.7.3",

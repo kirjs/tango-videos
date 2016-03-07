@@ -1,0 +1,8 @@
+.suggestions {
+    font-size: 12px;
+}
+
+.suggestion {
+    cursor: pointer;
+    text-decoration: underline;
+}
