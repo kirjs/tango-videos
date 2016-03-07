@@ -27,9 +27,9 @@ export class ClickableSuggestion {
     }
 
     ngOnChanges() {
-        var text = removeDiacritics(this.text);
+        var text = removeDiacritics(this.text).toLowerCase();
         this.suggestions = this.options.filter((option)=> {
-            return text.indexOf(removeDiacritics(option)) > -1;
+            return text.indexOf(removeDiacritics(option).toLowerCase().trim()) > -1;
         }).filter((option)=> {
             return this.exclude.indexOf(option) === -1;
         }).filter(option=>option.length > 2);

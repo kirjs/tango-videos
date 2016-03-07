@@ -21,7 +21,9 @@ export class VideoInfo {
     @Input() video:any;
     @Input() readonly:boolean = true;
     private orquestras = [];
+    private songNames = [];
     private existingOrquestras: Array<String> = [];
+    private existingSongNames: Array<String> = [];
 
     // TODO: We have 2 different date formats here, need to standardize
     // TODO: Ugly hack
@@ -54,7 +56,7 @@ export class VideoInfo {
 
     updateExistingOrquestras(songs){
        this.existingOrquestras = songs.map(song=>song.orquestra);
-
+       this.existingSongNames = songs.map(song=>song.name);
     }
     updateSong(info) {
         this.videoService.updateSongInfo(this.video.id, info.index, info.field, info.data).subscribe((song)=> {
@@ -94,6 +96,9 @@ export class VideoInfo {
     constructor(private videoService:VideoService, private songService:SongService) {
         songService.listOrquestras().subscribe((orquestras)=> {
             this.orquestras = orquestras.map(r=>r.value);
+        });
+        songService.listNames().subscribe((names)=> {
+            this.songNames = names.map(r=>r.value);
         });
 
     }
