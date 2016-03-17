@@ -7,6 +7,7 @@ import {NeedsPermission} from "../../../common/needs-permission/needs-permission
 import {VideoService} from "../../../../services/VideoService";
 import {ClickableSuggestion} from "../../../common/clickable-suggestion/clickable-suggestion";
 import {SongService} from "../../../../services/SongService";
+import {KeyValueUtils} from "../../../../interfaces/keyValue";
 
 
 @Component({
@@ -22,8 +23,8 @@ export class VideoInfo {
     @Input() readonly:boolean = true;
     private orquestras = [];
     private songNames = [];
-    private existingOrquestras: Array<String> = [];
-    private existingSongNames: Array<String> = [];
+    private existingOrquestras:Array<String> = [];
+    private existingSongNames:Array<String> = [];
 
     // TODO: We have 2 different date formats here, need to standardize
     // TODO: Ugly hack
@@ -50,14 +51,15 @@ export class VideoInfo {
         });
     }
 
-    ngOnChanges(){
+    ngOnChanges() {
         this.updateExistingOrquestras(this.video.songs);
     }
 
-    updateExistingOrquestras(songs){
-       this.existingOrquestras = songs.map(song=>song.orquestra);
-       this.existingSongNames = songs.map(song=>song.name);
+    updateExistingOrquestras(songs) {
+        this.existingOrquestras = songs.map(song=>song.orquestra);
+        this.existingSongNames = songs.map(song=>song.name);
     }
+
     updateSong(info) {
         this.videoService.updateSongInfo(this.video.id, info.index, info.field, info.data).subscribe((song)=> {
             this.video.songs[info.index] = song;
@@ -92,13 +94,25 @@ export class VideoInfo {
             this.video.dancers = data;
         });
     }
+    static extractLastName(name: string){
+        var mappings = {
+            'La Juan D\'arienzo': 'La Juan D\'arienzo',
+            'Sexteto Tango': 'Sexteto Tango',
+            'Uni Tango': 'Uni Tango'
+        };
+        if(name in mappings){
+            return mappings[name];
+        }
+        return name.split(' ').pop();
+    }
 
     constructor(private videoService:VideoService, private songService:SongService) {
         songService.listOrquestras().subscribe((orquestras)=> {
-            this.orquestras = orquestras.map(r=>r.value);
+            this.orquestras =
+                orquestras.map(r => KeyValueUtils.toKeyValue(VideoInfo.extractLastName(r.value), r.value));
         });
         songService.listNames().subscribe((names)=> {
-            this.songNames = names.map(r=>r.value);
+            this.songNames = names.map(KeyValueUtils.valueObjectToKeyValue);
         });
 
     }

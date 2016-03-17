@@ -1,4 +1,5 @@
 import {Component, Input, Output, EventEmitter} from 'angular2/core';
+import {KeyValue} from "../../../interfaces/keyValue";
 
 var removeDiacritics = require('diacritics').remove;
 
@@ -13,10 +14,10 @@ var removeDiacritics = require('diacritics').remove;
 export class ClickableSuggestion {
     @Input() label:String = 'Suggested items';
     @Input() text:String = '';
-    @Input() options:Array<String> = [];
+    @Input() options:Array<KeyValue> = [];
     @Input() exclude:Array<String> = [];
     @Output() addSuggestion;
-    private suggestions:Array<String>;
+    private suggestions:Array<KeyValue>;
 
     constructor() {
         this.addSuggestion = new EventEmitter();
@@ -27,12 +28,14 @@ export class ClickableSuggestion {
     }
 
     ngOnChanges() {
-        var text = removeDiacritics(this.text).toLowerCase();
+        var text = removeDiacritics(this.text)
+            .replace('´', '\'').toLowerCase();
+
         this.suggestions = this.options.filter((option)=> {
-            return text.indexOf(removeDiacritics(option).toLowerCase().trim()) > -1;
+            return text.indexOf(removeDiacritics(option.key).toLowerCase().trim()) > -1;
         }).filter((option)=> {
-            return this.exclude.indexOf(option) === -1;
-        }).filter(option=>option.length > 2);
+            return this.exclude.indexOf(option.key) === -1;
+        }).filter(option=>option.key.length > 2);
     }
 
 }

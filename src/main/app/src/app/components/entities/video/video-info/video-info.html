@@ -49,7 +49,7 @@
     ></clickable-suggestion>
     <clickable-suggestion *ngIf="!video.songs[0] || !video.songs[0].genre"
                           [text]="video.title+video.description+'tangovalsmilonga'"
-                          [options]="['Tango', 'Milonga', 'Vals']"
+                          [options]="[{key: 'Tango', value: 'Tango'},{key: 'Milonga', value: 'Milonga'},{key: 'Vals', value: 'Vals'}]"
                           (addSuggestion)="updateSong({index: 0, field: 'genre',data: $event})"
                           label="Suggested genres"
     ></clickable-suggestion>

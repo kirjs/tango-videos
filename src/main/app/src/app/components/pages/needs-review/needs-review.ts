@@ -65,7 +65,7 @@ export class NeedsReview {
 
     fetch() {
         this.videoService.needsReview(this.filterValues).subscribe((videos)=> {
-            this.videos = videos.slice(0,20);
+            this.videos = videos.slice(0,50);
         });
     }
 
