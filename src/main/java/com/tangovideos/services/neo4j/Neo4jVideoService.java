@@ -201,7 +201,7 @@ public class Neo4jVideoService implements VideoService {
     }
 
 
-    final private Set<String> allowedParameters = ImmutableSet.of("recordedAt");
+    final private Set<String> allowedParameters = ImmutableSet.of("recordedAt", "type");
 
     @Override
     public void updateField(String id, String field, String value) {
