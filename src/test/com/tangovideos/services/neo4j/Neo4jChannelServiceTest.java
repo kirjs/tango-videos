@@ -181,12 +181,29 @@ public class Neo4jChannelServiceTest extends EasyMockSupport {
         assertEquals(videosCount, l);
     }
 
+
+    @Test
+    public void testAutoupdate(){
+        final String id = "test";
+        channelService.addChannel(generateFakeChannel(id));
+
+        // Autoupdate is disabled by default
+        assertFalse(channelService.get(id).getAutoupdate());
+
+        // If we enable autoupdate
+        channelService.setAutoUpdate(id, true);
+        assertTrue(channelService.get(id).getAutoupdate());
+
+        // If we disable autoupdate
+        channelService.setAutoUpdate(id, false);
+        assertFalse(channelService.get(id).getAutoupdate());
+    }
+
     @Test
     public void testExists() throws Exception {
         final String id = "test";
         final Channel channel = generateFakeChannel(id);
         channelService.addChannel(channel);
-
         assertTrue(channelService.exists(id));
         assertFalse(channelService.exists("IDontExist"));
     }

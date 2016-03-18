@@ -8,6 +8,7 @@ public class Channel {
     private String title;
     private long lastUpdated;
     private long videosCount;
+    private boolean autoupdate;
 
     public Channel(String id) {
         this.id = id;
@@ -51,5 +52,17 @@ public class Channel {
 
     public void setVideosCount(long videosCount) {
         this.videosCount = videosCount;
+    }
+
+    public boolean getAutoupdate() {
+        return autoupdate;
+    }
+
+    public boolean isAutoupdate() {
+        return autoupdate;
+    }
+
+    public void setAutoupdate(boolean autoupdate) {
+        this.autoupdate = autoupdate;
     }
 }
