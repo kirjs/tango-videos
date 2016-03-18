@@ -189,9 +189,14 @@ public class Neo4jVideoService implements VideoService {
                 .map(Object::toString)
                 .collect(Collectors.joining(" OR "));
 
-        if (queryParams.length() > 0) {
-            queryParams = "WHERE " + queryParams + " ";
-        }
+
+
+            queryParams = "WHERE (" +
+                    "v.type = 'Dance performance' OR " +
+                    "v.type = '' OR " +
+                    "NOT exists(v.type))  "
+                    + (queryParams.isEmpty() ? "" : " AND ("+ queryParams + ") ");
+
 
 
         final String query = "MATCH (v:Video) " +

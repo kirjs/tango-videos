@@ -117,6 +117,7 @@ public class Neo4jVideoServiceTest {
         final String noOrquestraId = "videoId3";
         final String noGenreId = "videoId4";
         final String noYearId = "videoId5";
+        final String nonDancePreformanceVideoId = "not performance";
 
 
         final Node video0 = TestHelpers.addVideo(graphDb, videoId0);
@@ -134,6 +135,10 @@ public class Neo4jVideoServiceTest {
         songService.updateField(noDancersId, 0, "genre", "genre");
         songService.updateField(noDancersId, 0, "year", "2000");
         songService.updateField(noDancersId, 0, "orquestra", "orquestra");
+
+        // This video should be ignored
+        TestHelpers.addVideo(graphDb, nonDancePreformanceVideoId);
+        videoService.updateField(nonDancePreformanceVideoId, "type", "Non tango");
 
         // No song name
         final Node video2 = TestHelpers.addVideo(graphDb, noSongId);
@@ -280,7 +285,7 @@ public class Neo4jVideoServiceTest {
 
         final Node node = TestHelpers.addVideo(graphDb, videoId);
         videoService.updateField(videoId, "recordedAt", newValue);
-        try(Transaction tx = graphDb.beginTx()){
+        try (Transaction tx = graphDb.beginTx()) {
             assertEquals(node.getProperty("recordedAt"), newValue);
             tx.success();
         }
