@@ -35,6 +35,14 @@
         <div (click)="markComplete(true)" class="complete admin-control">✓</div>
     </div>
 
+    <div class="line">
+        <editable-field (update)="handleUpdate('type', $event)"
+                        emptyValue="Unknown type"
+                        label="Type"
+                        [value]="video.type">
+        </editable-field>
+    </div>
+
     <clickable-suggestion *ngIf="!video.songs[0] || !video.songs[0].orquestra"
                           [text]="video.title+video.description"
                           [options]="orquestras"
