@@ -50,3 +50,38 @@ h3 {
     font-size: 12px;
 }
 
+
+.quick.quick-dance {
+    background-color: #ff572f;
+    color: #fff;
+}
+
+.quick.quick-music {
+    background-color: #ffcb00;
+    color: #fff;
+}
+
+.quick.quick-non-tango {
+    background-color: #d5d4d3;
+    color: #999;
+}
+
+.quick.quick:hover {
+    background-color: #000;
+    color: white;
+    box-shadow: 2px 2px 2px #999;
+}
+
+.quick {
+
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-color: #d5d4d3;
+    color: #999;
+    line-height: 16px;
+    text-align: center;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 50%;
+}

@@ -36,6 +36,12 @@
     </div>
 
     <div class="line">
+        <span *ngIf="!video.type">
+            <span class = "quick-dance quick" (click)="handleUpdate('type', 'Dance performance')">D</span>
+            <span class = "quick-music quick"   (click)="handleUpdate('type', 'Music performance')">M</span>
+            <span class = "quick-non-tango quick"   (click)="handleUpdate('type', 'Tango history')">H</span>
+            <span class = "quick-non-tango quick"   (click)="handleUpdate('type', 'Not tango')">N</span>
+        </span>
         <editable-field (update)="handleUpdate('type', $event)"
                         emptyValue="Unknown type"
                         label="Type"

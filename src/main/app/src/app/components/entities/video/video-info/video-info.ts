@@ -42,6 +42,7 @@ export class VideoInfo {
         }
 
         this.videoService.update(this.video.id, field, value).subscribe(x => {
+            this.video[field] = value;
         });
     }
 
