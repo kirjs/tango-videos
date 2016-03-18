@@ -19,6 +19,6 @@ export class ChannelService {
     }
 
     setAutoUpdate(id:any, value:any):Observable<any> {
-        return this.backendService.write('channels/autoupdate', {key: id, value});
+        return this.backendService.write(`channels/${id}/autoupdate`, {value});
     }
 }

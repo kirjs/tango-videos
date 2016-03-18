@@ -2,6 +2,7 @@ package com.tangovideos.resources;
 
 import com.tangovideos.models.Channel;
 import com.tangovideos.resources.inputs.JustId;
+import com.tangovideos.resources.inputs.JustValue;
 import com.tangovideos.services.Interfaces.ChannelService;
 import com.tangovideos.services.TangoVideosServiceFactory;
 import com.tangovideos.services.YoutubeService;
@@ -29,6 +30,15 @@ public class ChannelResource {
 
         channelService.addChannel(channel);
 
+        return list();
+    }
+
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("{id}/autoupdate")
+    public Response autoupdate (@PathParam("id") String id, JustValue payload) {
+        channelService.setAutoupdate(id, payload.getValue());
         return list();
     }
 

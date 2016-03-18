@@ -6,6 +6,7 @@ import com.tangovideos.services.combined.CombinedVideoService;
 import org.neo4j.graphdb.Node;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ChannelService {
     Node addChannel(Channel channel);
@@ -21,4 +22,8 @@ public interface ChannelService {
     long fetchAllVideos(YoutubeService youtubeService, CombinedVideoService combinedVideoService, String channelId);
 
     boolean exists(String channelId);
+
+    void setAutoupdate(String id, boolean b);
+
+    Set<String> getAutoupdatedChannelIds();
 }

@@ -2,8 +2,10 @@ package com.tangovideos.services.neo4j;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.tangovideos.models.Channel;
 import com.tangovideos.models.Video;
+import com.tangovideos.services.Interfaces.ChannelService;
 import com.tangovideos.services.Interfaces.DancerService;
 import com.tangovideos.services.Interfaces.VideoService;
 import com.tangovideos.services.YoutubeService;
@@ -30,7 +32,7 @@ public class Neo4jChannelServiceTest extends EasyMockSupport {
 
 
     private GraphDatabaseService graphDb;
-    private Neo4jChannelService channelService;
+    private ChannelService channelService;
 
 
     @Before
@@ -191,13 +193,30 @@ public class Neo4jChannelServiceTest extends EasyMockSupport {
         assertFalse(channelService.get(id).getAutoupdate());
 
         // If we enable autoupdate
-        channelService.setAutoUpdate(id, true);
+        channelService.setAutoupdate(id, true);
         assertTrue(channelService.get(id).getAutoupdate());
 
         // If we disable autoupdate
-        channelService.setAutoUpdate(id, false);
+        channelService.setAutoupdate(id, false);
         assertFalse(channelService.get(id).getAutoupdate());
     }
+
+    @Test
+    public void testGetAutoupdatedChannels(){
+        final String id = "test1";
+        final String id2 = "test2";
+        final String idNoautoUpdate = "test3";
+
+        channelService.addChannel(generateFakeChannel(id));
+        channelService.setAutoupdate(id, true);
+        channelService.addChannel(generateFakeChannel(id2));
+        channelService.setAutoupdate(id2, true);
+        channelService.addChannel(generateFakeChannel(idNoautoUpdate));
+
+        assertEquals(channelService.getAutoupdatedChannelIds(), ImmutableSet.of(id, id2));
+    }
+
+
 
     @Test
     public void testExists() throws Exception {
