@@ -30,10 +30,12 @@ export class ChannelManager {
     setChannels(channels) {
         this.channels = channels;
     }
+    switchAutoupdate( channel, value ){
+        this.channelService.setAutoUpdate(channel.id, value).subscribe(()=>{});
+    }
 
     constructor(private channelService:ChannelService) {
         channelService.list().subscribe(this.setChannels.bind(this));
-
     }
 
 }

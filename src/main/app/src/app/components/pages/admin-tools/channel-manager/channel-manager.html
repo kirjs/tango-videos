@@ -11,6 +11,7 @@
                 <td>{{channel.videosCount}}</td>
                 <td>{{channel.lastUpdated * 1000 | date}}</td>
                 <td (click)="fetchLatestVideos(channel.id)">Update channel</td>
+                <td><input type = checkbox [checked]="autoupdate" (change)="switchAutoupdate(channel, $event.target.checked)"></td>
             </tr>
         </table>
 </div>
