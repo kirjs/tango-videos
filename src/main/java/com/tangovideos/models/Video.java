@@ -9,6 +9,7 @@ public class Video {
     private String description;
     private String recordedAt;
     private String addedAt;
+    private String type;
     private boolean complete;
 
     public String getTitle() {
@@ -113,5 +114,13 @@ public class Video {
 
     public boolean isComplete() {
         return complete;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
