@@ -98,7 +98,17 @@ export class VideoInfo {
         var mappings = {
             'La Juan D\'arienzo': 'La Juan D\'arienzo',
             'Sexteto Tango': 'Sexteto Tango',
-            'Uni Tango': 'Uni Tango'
+            'Uni Tango': 'Uni Tango',
+            'Pasional orquesta': 'Pasional orquesta',
+            'Solo tango orquestra': 'Solo tango',
+            'Color Tango': 'Color Tango',
+            'Escuela De Tango': 'Escuela De Tango',
+            'Domingo Federico': 'Domingo Federico',
+            'Sexteto Milonguero': 'Sexteto Milonguero',
+            'Pablo Valle sextet': 'Pablo Valle sextet',
+            'Fabio Hager Sexteto': 'Fabio Hager Sexteto',
+            'Los reyes del tango': 'Los reyes del tango'
+
         };
         if(name in mappings){
             return mappings[name];
