@@ -60,6 +60,7 @@ public class DancerResourceTest {
         TestHelpers.addVideoAndDancer(graphDb, "video-3", dancerId2);
 
         // When adding pseudonyme which is exactly the same as the name nothing happens.
+        assertEquals(1, countVideosForDancer(dancerId));
         assertEquals(0, renameAndCountPseudonyms(dancerId, dancerId));
         assertEquals(1, countVideosForDancer(dancerId));
 

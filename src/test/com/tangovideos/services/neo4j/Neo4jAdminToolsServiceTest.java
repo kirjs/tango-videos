@@ -1,7 +1,9 @@
 package com.tangovideos.services.neo4j;
 
 import com.google.common.collect.ImmutableMap;
+import com.tangovideos.models.Dancer;
 import com.tangovideos.models.KeyValue;
+import com.tangovideos.services.Interfaces.VideoService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +25,7 @@ public class Neo4jAdminToolsServiceTest {
     private Neo4jAdminToolsService adminService;
     private Neo4jDancerService dancerService;
     private Neo4jSongService songService;
+    private VideoService videoService;
 
 
     @Before
@@ -31,11 +34,29 @@ public class Neo4jAdminToolsServiceTest {
         adminService = new Neo4jAdminToolsService(graphDb);
         dancerService = new Neo4jDancerService(graphDb);
         songService = new Neo4jSongService(graphDb);
+        videoService = new Neo4jVideoService(graphDb);
     }
 
     @After
     public void tearDown() throws Exception {
         graphDb.shutdown();
+    }
+
+    @Test
+    // Some egdecase where dancers who were tagged on removed videos failed to get renamed
+    public void testRenameDancerWithRemovedVideos() throws Exception {
+        final String videoid = "videoid";
+        final String dancerId = "dancerId";
+        final String otherId = "otherId";
+
+        TestHelpers.addVideoAndDancer(graphDb, videoid, dancerId);
+        TestHelpers.addVideoAndDancer(graphDb, "OtherVideo", dancerId);
+
+        videoService.hide(videoid, true);
+        adminService.renameDancer("dancerId", otherId);
+        final Dancer dancer = dancerService.get(otherId);
+        assertEquals(otherId, dancer.getName());
+
     }
 
     @Test
@@ -61,7 +82,7 @@ public class Neo4jAdminToolsServiceTest {
             assertEquals(1, IteratorUtil.count(initialOldDancers));
 
             // Assert that renaming the dancer return number of videos
-            assertEquals(2,adminService.renameDancer(oldName, betterName));
+            assertEquals(2, adminService.renameDancer(oldName, betterName));
 
 
             // Assert that there are 0 videos for old and 2 for new dancers
@@ -76,7 +97,7 @@ public class Neo4jAdminToolsServiceTest {
 
             // Assert that the old node was removed
             final Result eventuallylOldDancers = graphDb.execute(dancersQuery, oldDancerParams);
-            assertEquals(0, IteratorUtil.count(eventuallylOldDancers ));
+            assertEquals(0, IteratorUtil.count(eventuallylOldDancers));
             tx.success();
         }
     }

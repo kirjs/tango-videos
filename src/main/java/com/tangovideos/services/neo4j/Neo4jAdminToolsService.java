@@ -31,8 +31,12 @@ public class Neo4jAdminToolsService implements AdminToolsService {
                 "MATCH (od:Dancer {id: {oldName}})-[r:DANCES]->(v:Video) " +
                 "MERGE (nd:Dancer {id: {newName}}) " +
                 "MERGE (nd)-[:DANCES]->(v) " +
-                "DELETE od " +
                 "DELETE r " +
+                "WITH od, r, nd " +
+                "OPTIONAL MATCH (od)-[rr:DANCES]->(rv:VideoRemoved) " +
+                "DELETE rr " +
+                "with od, r " +
+                "DELETE od  " +
                 "RETURN r";
         final ImmutableMap<String, Object> params = of("oldName", oldName, "newName", newName);
 
@@ -41,6 +45,7 @@ public class Neo4jAdminToolsService implements AdminToolsService {
             return IteratorUtil.count(result);
         }
     }
+
 
     @Override
     public List<KeyValue> stats() {

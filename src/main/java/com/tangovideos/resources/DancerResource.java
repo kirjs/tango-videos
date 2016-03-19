@@ -51,7 +51,7 @@ public class DancerResource {
     @GET
     @Path("{id}")
     public Response getVideo(@PathParam("id") String id) {
-        final Dancer dancer = TangoVideosServiceFactory.getDancerService().get(id);
+        final Dancer dancer = dancerService.get(id);
         dancer.setVideos(videoService.listByDancer(id));
 
         return Response.status(200)

@@ -6,8 +6,6 @@ import com.tangovideos.models.VideoAndDancer;
 import java.util.List;
 
 public interface AdminToolsService {
-
-
     long renameDancer(String oldName, String newName);
 
     List<KeyValue> stats();
