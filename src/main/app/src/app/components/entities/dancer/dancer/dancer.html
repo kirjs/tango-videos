@@ -1,5 +1,8 @@
 <div *ngIf="dancer">
-    <h1>{{dancer.name}}</h1>
+    <editable-field class = "header" (update)="rename($event)"
+                    [value]="dancer.name">
+    </editable-field>
+
 
     <div>
         Pseudonyms:

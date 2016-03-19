@@ -195,13 +195,18 @@ public class Neo4jDancerService implements DancerService {
 
     @Override
     public Dancer addPseudonym(String id, String name) {
-        final String query = "MERGE (d:Dancer {id: {id}}) " +
+        final String query =
+                "MERGE (d:Dancer {id: {id}}) " +
                 "MERGE (p:Pseudonym {id: {name}}) " +
                 "MERGE (d)-[:IS_ALSO]->(p) " +
+                "WITH d " +
+                "OPTIONAL MATCH (:Dancer {id: {name}})-[r:IS_ALSO]->(p:Pseudonym) " +
+                "MERGE (d)-[:IS_ALSO]->(p) " +
+                "with r, d " +
+                "DELETE r " +
                 "RETURN d";
 
         final ImmutableMap<String, Object> params = of("id", id, "name", name);
-
 
         try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params)) {
             tx.success();
@@ -216,6 +221,7 @@ public class Neo4jDancerService implements DancerService {
                 "DELETE p " +
                 "RETURN d";
         final ImmutableMap<String, Object> params = of("id", id, "name", name);
+
 
         try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params)) {
             tx.success();

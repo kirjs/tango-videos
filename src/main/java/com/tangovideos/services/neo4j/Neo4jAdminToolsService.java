@@ -69,7 +69,6 @@ public class Neo4jAdminToolsService implements AdminToolsService {
             final List<VideoAndDancer> videoAndDancerStream = IteratorUtil.asList(result).stream().map(r -> {
                 final VideoAndDancer videoAndDancer = new VideoAndDancer();
                 final Node v = (Node) r.get("v");
-
                 videoAndDancer.setDancers(Sets.newHashSet((Iterable<String>) r.get("dancers")));
                 videoAndDancer.setVideoId(v.getProperty("id").toString());
                 videoAndDancer.setTitle(v.getProperty("title").toString());

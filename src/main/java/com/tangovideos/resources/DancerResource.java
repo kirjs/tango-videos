@@ -17,15 +17,14 @@ import javax.ws.rs.core.Response;
 @Path("api/dancers")
 @Produces(MediaType.APPLICATION_JSON)
 public class DancerResource {
-    private DancerService dancerService = TangoVideosServiceFactory.getDancerService();
-    private VideoService videoService = TangoVideosServiceFactory.getVideoService();
-    private AdminToolsService adminToolsService = TangoVideosServiceFactory.getAdminToolsService();
+    private DancerService dancerService;
+    private VideoService videoService;
+    private AdminToolsService adminToolsService;
 
     public DancerResource(){
         dancerService = TangoVideosServiceFactory.getDancerService();
         videoService = TangoVideosServiceFactory.getVideoService();
         adminToolsService = TangoVideosServiceFactory.getAdminToolsService();
-
     }
     public DancerResource(DancerService dancerService , VideoService videoService, AdminToolsService adminToolsService){
         this.dancerService = dancerService;
@@ -63,9 +62,11 @@ public class DancerResource {
     @POST
     @Path("{id}/addPseudonym")
     public Response addPseudonym(@PathParam("id") String id, JustName payload) {
-        TangoVideosServiceFactory.getDancerService().addPseudonym(id, payload.getName());
-        adminToolsService.renameDancer(payload.getName(), id);
-
+        final String name = payload.getName();
+        if(!id.equals(name)){
+            dancerService.addPseudonym(id, name);
+            adminToolsService.renameDancer(name, id);
+        }
 
         return Response.status(200)
                 .entity(new JSONArray(dancerService.get(id).getPseudonyms()).toString())
@@ -75,7 +76,7 @@ public class DancerResource {
     @POST
     @Path("{id}/removePseudonym")
     public Response removePseudonym(@PathParam("id") String id, JustName payload) {
-        TangoVideosServiceFactory.getDancerService().removePseudonym(id, payload.getName());
+        dancerService.removePseudonym(id, payload.getName());
 
         return Response.status(200)
                 .entity(new JSONArray(dancerService.get(id).getPseudonyms()).toString())

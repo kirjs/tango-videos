@@ -9,6 +9,12 @@ public class JustName implements Serializable {
     @XmlElement
     String name;
 
+    public static JustName fromName(String name) {
+        final JustName justName = new JustName();
+        justName.setName(name);
+        return justName;
+    }
+
     public String getName() {
         return name;
     }

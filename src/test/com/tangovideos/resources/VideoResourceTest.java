@@ -66,6 +66,5 @@ public class VideoResourceTest {
 
         final Channel channel = channelService.get(testVideo.getChannelId());
         assertEquals(1L, channel.getVideosCount());
-
     }
 }

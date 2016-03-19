@@ -196,6 +196,7 @@ public class Neo4jDancerServiceTest {
         ));
     }
 
+
     @Test
     public void testRemovePseudonym() throws Exception {
         final String dancerId = "dancer0";
@@ -208,6 +209,8 @@ public class Neo4jDancerServiceTest {
         final Dancer dancer = dancerService.get(dancerId);
         assertEquals(ImmutableSet.of(), dancer.getPseudonyms());
     }
+
+
 
     @Test
     public void testGetPseudonyms() throws Exception {

@@ -1,7 +1,9 @@
 .editable-field {
     font-size: 12px;
 }
-
+:host(.header) .editable-field  {
+    font-size: 18px;
+}
 .editable-field:hover .suggest-edit {
     display: block;
 }
