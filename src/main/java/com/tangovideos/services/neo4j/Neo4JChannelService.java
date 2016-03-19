@@ -5,15 +5,18 @@ import com.google.common.collect.ImmutableMap;
 import com.tangovideos.data.Labels;
 import com.tangovideos.models.Channel;
 import com.tangovideos.services.Interfaces.ChannelService;
-import com.tangovideos.services.Interfaces.VideoService;
 import com.tangovideos.services.YoutubeService;
 import com.tangovideos.services.combined.CombinedVideoService;
-import org.neo4j.graphdb.*;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Result;
+import org.neo4j.graphdb.Transaction;
 import org.neo4j.helpers.collection.IteratorUtil;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.google.common.collect.ImmutableMap.of;
@@ -76,6 +79,7 @@ public class Neo4jChannelService implements ChannelService {
             channel = new Channel(a.getProperty("id").toString());
             channel.setTitle(a.getProperty("title").toString());
             channel.setUploadPlaylistId(a.getProperty("uploadPlaylistId").toString());
+            channel.setAutoupdate(Boolean.parseBoolean(a.getProperty("autoupdate", "false").toString()));
             channel.setLastUpdated(
                     Long.parseLong(a.getProperty("lastUpdated", "0").toString(), 10)
             );
@@ -148,7 +152,7 @@ public class Neo4jChannelService implements ChannelService {
     @Override
     public long fetchAllVideos(YoutubeService youtubeService, CombinedVideoService combinedVideoService, String channelId) {
         Channel channel = get(channelId);
-            final long lastUpdated = 0L; //channel.getLastUpdated();
+        final long lastUpdated = channel.getLastUpdated();
         long count = youtubeService.fetchChannelVideos(channel.getUploadPlaylistId(), lastUpdated)
                 .stream().filter(v -> !combinedVideoService.videoExists(v.getId()))
                 .peek(combinedVideoService::addVideo)
@@ -166,6 +170,27 @@ public class Neo4jChannelService implements ChannelService {
             return Optional
                     .fromNullable(graphDb.findNode(Labels.CHANNEL.label, "id", channelId))
                     .isPresent();
+        }
+    }
+
+    public void setAutoupdate(String id, boolean autoUpdate) {
+        final String query = "MATCH (c:Channel {id: {id}}) " +
+                "SET c.autoupdate = {autoUpdate} ";
+        final ImmutableMap<String, Object> params = of("id", id, "autoUpdate", autoUpdate);
+
+        try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params)) {
+            tx.success();
+        }
+    }
+
+    @Override
+    public Set<String> getAutoupdatedChannelIds() {
+        final String query = "MATCH (c:Channel {autoupdate: true}) " +
+                "RETURN c.id as ids";
+
+        try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query)) {
+            tx.success();
+            return IteratorUtil.asSet(result.<String>columnAs("ids"));
         }
     }
 }
