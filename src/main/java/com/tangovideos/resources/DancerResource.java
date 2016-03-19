@@ -17,10 +17,21 @@ import javax.ws.rs.core.Response;
 @Path("api/dancers")
 @Produces(MediaType.APPLICATION_JSON)
 public class DancerResource {
-
     private DancerService dancerService = TangoVideosServiceFactory.getDancerService();
     private VideoService videoService = TangoVideosServiceFactory.getVideoService();
     private AdminToolsService adminToolsService = TangoVideosServiceFactory.getAdminToolsService();
+
+    public DancerResource(){
+        dancerService = TangoVideosServiceFactory.getDancerService();
+        videoService = TangoVideosServiceFactory.getVideoService();
+        adminToolsService = TangoVideosServiceFactory.getAdminToolsService();
+
+    }
+    public DancerResource(DancerService dancerService , VideoService videoService, AdminToolsService adminToolsService){
+        this.dancerService = dancerService;
+        this.videoService = videoService;
+        this.adminToolsService = adminToolsService;
+    }
 
     @GET
     @Path("listNames")
