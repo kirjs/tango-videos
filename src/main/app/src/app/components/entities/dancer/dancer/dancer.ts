@@ -26,8 +26,8 @@ export class Dancer {
     }
 
     rename(name){
-        this.dancerService.addPseudonym(name, this.dancer.name).subscribe((pseudonyms)=> {
-            debugger
+        this.dancerService.addPseudonym(name, this.dancer.name).subscribe(()=> {
+            this.router.navigate(['Dancer', {id: name}])
         });
     }
 
