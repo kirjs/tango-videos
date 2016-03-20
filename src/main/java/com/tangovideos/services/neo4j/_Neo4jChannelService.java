@@ -22,11 +22,11 @@ import java.util.stream.Collectors;
 import static com.google.common.collect.ImmutableMap.of;
 
 
-public class Neo4jChannelService implements ChannelService {
+public class _Neo4jChannelService implements ChannelService {
     private final GraphDatabaseService graphDb;
 
 
-    public Neo4jChannelService(GraphDatabaseService graphDb) {
+    public _Neo4jChannelService(GraphDatabaseService graphDb) {
         this.graphDb = graphDb;
     }
 
