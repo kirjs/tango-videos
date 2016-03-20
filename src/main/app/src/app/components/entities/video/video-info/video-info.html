@@ -38,6 +38,11 @@
                         label="Date"
                         [value]="toDate(video.publishedAt, video.recordedAt)|date">
         </editable-field>
+        <editable-field (update)="handleUpdate('event', $event)"
+                        emptyValue="Unknown date"
+                        label="Date"
+                        [value]="">
+        </editable-field>
     </div>
     <div class="line">
         <dancer-tile [readonly]="readonly" [dancers]="video.dancers" (add)="addDancer($event)"
