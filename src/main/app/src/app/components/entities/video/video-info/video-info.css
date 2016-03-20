@@ -23,11 +23,13 @@ h2 {
 .data:hover .admin-controls {
     display: block;
 }
+
 .data:hover .admin-control:hover {
     box-shadow: 2px 2px 2px #444;
     background-color: #eeeeee;
     cursor: pointer;
 }
+
 .data:hover .admin-control {
     background-color: #ffffff;
     text-align: center;
@@ -49,7 +51,6 @@ h3 {
     padding: 0 8px;
     font-size: 12px;
 }
-
 
 .quick.quick-dance {
     background-color: #ff572f;
@@ -88,4 +89,17 @@ h3 {
 .line.description {
     height: 16px;
     overflow: hidden;
+}
+
+.data.readonly {
+    width: 500px;
+}
+
+.readonly .song {
+    margin-top: 10px;
+    padding: 0;
+}
+
+.readonly .dancer {
+    color: #ff4836;
 }

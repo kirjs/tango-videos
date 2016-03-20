@@ -22,9 +22,7 @@ public class CombinedVideoService {
         this.videoService = videoService;
         this.channelService = channelService;
         this.youtubeService = youtubeService;
-
     }
-
 
     public void addVideo(Video video) {
         final Node videoNode = videoService.addVideo(video);

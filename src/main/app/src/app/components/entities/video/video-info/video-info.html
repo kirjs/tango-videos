@@ -4,7 +4,23 @@
     This video has been hidden
     <div (click)="recover()">recover</div>
 </div>
-<div class="data" *ngIf="!video.hidden">
+
+<div class="data readonly" *ngIf="!video.hidden && readonly">
+    <div>
+        <span *ngFor="#dancer of video.dancers; #last = last, #index = index">
+            <span *ngIf="last && !index == 0">{{first}}and</span>
+            <span class="dancer">{{dancer}}</span>
+        </span>
+    </div>
+
+    <div class="line song">
+        <span *ngFor="#song of video.songs">
+        <icon name="song"></icon><span>{{song.name}}</span> by <span>{{song.orquestra}}</span>
+        </span>
+    </div>
+</div>
+
+<div class="data" *ngIf="!video.hidden && !readonly">
     <div class="line">
         <h2>
             <a class="youtube-social-icon-red-24px" href="https://www.youtube.com/watch?v={{video.id}}">
@@ -32,12 +48,12 @@
     </div>
     <div class="line">
         <span *ngIf="!video.type">
-            <span class = "quick-dance quick" (click)="handleUpdate('type', 'Dance performance')">D</span>
-            <span class = "quick-music quick"   (click)="handleUpdate('type', 'Music performance')">M</span>
-            <span class = "quick-non-tango quick"   (click)="handleUpdate('type', 'Tango history')">H</span>
-            <span class = "quick-non-tango quick"   (click)="handleUpdate('type', 'Tango Lesson')">L</span>
-            <span class = "quick-non-tango quick"   (click)="handleUpdate('type', 'Promo')">P</span>
-            <span class = "quick-non-tango quick"   (click)="handleUpdate('type', 'Not tango')">N</span>
+            <span class="quick-dance quick" (click)="handleUpdate('type', 'Dance performance')">D</span>
+            <span class="quick-music quick" (click)="handleUpdate('type', 'Music performance')">M</span>
+            <span class="quick-non-tango quick" (click)="handleUpdate('type', 'Tango history')">H</span>
+            <span class="quick-non-tango quick" (click)="handleUpdate('type', 'Tango Lesson')">L</span>
+            <span class="quick-non-tango quick" (click)="handleUpdate('type', 'Promo')">P</span>
+            <span class="quick-non-tango quick" (click)="handleUpdate('type', 'Not tango')">N</span>
         </span>
         <editable-field (update)="handleUpdate('type', $event)"
                         emptyValue="Unknown type"
