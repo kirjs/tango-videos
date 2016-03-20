@@ -9,7 +9,7 @@ import com.tangovideos.services.Interfaces.ChannelService;
 import com.tangovideos.services.Interfaces.DancerService;
 import com.tangovideos.services.Interfaces.VideoService;
 import com.tangovideos.services.YoutubeService;
-import com.tangovideos.services.combined._CombinedVideoService;
+import com.tangovideos.services.combined.CombinedVideoService;
 import org.easymock.EasyMockSupport;
 import org.junit.After;
 import org.junit.Before;
@@ -139,7 +139,7 @@ public class Neo4jChannelServiceTest extends EasyMockSupport {
         VideoService videoService = new Neo4jVideoService(graphDb);
         DancerService dancerService = new Neo4jDancerService(graphDb);
         YoutubeService youtubeService = createMock(YoutubeService.class);
-        _CombinedVideoService combinedVideoService = new _CombinedVideoService(
+        CombinedVideoService combinedVideoService = new CombinedVideoService(
                 dancerService, videoService, channelService, youtubeService);
 
 

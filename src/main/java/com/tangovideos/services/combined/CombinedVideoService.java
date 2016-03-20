@@ -8,16 +8,16 @@ import com.tangovideos.services.Interfaces.VideoService;
 import com.tangovideos.services.YoutubeService;
 import org.neo4j.graphdb.Node;
 
-public class _CombinedVideoService {
+public class CombinedVideoService {
     final DancerService dancerService;
     final VideoService videoService;
     final ChannelService channelService;
     final YoutubeService youtubeService;
 
-    public _CombinedVideoService(DancerService dancerService,
-                                 VideoService videoService,
-                                 ChannelService channelService,
-                                 YoutubeService youtubeService) {
+    public CombinedVideoService(DancerService dancerService,
+                                VideoService videoService,
+                                ChannelService channelService,
+                                YoutubeService youtubeService) {
         this.dancerService = dancerService;
         this.videoService = videoService;
         this.channelService = channelService;

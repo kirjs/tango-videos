@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.tangovideos.models.Channel;
 import com.tangovideos.models.Video;
 import com.tangovideos.services.YoutubeService;
-import com.tangovideos.services.combined._CombinedVideoService;
+import com.tangovideos.services.combined.CombinedVideoService;
 import com.tangovideos.services.neo4j.*;
 import org.junit.After;
 import org.junit.Before;
@@ -27,7 +27,7 @@ public class VideoResourceTest {
     private Neo4jDancerService dancerService;
     private YoutubeService youtubeService;
     private VideoResource videoResource;
-    private _CombinedVideoService combinedVideoService;
+    private CombinedVideoService combinedVideoService;
 
     @Before
     public void setUp() throws Exception {
@@ -36,7 +36,7 @@ public class VideoResourceTest {
         dancerService = new Neo4jDancerService(graphDb);
         videoService = new Neo4jVideoService(graphDb);
         youtubeService = createMock(YoutubeService.class);
-        combinedVideoService = new _CombinedVideoService(dancerService, videoService, channelService, youtubeService);
+        combinedVideoService = new CombinedVideoService(dancerService, videoService, channelService, youtubeService);
         videoResource = new VideoResource(dancerService, videoService, youtubeService, combinedVideoService);
     }
 

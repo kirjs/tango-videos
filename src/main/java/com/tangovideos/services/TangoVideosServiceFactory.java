@@ -1,7 +1,7 @@
 package com.tangovideos.services;
 
 import com.tangovideos.services.Interfaces.*;
-import com.tangovideos.services.combined._CombinedVideoService;
+import com.tangovideos.services.combined.CombinedVideoService;
 import com.tangovideos.services.neo4j.Neo4JServiceFactory;
 
 public class TangoVideosServiceFactory {
@@ -36,7 +36,7 @@ public class TangoVideosServiceFactory {
         TangoVideosServiceFactory.channelService = channelService;
     }
 
-    public static _CombinedVideoService getCombinedVideoService() {
+    public static CombinedVideoService getCombinedVideoService() {
         return serviceFactory.getCombinedVideoService();
     }
 }
