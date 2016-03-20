@@ -9,7 +9,7 @@ import com.tangovideos.services.Interfaces.DancerService;
 import com.tangovideos.services.Interfaces.VideoService;
 import com.tangovideos.services.TangoVideosServiceFactory;
 import com.tangovideos.services.YoutubeService;
-import com.tangovideos.services.combined.CombinedVideoService;
+import com.tangovideos.services.combined._CombinedVideoService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.neo4j.graphdb.Node;
@@ -28,14 +28,14 @@ public class VideoResource {
     final DancerService dancerService;
     final VideoService videoService;
     final YoutubeService youtubeService;
-    final CombinedVideoService combinedVideoService;
+    final _CombinedVideoService combinedVideoService;
 
 
     // TODO: this is used for testing, but it would be nice to use some dependency injection mechanism.
     public VideoResource(DancerService dancerService,
                          VideoService videoService,
                          YoutubeService youtubeService,
-                         CombinedVideoService combinedVideoService) {
+                         _CombinedVideoService combinedVideoService) {
         this.dancerService = dancerService;
         this.videoService = videoService;
         this.youtubeService = youtubeService;

@@ -3,7 +3,7 @@ package com.tangovideos.services.neo4j;
 import com.google.common.collect.ImmutableSet;
 import com.tangovideos.services.Interfaces.*;
 import com.tangovideos.services.YoutubeService;
-import com.tangovideos.services.combined.CombinedVideoService;
+import com.tangovideos.services.combined._CombinedVideoService;
 import com.tangovideos.services.nameParsing.NameAwareNameParser;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -25,7 +25,7 @@ public class Neo4JServiceFactory implements ServiceFactory {
     private SongService songService;
     private AdminToolsService adminToolsService;
     private ChannelService channelService;
-    private CombinedVideoService combinedVideoService;
+    private _CombinedVideoService combinedVideoService;
 
 
     public Neo4JServiceFactory() {
@@ -125,9 +125,9 @@ public class Neo4JServiceFactory implements ServiceFactory {
     }
 
     @Override
-    public CombinedVideoService getCombinedVideoService() {
+    public _CombinedVideoService getCombinedVideoService() {
         if (combinedVideoService == null) {
-            combinedVideoService = new CombinedVideoService(
+            combinedVideoService = new _CombinedVideoService(
                     getDancerService(),
                     getVideoService(),
                     getChannelService(),

@@ -6,7 +6,7 @@ import com.tangovideos.resources.inputs.JustValue;
 import com.tangovideos.services.Interfaces.ChannelService;
 import com.tangovideos.services.TangoVideosServiceFactory;
 import com.tangovideos.services.YoutubeService;
-import com.tangovideos.services.combined.CombinedVideoService;
+import com.tangovideos.services.combined._CombinedVideoService;
 import org.json.JSONArray;
 
 import javax.ws.rs.*;
@@ -19,7 +19,7 @@ public class ChannelResource {
 
     private ChannelService channelService = TangoVideosServiceFactory.getChannelService();
     private YoutubeService youtubeService = TangoVideosServiceFactory.getYoutubeService();
-    private CombinedVideoService combinedVideoService = TangoVideosServiceFactory.getCombinedVideoService();
+    private _CombinedVideoService combinedVideoService = TangoVideosServiceFactory.getCombinedVideoService();
 
 
     @POST
