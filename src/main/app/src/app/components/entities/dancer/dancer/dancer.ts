@@ -40,7 +40,7 @@ export class Dancer {
     constructor(private dancerService:DancerService, params:RouteParams, private router:Router) {
         this.dancerService.get(params.get('id')).subscribe((data) => {
             this.dancer = data;
-            this.dancer.videos = this.dancer.videos.slice(0, 10);
+            this.dancer.videos = this.dancer.videos.slice(0, 20);
         });
     }
 }

@@ -24,6 +24,12 @@ export class VideoTile {
     playVideo(){
         this.play.emit(this.video);
     }
+    getGenre(){
+        if(!this.video.songs || !this.video.songs[0] ){
+            return '';
+        }
+        return this.video.songs[0].genre.toLowerCase() || '';
+    }
 
     getThumbnail(id:string) {
         return `https://i.ytimg.com/vi/${this.video.id}/mqdefault.jpg`;
