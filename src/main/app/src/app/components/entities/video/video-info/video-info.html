@@ -35,13 +35,15 @@
         <icon name="date"></icon>
         <editable-field (update)="handleUpdate('recordedAt', $event)"
                         emptyValue="Unknown date"
-                        label="Date"
                         [value]="toDate(video.publishedAt, video.recordedAt)|date">
         </editable-field>
         <editable-field (update)="handleUpdate('event', $event)"
-                        emptyValue="Unknown date"
-                        label="Date"
-                        [value]="">
+                        emptyValue="Unknown event"
+                        [value]="video.event">
+        </editable-field>
+        <editable-field (update)="handleUpdate('event instance', $event)"
+                        emptyValue="Unknown event instance"
+                        [value]="video.eventInstance">
         </editable-field>
     </div>
     <div class="line">
@@ -56,8 +58,11 @@
             <span class="quick-dance quick" (click)="handleUpdate('type', 'Dance performance')">D</span>
             <span class="quick-music quick" (click)="handleUpdate('type', 'Music performance')">M</span>
             <span class="quick-non-tango quick" (click)="handleUpdate('type', 'Tango history')">H</span>
+            <span class="quick-non-tango quick" (click)="handleUpdate('type', 'Milonga Moments')">MM</span>
             <span class="quick-non-tango quick" (click)="handleUpdate('type', 'Tango Lesson')">L</span>
             <span class="quick-non-tango quick" (click)="handleUpdate('type', 'Promo')">P</span>
+            <span class="quick-non-tango quick" (click)="handleUpdate('type', 'Folklore')">F</span>
+            <span class="quick-non-tango quick" (click)="handleUpdate('type', 'Chacarera')">C</span>
             <span class="quick-non-tango quick" (click)="handleUpdate('type', 'Not tango')">N</span>
         </span>
         <editable-field (update)="handleUpdate('type', $event)"
