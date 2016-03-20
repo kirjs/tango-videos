@@ -2,6 +2,7 @@
     <h2>Channels</h2>
     <tr class="side-panel">
         <addable-field addButtonLabel="Add channel" (onAdd)="addChannel($event)"></addable-field>
+        <button (click)="updateAll()">Update all</button>
         <table>
             <tr *ngFor="#channel of channels">
                 <td>

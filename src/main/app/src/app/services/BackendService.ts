@@ -73,7 +73,7 @@ export class BackendService {
 
     }
 
-    write(url:string, params:any):Observable<any> {
+    write(url:string, params:any = {}):Observable<any> {
         var headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Accept', 'application/json');

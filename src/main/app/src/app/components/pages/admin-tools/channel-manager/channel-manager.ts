@@ -23,15 +23,22 @@ export class ChannelManager {
         this.channelService.add(channelId.trim()).subscribe(this.setChannels.bind(this))
     }
 
-    fetchLatestVideos(channelId){
+    fetchLatestVideos(channelId) {
         this.channelService.fetchLatestVideos(channelId.trim()).subscribe(this.setChannels.bind(this))
+    }
+
+    updateAll() {
+        this.channelService.updateAll().subscribe(()=> {
+        });
     }
 
     setChannels(channels) {
         this.channels = channels;
     }
-    switchAutoupdate( channel, value ){
-        this.channelService.setAutoUpdate(channel.id, value).subscribe(()=>{});
+
+    switchAutoupdate(channel, value) {
+        this.channelService.setAutoUpdate(channel.id, value).subscribe(()=> {
+        });
     }
 
     constructor(private channelService:ChannelService) {

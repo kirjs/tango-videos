@@ -27,9 +27,7 @@ public class ChannelResource {
     @Path("add")
     public Response addChannel(JustId payload) {
         final Channel channel = youtubeService.getChannelInfoById(payload.getId());
-
         channelService.addChannel(channel);
-
         return list();
     }
 
