@@ -26,4 +26,6 @@ public interface ChannelService {
     void setAutoupdate(String id, boolean b);
 
     Set<String> getAutoupdatedChannelIds();
+
+    int updateAll(YoutubeService youtubeService, CombinedVideoService combinedVideoService);
 }

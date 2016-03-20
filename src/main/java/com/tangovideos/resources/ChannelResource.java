@@ -35,7 +35,7 @@ public class ChannelResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("{id}/autoupdate")
-    public Response autoupdate (@PathParam("id") String id, JustValue payload) {
+    public Response autoupdate(@PathParam("id") String id, JustValue payload) {
         channelService.setAutoupdate(id, payload.getValue());
         return list();
     }
@@ -45,6 +45,14 @@ public class ChannelResource {
     @Path("fetch")
     public Response fetchLatestVideos(JustId payload) {
         channelService.fetchAllVideos(youtubeService, combinedVideoService, payload.getId());
+        return list();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("updateAll")
+    public Response updateAll(JustId payload) {
+        channelService.updateAll(youtubeService, combinedVideoService);
         return list();
     }
 

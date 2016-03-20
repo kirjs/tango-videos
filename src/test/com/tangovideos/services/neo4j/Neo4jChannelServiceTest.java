@@ -143,11 +143,6 @@ public class Neo4jChannelServiceTest extends EasyMockSupport {
                 dancerService, videoService, channelService, youtubeService);
 
 
-
-
-
-
-
         final String videoId = "videoId";
         final Video video = TestHelpers.generateFakeVideo(videoId);
         final Video video2 = TestHelpers.generateFakeVideo("videoId2");
@@ -162,7 +157,7 @@ public class Neo4jChannelServiceTest extends EasyMockSupport {
 
 
         replay(youtubeService);
-        final long newVideos = channelService.fetchAllVideos(youtubeService, combinedVideoService , fakeChannel.getId());
+        final long newVideos = channelService.fetchAllVideos(youtubeService, combinedVideoService, fakeChannel.getId());
         assertEquals(newVideos, 2);
         assertTrue(videoService.exists(videoId));
         final Channel channel = channelService.get(fakeChannel.getId());
@@ -185,7 +180,7 @@ public class Neo4jChannelServiceTest extends EasyMockSupport {
 
 
     @Test
-    public void testAutoupdate(){
+    public void testAutoupdate() {
         final String id = "test";
         channelService.addChannel(generateFakeChannel(id));
 
@@ -202,7 +197,7 @@ public class Neo4jChannelServiceTest extends EasyMockSupport {
     }
 
     @Test
-    public void testGetAutoupdatedChannels(){
+    public void testGetAutoupdatedChannels() {
         final String id = "test1";
         final String id2 = "test2";
         final String idNoautoUpdate = "test3";
@@ -217,7 +212,6 @@ public class Neo4jChannelServiceTest extends EasyMockSupport {
     }
 
 
-
     @Test
     public void testExists() throws Exception {
         final String id = "test";
@@ -225,5 +219,37 @@ public class Neo4jChannelServiceTest extends EasyMockSupport {
         channelService.addChannel(channel);
         assertTrue(channelService.exists(id));
         assertFalse(channelService.exists("IDontExist"));
+    }
+
+    @Test
+    public void testUpdateAll() throws Exception {
+        YoutubeService youtubeService = createMock(YoutubeService.class);
+        CombinedVideoService combinedVideoService = createMock(CombinedVideoService.class);
+        ChannelService channelService = partialMockBuilder(Neo4jChannelService.class)
+                .addMockedMethod("fetchAllVideos")
+                .withConstructor(graphDb)
+                .createMock();
+
+        final String testChannel1 = "testChannel1";
+        channelService.addChannel(generateFakeChannel(testChannel1));
+        channelService.setAutoupdate(testChannel1, true);
+
+        final String testChannel2 = "testChannel2";
+        channelService.addChannel(generateFakeChannel(testChannel2));
+        channelService.setAutoupdate(testChannel2, true);
+
+        final String testChannel3 = "testChannel3";
+        channelService.addChannel(generateFakeChannel(testChannel3));
+        channelService.setAutoupdate(testChannel3, true);
+
+        channelService.addChannel(generateFakeChannel("noAutoUpdate"));
+
+
+        expect(channelService.fetchAllVideos(youtubeService, combinedVideoService, testChannel1)).andReturn(0L);
+        expect(channelService.fetchAllVideos(youtubeService, combinedVideoService, testChannel2)).andReturn(1L);
+        expect(channelService.fetchAllVideos(youtubeService, combinedVideoService, testChannel3)).andReturn(2L);
+        replay(channelService);
+
+        assertEquals(3, channelService.updateAll(youtubeService, combinedVideoService));
     }
 }

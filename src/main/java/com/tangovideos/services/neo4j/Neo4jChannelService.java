@@ -157,6 +157,7 @@ public class Neo4jChannelService implements ChannelService {
                 .stream().filter(v -> !combinedVideoService.videoExists(v.getId()))
                 .peek(combinedVideoService::addVideo)
                 .count();
+        
         channel.setLastUpdated(Instant.now().getEpochSecond());
         update(channel);
         return count;
@@ -192,5 +193,14 @@ public class Neo4jChannelService implements ChannelService {
             tx.success();
             return IteratorUtil.asSet(result.<String>columnAs("ids"));
         }
+    }
+
+    @Override
+    public int updateAll(YoutubeService youtubeService, CombinedVideoService combinedVideoService) {
+        return getAutoupdatedChannelIds().stream()
+                .map(id -> this.fetchAllVideos(youtubeService, combinedVideoService, id))
+                .mapToInt(Math::toIntExact)
+                .sum();
+
     }
 }
