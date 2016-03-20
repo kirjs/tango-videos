@@ -40,9 +40,10 @@
     left: 0;
     top: 0;
     z-index: 100;
-
     color: #fff;
     padding: 4px;
+    box-shadow: 1px 1px 5px #000;
+    border-bottom-right-radius: 2px;
 }
 
 .video-tile:hover .thumb img:hover {
