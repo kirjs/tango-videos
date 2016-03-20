@@ -1,18 +1,25 @@
 <div class="channels">
     <h2>Channels</h2>
-    <tr class="side-panel">
+    <div *ngIf = "updated > 0">
+        {{updated}} new videos were saved!
+    </div>
+    <div class="side-panel">
         <addable-field addButtonLabel="Add channel" (onAdd)="addChannel($event)"></addable-field>
         <button (click)="updateAll()">Update all</button>
         <table>
             <tr *ngFor="#channel of channels">
                 <td>
-                    <a href="https://www.youtube.com/channel/{{channel.id}}"><icon name="youtube"></icon></a>
+                    <a href="https://www.youtube.com/channel/{{channel.id}}">
+                        <icon name="youtube"></icon>
+                    </a>
                 </td>
                 <td>{{channel.title}}</td>
                 <td>{{channel.videosCount}}</td>
                 <td>{{channel.lastUpdated * 1000 | date}}</td>
                 <td (click)="fetchLatestVideos(channel.id)">Update channel</td>
-                <td><input type = checkbox [checked]="channel.autoupdate" (change)="switchAutoupdate(channel, $event.target.checked)"></td>
+                <td><input type=checkbox [checked]="channel.autoupdate"
+                           (change)="switchAutoupdate(channel, $event.target.checked)"></td>
             </tr>
         </table>
+    </div>
 </div>

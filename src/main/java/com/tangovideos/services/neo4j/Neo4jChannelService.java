@@ -157,11 +157,10 @@ public class Neo4jChannelService implements ChannelService {
                 .stream().filter(v -> !combinedVideoService.videoExists(v.getId()))
                 .peek(combinedVideoService::addVideo)
                 .count();
-        
+
         channel.setLastUpdated(Instant.now().getEpochSecond());
         update(channel);
         return count;
-
     }
 
     @Override

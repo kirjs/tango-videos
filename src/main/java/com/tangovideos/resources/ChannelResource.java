@@ -52,8 +52,11 @@ public class ChannelResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("updateAll")
     public Response updateAll(JustId payload) {
-        channelService.updateAll(youtubeService, combinedVideoService);
-        return list();
+
+        final int result = channelService.updateAll(youtubeService, combinedVideoService);
+        return Response.status(200)
+                .entity(String.valueOf(result))
+                .type(MediaType.APPLICATION_JSON).build();
     }
 
     @GET

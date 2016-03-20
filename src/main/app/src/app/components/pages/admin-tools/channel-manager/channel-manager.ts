@@ -18,6 +18,7 @@ interface Channel {
 })
 export class ChannelManager {
     channels:Array<Channel> = [];
+    updated: number = 0;
 
     addChannel(channelId) {
         this.channelService.add(channelId.trim()).subscribe(this.setChannels.bind(this))
@@ -28,7 +29,8 @@ export class ChannelManager {
     }
 
     updateAll() {
-        this.channelService.updateAll().subscribe(()=> {
+        this.channelService.updateAll().subscribe((count)=> {
+            this.updated = count;
         });
     }
 
