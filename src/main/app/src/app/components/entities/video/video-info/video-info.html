@@ -5,7 +5,7 @@
     <div (click)="recover()">recover</div>
 </div>
 
-<div class="data readonly" *ngIf="!video.hidden && readonly">
+<div class="data readonly" needs-permission = "loggedOut">
     <div>
         <span *ngFor="#dancer of video.dancers; #last = last, #index = index">
             <span *ngIf="last && !index == 0">{{first}}and</span>
@@ -20,7 +20,7 @@
     </div>
 </div>
 
-<div class="data" *ngIf="!video.hidden && !readonly">
+<div class="data"  needs-permission = "video:read">
     <div class="line">
         <h2>
             <a class="youtube-social-icon-red-24px" href="https://www.youtube.com/watch?v={{video.id}}">

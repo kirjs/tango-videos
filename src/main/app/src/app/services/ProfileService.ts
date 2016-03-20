@@ -20,10 +20,13 @@ export class CurrentUserService {
         this.permissions
             .startWith('')
             .flatMap(() => this.fetchPermissions())
-            .map((permissions:Array<string>)=>permissions.reduce((result, permission)=> {
-                    result[permission] = true;
-                    return result;
-                }, {})
+            .map((permissions:Array<string>)=>
+                permissions.length ?
+                    permissions.reduce((result, permission)=> {
+                        result[permission] = true;
+                        return result;
+                    }, {}) :
+                {loggedOut: true}
             )
             .subscribe((data)=> {
                 this.permissionObservable.next(data);
