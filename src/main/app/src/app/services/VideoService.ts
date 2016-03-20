@@ -55,8 +55,4 @@ export class VideoService {
     update(id:string, field:String, value:String):Observable<any> {
         return this.backendService.write(`videos/${id}/update`, {field: field, value: value});
     }
-
-    markComplete(id:String, value:boolean):Observable<any> {
-        return this.backendService.write(`videos/${id}/markComplete`, {value: value});
-    }
 }

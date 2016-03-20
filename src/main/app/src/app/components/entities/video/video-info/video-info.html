@@ -4,7 +4,7 @@
     This video has been hidden
     <div (click)="recover()">recover</div>
 </div>
-<div class="data" *ngIf="!video.hidden && !video.complete">
+<div class="data" *ngIf="!video.hidden">
     <div class="line">
         <h2>
             <a class="youtube-social-icon-red-24px" href="https://www.youtube.com/watch?v={{video.id}}">
@@ -13,7 +13,7 @@
             {{video.title}}
         </h2>
     </div>
-    <div class="line">{{video.description}}</div>
+    <div class="line description">{{video.description}}</div>
 
     <div class="line">
         <icon name="date"></icon>
@@ -30,11 +30,6 @@
     <div class="line">
         <song-list [readonly]="readonly" [songs]="video.songs" (update)="updateSong($event)"></song-list>
     </div>
-    <div class="admin-controls" needs-permission="video:write">
-        <div (click)="hide()" class="hide admin-control">&times;</div>
-        <div (click)="markComplete(true)" class="complete admin-control">✓</div>
-    </div>
-
     <div class="line">
         <span *ngIf="!video.type">
             <span class = "quick-dance quick" (click)="handleUpdate('type', 'Dance performance')">D</span>
@@ -69,26 +64,4 @@
                           (addSuggestion)="updateSong({index: 0, field: 'genre',data: $event})"
                           label="Suggested genres"
     ></clickable-suggestion>
-
-
-</div>
-
-
-<div class="data" *ngIf="!video.hidden && video.complete">
-    <div class="line">
-        <dancer-tile [readonly]="true" [dancers]="video.dancers" (add)="addDancer($event)"
-                     (remove)="removeDancer($event)"></dancer-tile>
-    </div>
-    <div class="line">
-        <song-list [readonly]="true" [songs]="video.songs" (update)="updateSong($event)"></song-list>
-    </div>
-    <div class="line">
-        <icon name="date"></icon>
-        {{toDate(video.publishedAt, video.recordedAt)|date}}
-    </div>
-
-
-    <div class="admin-controls">
-        <div (click)="markComplete(false)" class="complete admin-control">⎌</div>
-    </div>
 </div>

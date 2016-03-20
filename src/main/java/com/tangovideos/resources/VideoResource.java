@@ -10,7 +10,6 @@ import com.tangovideos.services.Interfaces.VideoService;
 import com.tangovideos.services.TangoVideosServiceFactory;
 import com.tangovideos.services.YoutubeService;
 import com.tangovideos.services.combined.CombinedVideoService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.neo4j.graphdb.Node;
@@ -118,19 +117,6 @@ public class VideoResource {
 
         return Response.status(200)
                 .entity("true")
-                .type(MediaType.APPLICATION_JSON)
-                .build();
-    }
-
-    @POST
-    @Path("{id}/markComplete")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @RequiresPermissions("video:write")
-    public Response markComplete(@PathParam("id") String id, JustValue payload) {
-        videoService.markComplete(id, payload.getValue());
-
-        return Response.status(200)
-                .entity(payload.getValue().toString())
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }

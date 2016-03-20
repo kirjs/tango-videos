@@ -10,7 +10,6 @@ public class Video {
     private String recordedAt;
     private String addedAt;
     private String type;
-    private boolean complete;
 
     public String getTitle() {
         return title;
@@ -106,14 +105,6 @@ public class Video {
 
     public String getAddedAt() {
         return addedAt;
-    }
-
-    public void setComplete(boolean complete) {
-        this.complete = complete;
-    }
-
-    public boolean isComplete() {
-        return complete;
     }
 
     public String getType() {

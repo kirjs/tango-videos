@@ -27,6 +27,4 @@ public interface VideoService {
     List<Video> needsReview(Map<String, Boolean> of);
 
     void updateField(String id, String field, String value);
-
-    void markComplete(String id, Boolean value);
 }

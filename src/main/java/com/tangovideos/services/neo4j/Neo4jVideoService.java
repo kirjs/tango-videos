@@ -86,7 +86,6 @@ public class Neo4jVideoService implements VideoService {
         }
 
         video.setAddedAt(node.getProperty("addedAt").toString());
-        video.setComplete(node.hasProperty("complete") && node.getProperty("complete").toString().equals("true"));
         return video;
     }
 
@@ -233,21 +232,6 @@ public class Neo4jVideoService implements VideoService {
             tx.success();
         }
 
-    }
-
-    @Override
-    public void markComplete(String id, Boolean value) {
-        final String query = "MATCH (v:Video {id: {id}}) " +
-                "SET v.complete = {value} " +
-                "RETURN v ";
-
-        final ImmutableMap<String, Object> params = ImmutableMap.of("id", id, "value", value);
-        try (
-                Transaction tx = graphDb.beginTx();
-                Result result = graphDb.execute(query, params)
-        ) {
-            tx.success();
-        }
     }
 
     @SuppressWarnings("unchecked")

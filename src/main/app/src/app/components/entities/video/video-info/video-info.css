@@ -73,7 +73,6 @@ h3 {
 }
 
 .quick {
-
     display: inline-block;
     width: 16px;
     height: 16px;
@@ -84,4 +83,9 @@ h3 {
     font-size: 12px;
     cursor: pointer;
     border-radius: 50%;
+}
+
+.line.description {
+    height: 16px;
+    overflow: hidden;
 }

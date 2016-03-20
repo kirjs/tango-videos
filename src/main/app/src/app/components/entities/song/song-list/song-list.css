@@ -15,6 +15,7 @@
 .dancer-tile:hover .remove {
     display: inline-block;
 }
+
 .dancer-tile:hover .remove:hover {
     background-color: #999;
     color: white;
@@ -39,7 +40,15 @@
     border-radius: 50%;
 
 }
-.dancer-tile .image, .dancer-tile .name{
+
+.dancer-tile .image, .dancer-tile .name {
     display: inline-block;
     vertical-align: middle;
+}
+
+.song {
+    display: inline-block;
+}
+.add {
+    float: right;
 }
