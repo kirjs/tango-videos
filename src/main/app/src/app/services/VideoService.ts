@@ -29,7 +29,7 @@ export class VideoService {
     needsReview(filters:any):Observable<any> {
 
         //noinspection TypeScriptUnresolvedFunction
-        var urlSearchParams = Object.keys(filters).reduce((params, filter)=>{
+        var urlSearchParams = Object.keys(filters).reduce((params, filter)=> {
             params.set(filter, filters[filter]);
             return params;
         }, new URLSearchParams());
@@ -54,5 +54,9 @@ export class VideoService {
 
     update(id:string, field:String, value:String):Observable<any> {
         return this.backendService.write(`videos/${id}/update`, {field: field, value: value});
+    }
+
+    updateEvent(id:String, eventName:String, eventInstance:String):Observable<any> {
+        return this.backendService.write(`videos/${id}/updateEvent`, {eventName, eventInstance});
     }
 }

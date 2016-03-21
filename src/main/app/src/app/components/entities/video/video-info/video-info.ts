@@ -108,6 +108,17 @@ export class VideoInfo {
         return name.split(' ').pop();
     }
 
+
+    updateEventName(eventName: String){
+        this.updateEvent(eventName, this.video.eventInstance || this.video.publishedAt);
+    }
+    updateEventInstance(eventInstance: String){
+        this.updateEvent('Unknown event', eventInstance);
+    }
+    updateEvent(eventName: String, eventInstance: String){
+        this.videoService.updateEvent(this.video.id, eventName, eventInstance);
+    }
+
     constructor(private videoService:VideoService, private songService:SongService) {
         songService.listOrquestras().subscribe((orquestras)=> {
             this.orquestras =

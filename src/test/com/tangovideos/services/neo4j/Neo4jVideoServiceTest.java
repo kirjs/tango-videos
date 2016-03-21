@@ -354,7 +354,6 @@ public class Neo4jVideoServiceTest {
         assertEquals(newEventInstance, event.getInstance());
     }
 
-
     @Test
     public void testGetVideo() throws Exception {
         final String testVideo = "testVideo";
