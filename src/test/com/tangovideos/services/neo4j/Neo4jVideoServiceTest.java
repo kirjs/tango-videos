@@ -2,6 +2,7 @@ package com.tangovideos.services.neo4j;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.tangovideos.models.Event;
 import com.tangovideos.models.Song;
 import com.tangovideos.models.Video;
 import com.tangovideos.services.Interfaces.VideoService;
@@ -297,5 +298,69 @@ public class Neo4jVideoServiceTest {
         TestHelpers.addVideo(graphDb, videoId);
 
         videoService.updateField(videoId, "leg", "123");
+    }
+
+    @Test
+    public void testUpdateEvent() throws Exception {
+        final String testVideo = "testVideo";
+        final String testVideo2 = "testVideo2";
+        final String eventName = "eventName";
+        final String newEventName = "newEventName";
+        final String eventInstance = "eventInstance";
+        final String newEventInstance = "newEventInstance";
+
+        TestHelpers.addVideo(graphDb, testVideo);
+        TestHelpers.addVideo(graphDb, testVideo2);
+
+        Event event = videoService.getVideo(testVideo).getEvent();
+        assertEquals("", event.getName());
+        assertEquals("", event.getInstance());
+
+
+        // Initial event Update
+        videoService.updateEvent(testVideo, eventName, eventInstance);
+        event = videoService.getVideo(testVideo).getEvent();
+        assertEquals(eventName, event.getName());
+        assertEquals(eventInstance, event.getInstance());
+
+        // Update the instance
+        videoService.updateEvent(testVideo, eventName, newEventInstance);
+        event = videoService.getVideo(testVideo).getEvent();
+        assertEquals(eventName, event.getName());
+        assertEquals(newEventInstance, event.getInstance());
+
+        // Update the event and instance
+        videoService.updateEvent(testVideo, newEventName, newEventInstance);
+        event = videoService.getVideo(testVideo).getEvent();
+        assertEquals(newEventName, event.getName());
+        assertEquals(newEventInstance, event.getInstance());
+
+
+        // Set same event data for the second video
+        videoService.updateEvent(testVideo2, newEventName, newEventInstance);
+        event = videoService.getVideo(testVideo2).getEvent();
+        assertEquals(newEventName, event.getName());
+        assertEquals(newEventInstance, event.getInstance());
+
+
+        // When one video gets updated the other one doesn't get affected.
+        videoService.updateEvent(testVideo, eventName, eventInstance);
+        event = videoService.getVideo(testVideo).getEvent();
+        TestHelpers.dumpDb(graphDb);
+        assertEquals(eventName, event.getName());
+        assertEquals(eventInstance, event.getInstance());
+        event = videoService.getVideo(testVideo2).getEvent();
+        assertEquals(newEventName, event.getName());
+        assertEquals(newEventInstance, event.getInstance());
+    }
+
+
+    @Test
+    public void testGetVideo() throws Exception {
+        final String testVideo = "testVideo";
+        final String testDancer = "testDancer";
+        TestHelpers.addVideoAndDancer(graphDb, testVideo, testDancer);
+        assertEquals(testVideo, videoService.getVideo(testVideo).getId());
+        assertEquals(ImmutableSet.of(testDancer), videoService.getVideo(testVideo).getDancers());
     }
 }

@@ -10,6 +10,7 @@ public class Video {
     private String recordedAt;
     private String addedAt;
     private String type;
+    private Event event;
 
     public String getTitle() {
         return title;
@@ -113,5 +114,13 @@ public class Video {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 }

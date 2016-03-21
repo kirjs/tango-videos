@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.tangovideos.data.Labels;
+import com.tangovideos.models.Event;
 import com.tangovideos.models.Song;
 import com.tangovideos.models.Video;
 import com.tangovideos.services.Interfaces.VideoService;
@@ -22,6 +23,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.google.common.collect.ImmutableMap.of;
 
 
 public class Neo4jVideoService implements VideoService {
@@ -98,7 +101,7 @@ public class Neo4jVideoService implements VideoService {
                         "RETURN v, collect(d.id) as dancers, collect(s) as songs " +
                         "ORDER BY v.addedAt DESC";
 
-        return getMultipleVideos(query, ImmutableMap.of());
+        return getMultipleVideos(query, of());
     }
 
     @Override
@@ -112,7 +115,7 @@ public class Neo4jVideoService implements VideoService {
                         "SKIP {skip} " +
                         "LIMIT {limit}";
 
-        return getMultipleVideos(query, ImmutableMap.of("skip", skip, "limit", limit));
+        return getMultipleVideos(query, of("skip", skip, "limit", limit));
     }
 
     @Override
@@ -131,7 +134,7 @@ public class Neo4jVideoService implements VideoService {
         }
 
         try (Transaction tx = graphDb.beginTx()) {
-            graphDb.execute(query, ImmutableMap.of("id", id));
+            graphDb.execute(query, of("id", id));
             tx.success();
             return true;
         }
@@ -149,12 +152,12 @@ public class Neo4jVideoService implements VideoService {
                         "RETURN v, collect(d.id) as dancers, collect(s) as songs";
 
 
-        return getMultipleVideos(query, ImmutableMap.of("dancerId", dancerId));
+        return getMultipleVideos(query, of("dancerId", dancerId));
     }
 
     @Override
     public Set<String> exist(Set<String> ids) {
-        final ImmutableMap<String, Object> params = ImmutableMap.of("ids", ImmutableList.copyOf(ids));
+        final ImmutableMap<String, Object> params = of("ids", ImmutableList.copyOf(ids));
         final String query = "MATCH (v:Video) WHERE v.id IN {ids} RETURN v.id as id";
         final Result result = graphDb.execute(query, params);
         return IteratorUtil.asSet(result.columnAs("id"));
@@ -189,13 +192,11 @@ public class Neo4jVideoService implements VideoService {
                 .collect(Collectors.joining(" OR "));
 
 
-
-            queryParams = "WHERE (" +
-                    "v.type = 'Dance performance' OR " +
-                    "v.type = '' OR " +
-                    "NOT exists(v.type))  "
-                    + (queryParams.isEmpty() ? "" : " AND ("+ queryParams + ") ");
-
+        queryParams = "WHERE (" +
+                "v.type = 'Dance performance' OR " +
+                "v.type = '' OR " +
+                "NOT exists(v.type))  "
+                + (queryParams.isEmpty() ? "" : " AND (" + queryParams + ") ");
 
 
         final String query = "MATCH (v:Video) " +
@@ -205,7 +206,7 @@ public class Neo4jVideoService implements VideoService {
                 queryParams +
                 "RETURN v, collect(d.id) as dancers, collect(s) as songs";
 
-        return getMultipleVideos(query, ImmutableMap.of());
+        return getMultipleVideos(query, of());
     }
 
 
@@ -220,7 +221,7 @@ public class Neo4jVideoService implements VideoService {
                 "SET v.%s = {value} " +
                 "RETURN v", field);
 
-        final ImmutableMap<String, Object> params = ImmutableMap.of(
+        final ImmutableMap<String, Object> params = of(
                 "id", id,
                 "value", value);
 
@@ -234,6 +235,44 @@ public class Neo4jVideoService implements VideoService {
 
     }
 
+    @Override
+    public void updateEvent(String id, String eventName, String eventInstance) {
+        final String query =
+                // Match the video
+                "MATCH (v:Video {id: {id}}) " +
+                        // Get existing event, and remove the previous relationship
+                        "OPTIONAL MATCH (v)-[r:HAPPENED_AT]->(e:Event) " +
+                        "WHERE e.id <> {name} " +
+                        "DELETE r " +
+                        "WITH v " +
+                        // Merge event instance
+                        "MERGE (e:Event {id: {name}}) " +
+                        "MERGE (v)-[r:HAPPENED_AT]->(e) " +
+                        "SET r.id = {instance}" +
+                        "RETURN e, v";
+
+        final ImmutableMap<String, Object> params = of("id", id, "name", eventName, "instance", eventInstance);
+
+        try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params)) {
+            tx.success();
+        }
+
+    }
+
+
+    @Override
+    public Video getVideo(String id) {
+        final String query =
+                "MATCH (v:Video {id: {id}}) " +
+                        "OPTIONAL MATCH (v)<-[:DANCES]-(d:Dancer) " +
+                        "OPTIONAL MATCH (v)<-[:PLAYS_IN]-(s:Song) " +
+                        "OPTIONAL MATCH (v)-[i:HAPPENED_AT]->(e)" +
+                        "WHERE v.id = {id}" +
+                        "RETURN v, collect(d.id) as dancers, collect(s) as songs, i.id as instance, e.id as event";
+
+        return getMultipleVideos(query, of("id", id)).get(0);
+    }
+
     @SuppressWarnings("unchecked")
     private List<Video> getMultipleVideos(String query, Map<String, Object> params) {
         List<Video> videos = Lists.newArrayList();
@@ -244,6 +283,16 @@ public class Neo4jVideoService implements VideoService {
                 final Map<String, Object> next = result.next();
                 final Node videoNode = (Node) next.get("v");
                 final Video video = mapNodeToVideo(videoNode);
+
+                Event event = new Event();
+
+
+                final Object eventName = next.get("event");
+                event.setName(eventName == null ? "" : eventName.toString());
+                final Object eventInstance = next.get("instance");
+                event.setInstance(eventInstance == null ? "" : eventInstance.toString());
+                video.setEvent(event);
+
                 video.setDancers(Sets.newHashSet((Iterable<String>) next.get("dancers")));
                 final List<Song> songs = Sets.newHashSet((Iterable<Node>) next.get("songs"))
                         .stream()

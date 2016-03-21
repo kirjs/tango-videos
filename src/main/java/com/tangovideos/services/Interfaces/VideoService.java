@@ -27,4 +27,8 @@ public interface VideoService {
     List<Video> needsReview(Map<String, Boolean> of);
 
     void updateField(String id, String field, String value);
+
+    void updateEvent(String id, String eventName, String eventInstance);
+
+    Video getVideo(String testVideo);
 }

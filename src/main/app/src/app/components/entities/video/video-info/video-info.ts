@@ -92,6 +92,7 @@ export class VideoInfo {
             'Uni Tango': 'Uni Tango',
             'Pasional orquesta': 'Pasional orquesta',
             'Solo tango orquestra': 'Solo tango',
+            'Julio De Caro': 'De Caro',
             'Color Tango': 'Color Tango',
             'Escuela De Tango': 'Escuela De Tango',
             'Domingo Federico': 'Domingo Federico',

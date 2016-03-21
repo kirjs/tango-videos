@@ -36,6 +36,9 @@ public class TestHelpers {
         return node;
     }
 
+    public static void dumpDb(GraphDatabaseService graphDb) {
+        System.out.println(graphDb.execute("match (a)-[r]->(b) return a,r,b").resultAsString());
+    }
     public static Node addVideo(GraphDatabaseService graphDb, String videoId) {
         return addVideo(graphDb, videoId, 0);
     }
