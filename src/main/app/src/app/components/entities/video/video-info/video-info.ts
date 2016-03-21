@@ -85,7 +85,8 @@ export class VideoInfo {
             this.video.dancers = data;
         });
     }
-    static extractLastName(name: string){
+
+    static extractLastName(name:string) {
         var mappings = {
             'La Juan D\'arienzo': 'La Juan D\'arienzo',
             'Sexteto Tango': 'Sexteto Tango',
@@ -102,22 +103,25 @@ export class VideoInfo {
             'Los reyes del tango': 'Los reyes del tango'
 
         };
-        if(name in mappings){
+        if (name in mappings) {
             return mappings[name];
         }
         return name.split(' ').pop();
     }
 
 
-    updateEventName(eventName: String){
-        this.updateEvent(eventName, this.video.eventInstance || this.video.publishedAt);
+    updateEventName(eventName:String) {
+        this.updateEvent(eventName, this.video.event.instance || this.toDate(this.video.publishedAt, this.video.recordedAt));
     }
-    updateEventInstance(eventInstance: String){
-        this.updateEvent('', eventInstance);
+
+    updateEventInstance(eventInstance:String) {
+        this.updateEvent(this.video.event.name || '', eventInstance);
     }
-    updateEvent(eventName: String, eventInstance: String){
-        this.videoService.updateEvent(this.video.id, eventName, eventInstance).subscribe(()=>{
-            // Do nothing
+
+    updateEvent(eventName:String, eventInstance:String) {
+        this.videoService.updateEvent(this.video.id, eventName, eventInstance).subscribe(()=> {
+            this.video.event.name = eventName;
+            this.video.event.instance = eventInstance;
         });
     }
 

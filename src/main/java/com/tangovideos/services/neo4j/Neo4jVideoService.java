@@ -98,7 +98,8 @@ public class Neo4jVideoService implements VideoService {
                 "MATCH (v:Video) " +
                         "OPTIONAL MATCH (v)<-[:DANCES]-(d:Dancer) " +
                         "OPTIONAL MATCH (v)<-[:PLAYS_IN]-(s:Song) " +
-                        "RETURN v, collect(d.id) as dancers, collect(s) as songs " +
+                        "OPTIONAL MATCH (v)-[i:HAPPENED_AT]->(e) " +
+                        "RETURN v, collect(d.id) as dancers, collect(s) as songs, i.id as instance, e.id as event " +
                         "ORDER BY v.addedAt DESC";
 
         return getMultipleVideos(query, of());
@@ -110,7 +111,8 @@ public class Neo4jVideoService implements VideoService {
                 "MATCH (v:Video) " +
                         "OPTIONAL MATCH (v)<-[:DANCES]-(d:Dancer) " +
                         "OPTIONAL MATCH (v)<-[:PLAYS_IN]-(s:Song) " +
-                        "RETURN v, collect(d.id) as dancers, collect(s) as songs " +
+                        "OPTIONAL MATCH (v)-[i:HAPPENED_AT]->(e) " +
+                        "RETURN v, collect(d.id) as dancers, collect(s) as songs, i.id as instance, e.id as event " +
                         "ORDER BY v.addedAt DESC " +
                         "SKIP {skip} " +
                         "LIMIT {limit}";
@@ -202,9 +204,10 @@ public class Neo4jVideoService implements VideoService {
         final String query = "MATCH (v:Video) " +
                 "OPTIONAL MATCH (d:Dancer)-[:DANCES]->(v) " +
                 "OPTIONAL MATCH (v)<-[:PLAYS_IN]-(s:Song) " +
-                "WITH d, v, s " +
+                "OPTIONAL MATCH (v)-[i:HAPPENED_AT]->(e)" +
+                "WITH d, v, s, i, e " +
                 queryParams +
-                "RETURN v, collect(d.id) as dancers, collect(s) as songs";
+                "RETURN v, collect(d.id) as dancers, collect(s) as songs, i.id as instance, e.id as event";
 
         return getMultipleVideos(query, of());
     }

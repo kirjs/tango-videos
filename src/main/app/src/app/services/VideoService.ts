@@ -57,7 +57,6 @@ export class VideoService {
     }
 
     updateEvent(id:String, eventName:String, eventInstance:String):Observable<any> {
-        debugger
         return this.backendService.write(`videos/${id}/updateEvent`, {eventName, eventInstance});
     }
 }
