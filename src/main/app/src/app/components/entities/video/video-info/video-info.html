@@ -37,13 +37,14 @@
                         emptyValue="Unknown date"
                         [value]="toDate(video.publishedAt, video.recordedAt)|date">
         </editable-field>
-        <editable-field (update)="updateEvent($event)"
+
+        <editable-field (update)="updateEventName($event)"
                         emptyValue="Unknown event"
-                        [value]="video.event">
+                        [value]="video.event.name">
         </editable-field>
         <editable-field (update)="updateEventInstance($event)"
                         emptyValue="Unknown event instance"
-                        [value]="video.eventInstance">
+                        [value]="video.event.instance">
         </editable-field>
     </div>
     <div class="line">

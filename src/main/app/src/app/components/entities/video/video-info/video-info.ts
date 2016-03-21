@@ -113,10 +113,12 @@ export class VideoInfo {
         this.updateEvent(eventName, this.video.eventInstance || this.video.publishedAt);
     }
     updateEventInstance(eventInstance: String){
-        this.updateEvent('Unknown event', eventInstance);
+        this.updateEvent('', eventInstance);
     }
     updateEvent(eventName: String, eventInstance: String){
-        this.videoService.updateEvent(this.video.id, eventName, eventInstance);
+        this.videoService.updateEvent(this.video.id, eventName, eventInstance).subscribe(()=>{
+            // Do nothing
+        });
     }
 
     constructor(private videoService:VideoService, private songService:SongService) {
@@ -127,6 +129,5 @@ export class VideoInfo {
         songService.listNames().subscribe((names)=> {
             this.songNames = names.map(KeyValueUtils.valueObjectToKeyValue);
         });
-
     }
 }

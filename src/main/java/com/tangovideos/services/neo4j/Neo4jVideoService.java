@@ -256,7 +256,6 @@ public class Neo4jVideoService implements VideoService {
         try (Transaction tx = graphDb.beginTx(); Result result = graphDb.execute(query, params)) {
             tx.success();
         }
-
     }
 
 

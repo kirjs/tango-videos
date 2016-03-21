@@ -178,6 +178,18 @@ public class VideoResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Path("{id}/updateEvent")
+    public Response updateEvent(@PathParam("id") String id, EventUpdate payload) {
+        this.videoService.updateEvent(id, payload.getEventName(), payload.getEventInstance());
+
+        return Response.status(200)
+                .entity("true")
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("{id}/dancers/remove")
     public Response removeDancer(@PathParam("id") String id, JustName dancer) {
         final Node dancerNode = dancerService.insertOrGetNode(dancer.getName());
