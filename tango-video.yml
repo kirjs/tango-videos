@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tango-video-pod
+  labels:
+    name: tango-video
+spec:
+  containers:
+  - name: tango-video-service
+    image: gcr.io/tango-videos/tango-videos-service:v8
+  - name: tango-video-ui
+    image: gcr.io/tango-videos/tango-videos-ui:v2
