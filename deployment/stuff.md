@@ -12,7 +12,7 @@ gcloud container clusters create tango-videos
 docker build -t gcr.io/tango-videos/tango-video-rest:v10 .
 docker run -d -p 8088:8087 gcr.io/tango-videos/tango-video-rest:v10
 gcloud docker push gcr.io/tango-videos/tango-video-rest:v10
-kubectl run tango-video-rest --image=gcr.io/tango-videos/tango-video-rest:v10 --port=8088
+kubectl run tango-video-rest --image=gcr.io/tango-videos/tango-video-rest:v10 --port=8087
 kubectl expose deployment tango-video-rest --port=8087 --type="LoadBalancer"
 kubectl get service tango-video-rest
 
