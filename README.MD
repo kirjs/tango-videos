@@ -1,15 +1,21 @@
 # Tango videos
 
 # Developing
-Both have to be running
+3 Steps to run the app:
 
-## Running UI
-```bash
-(cd src/main/app && npm install && npm start)
-```
+## 1. Copy the db to tomcat folder
+cp -r ./db/neo4jDb12/ /usr/local/tomcat/bin/neo4jDb12
 
-## Running API
+## 2. Run the back-end
 1. Install TomCat https://tomcat.apache.org/tomcat-7.0-doc/appdev/installation.html
 2. Run `mvn package`
 3. Run tango-videos.war-exploded on port 8087
+
+
+## 3. Run the UI
+```bash
+(cd src/main/app && npm install && npm start)
+```
+go to https://localhost:8087/
+
 
