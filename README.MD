@@ -7,7 +7,7 @@
 cp -r ./db/neo4jDb12/ /usr/local/tomcat/bin/neo4jDb12
 
 ## 2. Run the back-end
-1. Install TomCat https://tomcat.apache.org/tomcat-7.0-doc/appdev/installation.html
+1. Install TomCat http://tomcat.apache.org/download-90.cgi
 2. Run `mvn package`
 3. Run tango-videos.war-exploded on port 8087
 
