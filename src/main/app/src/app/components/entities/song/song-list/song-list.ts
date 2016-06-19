@@ -1,5 +1,5 @@
-import {Component, Input, ViewChildren, Output, EventEmitter} from 'angular2/core';
-import {ROUTER_DIRECTIVES} from 'angular2/router';
+import {Component, Input, ViewChildren, Output, EventEmitter} from '@angular/core';
+import {ROUTER_DIRECTIVES} from '@angular/router';
 import {SongItem} from "../song-item/song-item";
 
 @Component({

@@ -1,4 +1,4 @@
-import {Component, Output, Input, EventEmitter} from 'angular2/core';
+import {Component, Output, Input, EventEmitter} from '@angular/core';
 import {Icon} from "../icon/icon";
 import {Observable} from "rxjs";
 import {AddableField} from "../addable-field/addable-field";

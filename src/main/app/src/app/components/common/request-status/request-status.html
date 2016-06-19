@@ -1,8 +1,8 @@
 <div class="requests">
-    <div *ngFor="#request of requests" class="request">
+    <div *ngFor="let request of requests" class="request">
         <span>{{request.message}}</span>
         <span class="actions">
-            <span *ngFor="#action of request.actions" class="action" (click)="action.callback()">{{action.label}}</span>
+            <span *ngFor="let action of request.actions" class="action" (click)="action.callback()">{{action.label}}</span>
         </span>
     </div>
 </div>

@@ -1,4 +1,4 @@
-import {Component, Directive, SkipSelf, Host, Optional, EventEmitter, Output, ElementRef, Input, Attribute} from 'angular2/core';
+import {Component, Directive, SkipSelf, Host, Optional, EventEmitter, Output, ElementRef, Input, Attribute} from '@angular/core';
 import { Observable } from 'rxjs';
 var removeDiacritics = require('diacritics').remove;
 

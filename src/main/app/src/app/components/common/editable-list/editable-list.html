@@ -2,7 +2,7 @@
     Please wait, saving your changes.
 </span>
 <span *ngIf="!saving">
-    <span *ngFor="#item of items" class="item">
+    <span *ngFor="let item of items" class="item">
         <span class="tile" (click)="handleSelectItem(item)">
             <span class="name">{{item}}</span>
             <span class="remove" (click)="handleRemoveItem($event, item)" *ngIf="!readonly">&times;</span>

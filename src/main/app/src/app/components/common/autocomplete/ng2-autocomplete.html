@@ -2,7 +2,7 @@
     <ng-content></ng-content>
     <span class="dropdown" *ngIf="dropdownOpen">
         <div class="item"
-             *ngFor="#item of items; #i = index"
+             *ngFor="let item of items; let i = index"
              [class.selected]="i === selectedIndex"
              (mousedown)="selectItem(i)"
         >{{item.value}}

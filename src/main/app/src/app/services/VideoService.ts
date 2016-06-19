@@ -1,8 +1,8 @@
-import {Injectable} from 'angular2/core';
+import {Injectable} from '@angular/core';
 import {BackendService} from "./BackendService";
 import {Observable} from "rxjs";
 import {ReviewFilters} from "../components/pages/needs-review/needs-review";
-import {URLSearchParams} from "angular2/http";
+import {URLSearchParams} from "@angular/http";
 
 
 @Injectable()

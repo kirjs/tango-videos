@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {Videos} from "../../entities/video/videos/videos";
 import {LoadMore} from "../../common/load-more/load-more";
 import {VideoService} from "../../../services/VideoService";

@@ -4,11 +4,14 @@
         [<a class="log-out" (click)="logout()">x</a>]
     </div>
     <div *ngIf="!authentificated">
-        <form [ngFormModel]="loginForm" (ngSubmit)="authenticate()">
-            <input type="text" [ngFormControl]="username">
-            <input type="text" [ngFormControl]="password">
-            <input type="submit" [disabled]="!loginForm.valid">
+        <form>
+            <input #username name = "username">
+            <input #password name = "password"/>
+
+            <input type="button" value = "!" (click)="authenticate()">
+
         </form>
         <div>{{error}}</div>
     </div>
+
 </div>

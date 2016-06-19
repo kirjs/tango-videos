@@ -7,14 +7,14 @@
 
 <div class="data readonly" needs-permission = "loggedOut">
     <div>
-        <span *ngFor="#dancer of video.dancers; #last = last, #index = index">
+        <span *ngFor="let dancer of video.dancers; let last = last, let index = index">
             <span *ngIf="last && !index == 0">{{first}}and</span>
             <span class="dancer">{{dancer}}</span>
         </span>
     </div>
 
     <div class="line song">
-        <span *ngFor="#song of video.songs">
+        <span *ngFor="let song of video.songs">
         <icon name="song"></icon><span>{{song.name}}</span> by <span>{{song.orquestra}}</span>
         </span>
     </div>

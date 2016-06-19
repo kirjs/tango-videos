@@ -7,7 +7,7 @@
         <addable-field addButtonLabel="Add channel" (onAdd)="addChannel($event)"></addable-field>
         <button (click)="updateAll()">Update all</button>
         <table>
-            <tr *ngFor="#channel of channels">
+            <tr *ngFor="let channel of channels">
                 <td>
                     <a href="https://www.youtube.com/channel/{{channel.id}}">
                         <icon name="youtube"></icon>

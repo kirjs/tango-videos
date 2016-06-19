@@ -1,6 +1,7 @@
-import {bootstrap} from 'angular2/platform/browser';
-import {HTTP_PROVIDERS} from 'angular2/http';
-import {ROUTER_PROVIDERS} from 'angular2/router';
+import { bootstrap } from '@angular/platform-browser-dynamic';
+import {disableDeprecatedForms, provideForms} from '@angular/forms';
+import {HTTP_PROVIDERS} from '@angular/http';
+import {ROUTER_PROVIDERS} from '@angular/router';
 import {CurrentUserService} from './app/services/ProfileService';
 import {VideoService} from './app/services/VideoService';
 
@@ -12,6 +13,7 @@ import {BackendService} from "./app/services/BackendService";
 import {ChannelService} from "./app/services/ChannelService";
 
 bootstrap(TangoVideos, [
+    disableDeprecatedForms(),
     HTTP_PROVIDERS,
     ROUTER_PROVIDERS,
     BackendService,

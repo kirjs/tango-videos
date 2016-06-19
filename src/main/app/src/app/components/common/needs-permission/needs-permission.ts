@@ -1,4 +1,4 @@
-import {Directive, Attribute, HostBinding} from 'angular2/core';
+import {Directive, Attribute, HostBinding} from '@angular/core';
 import {CurrentUserService} from "../../../services/ProfileService";
 
 

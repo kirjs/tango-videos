@@ -3,7 +3,7 @@
 </div>
 
 <div *ngIf="!saving">
-    <div *ngFor="#song of songs, #i = index" class="song">
+    <div *ngFor="let song of songs, let i = index" class="song">
         <song-item (update)="handleUpdate(i, $event)" [song]= "song" [readonly] = "readonly"></song-item>
     </div>
 

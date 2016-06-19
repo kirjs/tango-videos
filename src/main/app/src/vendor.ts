@@ -1,6 +1,7 @@
-import 'angular2/bundles/angular2-polyfills';
+import 'reflect-metadata';
+import 'zone.js/dist/zone';
 
-import 'angular2/platform/browser';
-import 'angular2/core';
-import 'angular2/http';
-import 'angular2/router';
+import '@angular/platform-browser';
+import '@angular/core';
+import '@angular/http';
+import '@angular/router';

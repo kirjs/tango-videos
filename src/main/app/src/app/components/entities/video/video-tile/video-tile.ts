@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter} from 'angular2/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {VideoInfo} from "../video-info/video-info";
 
 import {PlayerService} from "../../../../services/PlayerService";

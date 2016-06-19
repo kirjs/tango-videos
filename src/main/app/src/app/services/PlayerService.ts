@@ -1,10 +1,8 @@
-import {Injectable} from 'angular2/core';
+import {Injectable} from '@angular/core';
 import {VideoPlayer} from "../components/entities/player/video-player/video-player";
 import {YoutubePlayer} from "../components/entities/player/youtube-player/youtube-player";
 import {Video} from "../interfaces/video";
-
-declare var zone:any;
-
+declare var Zone;
 
 var YouTubePlayer = require('youtube-player');
 
@@ -67,7 +65,7 @@ export class PlayerService {
             height: 350
 
         });
-        this.player.on('stateChange', zone.bind( (event) => {
+        this.player.on('stateChange', Zone.bind( (event) => {
             if(event.data == 0){
                 if(this.youtubePlayer.getAutoplay()){
                     this.next();

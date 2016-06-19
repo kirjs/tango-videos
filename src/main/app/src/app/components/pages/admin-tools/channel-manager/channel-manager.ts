@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {AddableField} from "../../../common/addable-field/addable-field";
 import {Observable} from "rxjs";
 import {ChannelService} from "../../../../services/ChannelService";

@@ -1,6 +1,6 @@
 <div *ngIf="suggestions.length" class="suggestions">
     <span>{{label}}:</span>
-    <span *ngFor="#suggestion of suggestions; #l=last" (click)="handleAddSuggestion(suggestion)" class="suggestion">
+    <span *ngFor="let suggestion of suggestions; let l=last" (click)="handleAddSuggestion(suggestion)" class="suggestion">
         {{suggestion.value}}{{l?'':', '}}
     </span>
 </div>

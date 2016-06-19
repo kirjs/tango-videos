@@ -1,4 +1,4 @@
-import {Component, Input} from 'angular2/core';
+import {Component, Input} from '@angular/core';
 import {VideoInfo} from "../video-info/video-info";
 import {VideoTile} from "../video-tile/video-tile";
 import {EditableField} from "../../../common/editable-field/editable-field";

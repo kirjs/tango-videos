@@ -1,4 +1,4 @@
-import {Component, ViewChild} from 'angular2/core';
+import {Component, ViewChild} from '@angular/core';
 import {VideoInfo} from "../../video/video-info/video-info";
 import {PlayerService} from "../../../../services/PlayerService";
 import {YoutubePlayer} from "../youtube-player/youtube-player";

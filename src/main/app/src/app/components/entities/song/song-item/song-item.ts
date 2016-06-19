@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter} from 'angular2/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {Observable} from 'rxjs';
 import {EditableField} from "../../../common/editable-field/editable-field";
 import {Icon} from "../../../common/icon/icon";
@@ -26,7 +26,7 @@ export class SongItem {
     }
 
     constructor(songService:SongService) {
-        const years:String[] = [];
+        const years:string[] = [];
         for (let i = 1880; i < new Date().getFullYear(); i++) {
             years.push(i.toString());
         }

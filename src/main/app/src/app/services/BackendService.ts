@@ -1,7 +1,7 @@
-import {Http, Response, Headers} from 'angular2/http';
-import {Injectable} from "angular2/core";
+import {Http, Response, Headers} from '@angular/http';
+import {Injectable} from "@angular/core";
 import {Observable, Subject} from "rxjs";
-import {URLSearchParams} from "angular2/http";
+import {URLSearchParams} from "@angular/http";
 
 function errorToMessage(response, request$, retry$) {
     var actions = {

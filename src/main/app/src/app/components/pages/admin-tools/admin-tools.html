@@ -16,7 +16,7 @@
     </div>
     <div class="block">
         <h2>Stats</h2>
-        <div *ngFor="#stat of stats$ | async">
+        <div *ngFor="let stat of stats$ | async">
             <span>{{stat.key}}:</span>
             <span>{{stat.value}}</span>
         </div>

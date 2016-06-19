@@ -1,5 +1,5 @@
-import {Component, Input, ViewChildren, Output, EventEmitter} from 'angular2/core';
-import {Router} from 'angular2/router';
+import {Component, Input, ViewChildren, Output, EventEmitter} from '@angular/core';
+import {Router} from '@angular/router';
 
 import {Observable} from "rxjs";
 import {NgAutocompleteContainer} from "../../../common/autocomplete/ng2-autocomplete";

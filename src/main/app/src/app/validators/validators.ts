@@ -1,4 +1,4 @@
-import { Control  } from 'angular2/common';
+import { Control  } from '@angular/common';
 var regex = /^[a-zA-Z- ]+$/;
 export function nameValidaters(control: Control) {
     if(!regex.test(control.value)){

@@ -1,36 +1,32 @@
-import {Component} from 'angular2/core';
-import {Http} from 'angular2/http';
-import {Input} from "angular2/core";
+import {Component, ViewChild} from '@angular/core';
+import {Http} from '@angular/http';
+import {Input} from '@angular/core';
 
-import { FORM_DIRECTIVES, ControlGroup, Control,  Validators, FormBuilder } from 'angular2/common';
-import {CurrentUserService} from "../../../services/ProfileService";
+import { REACTIVE_FORM_DIRECTIVES,  NgModel, FormControl, FormGroup, Validators, FormBuilder} from '@angular/forms'
+import {CurrentUserService} from '../../../services/ProfileService';
 
 @Component({
     selector: 'user-profile',
     template: require('./user-profile.html'),
     styles: [require('./user-profile.css')],
-    directives: [FORM_DIRECTIVES]
+    directives: [NgModel, REACTIVE_FORM_DIRECTIVES]
 
 })
 export class UserProfile {
     @Input() src:any;
     user:any;
-    loginForm:ControlGroup;
-    username:Control;
-    password:Control;
+
     authentificated:boolean = false;
     error:string;
 
+    // Todo: use forms api once it actually works.
+    @ViewChild('username', true) username;
+    @ViewChild('password', true) password;
 
-    constructor(private profileService:CurrentUserService, private builder:FormBuilder) {
+
+
+    constructor(private profileService:CurrentUserService   ) {
         this.profileService = profileService;
-        this.username = new Control("admin", Validators.required);
-        this.password = new Control("hashme", Validators.required);
-        this.loginForm = builder.group({
-            username: this.username,
-            password: this.password
-        });
-
 
         profileService.getCurrentUser().subscribe((user)=> {
             this.user = user;
@@ -39,14 +35,14 @@ export class UserProfile {
     }
 
     logout() {
-        this.profileService.logout().subscribe((data) => {
+        this.profileService.logout().subscribe(() => {
             this.authentificated = false;
         });
     }
 
     authenticate() {
-        this.profileService.login(this.loginForm.value).subscribe((user)=> {
-            this.error = "";
+        this.profileService.login({username: this.username.nativeElement.value, password: this.password.nativeElement.value}).subscribe((user)=> {
+            this.error = '';
             this.user = user;
 
             this.authentificated = user.authentificated;

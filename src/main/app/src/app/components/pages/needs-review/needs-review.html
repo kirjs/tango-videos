@@ -1,6 +1,6 @@
 <div class="controls">
 
-    <label class=button *ngFor="#filter of filters">
+    <label class=button *ngFor="let filter of filters">
         <input type="checkbox" #cb [checked]="filter.defaultValue" (change)="updateFilter(filter.key, cb.checked)">{{filter.name}}
     </label>
 

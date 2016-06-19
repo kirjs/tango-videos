@@ -13,19 +13,26 @@
   "author": "Kirill Cherkashin <kirill@kcherkashin.org>",
   "license": "MIT",
   "devDependencies": {
+    "@angular/forms": "^0.1.0",
     "diacritics": "^1.2.3",
     "raw-loader": "^0.5.1",
-    "ts-loader": "^0.7.2",
-    "typescript": "^1.7.3",
+    "ts-loader": "^0.8.2",
+    "typescript": "^1.8.10",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0"
   },
   "dependencies": {
-    "angular2": "2.0.0-beta.0",
+    "@angular/common": "2.0.0-rc.2",
+    "@angular/compiler": "2.0.0-rc.2",
+    "@angular/core": "2.0.0-rc.2",
+    "@angular/http": "2.0.0-rc.2",
+    "@angular/router": "2.0.0-rc.2",
+    "@angular/platform-browser": "2.0.0-rc.2",
+    "@angular/platform-browser-dynamic": "2.0.0-rc.2",
     "es6-promise": "3.0.2",
     "es6-shim": "0.33.3",
-    "reflect-metadata": "0.1.2",
-    "rxjs": "5.0.0-beta.0",
-    "zone.js": "0.5.10"
+    "reflect-metadata": "0.1.3",
+    "rxjs": "5.0.0-beta.6",
+    "zone.js": "^0.6.12"
   }
 }

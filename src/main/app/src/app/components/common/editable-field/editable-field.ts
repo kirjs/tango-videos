@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, ViewChild} from 'angular2/core';
+import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {Focus} from "../focus/focus";
 import { Observable } from 'rxjs';
 import {NgAutocompleteContainer} from "../autocomplete/ng2-autocomplete";

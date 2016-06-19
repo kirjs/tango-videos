@@ -1,4 +1,4 @@
-import {Component, Input} from 'angular2/core';
+import {Component, Input} from '@angular/core';
 import {DancerTile} from "../../dancer/dancer-tile/dancer-tile";
 import {SongList} from "../../song/song-list/song-list";
 import {EditableField} from "../../../common/editable-field/editable-field";

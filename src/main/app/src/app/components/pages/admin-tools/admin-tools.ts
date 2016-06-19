@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {Observable} from 'rxjs';
 import {AdminToolsService} from "../../../services/AdminToolsService";
 import {NeedsPermission} from "../../common/needs-permission/needs-permission";

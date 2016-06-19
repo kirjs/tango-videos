@@ -1,4 +1,4 @@
-import {Injectable} from 'angular2/core';
+import {Injectable} from '@angular/core';
 import {BackendService} from "./BackendService";
 import {Observable} from "rxjs";
 

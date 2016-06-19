@@ -1,5 +1,5 @@
-import {Component, Input} from 'angular2/core';
-import {Http} from 'angular2/http';
+import {Component, Input} from '@angular/core';
+import {Http} from '@angular/http';
 import {VideoInfo} from "../video-info/video-info";
 import {VideoTile} from "../video-tile/video-tile";
 

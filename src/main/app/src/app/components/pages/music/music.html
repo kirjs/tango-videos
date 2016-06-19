@@ -1,6 +1,6 @@
 <div class="songs">
     <h2>Most popular orquestras</h2>
-    <div *ngFor="#orquestra of orquestras | async">
+    <div *ngFor="let orquestra of orquestras | async">
         <div>
             <span>{{orquestra.value}}</span>:
             <span>{{orquestra.count}}</span>
@@ -8,7 +8,7 @@
     </div>
 
     <h2>Most popular songs titles</h2>
-    <div *ngFor="#song of songs | async">
+    <div *ngFor="let song of songs | async">
         <div>
             <span>{{song.value}}</span>:
             <span>{{song.count}}</span>
@@ -16,7 +16,7 @@
     </div>
 
     <h2>Most popular genres</h2>
-    <div *ngFor="#genre of genres | async">
+    <div *ngFor="let genre of genres | async">
         <div>
             <span>{{genre.value}}</span>:
             <span>{{genre.count}}</span>
