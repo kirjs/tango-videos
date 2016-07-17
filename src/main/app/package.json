@@ -1,9 +1,10 @@
 {
   "name": "tango-videos",
   "version": "1.0.0",
-  "description": "Tango videos website.",
+  "description": "Tango videos websitek.",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "karma start"
   },
   "repository": {
     "type": "git",
@@ -15,6 +16,11 @@
   "devDependencies": {
     "@angular/forms": "^0.1.0",
     "diacritics": "^1.2.3",
+    "jasmine-core": "^2.4.1",
+    "karma": "^1.1.1",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-jasmine": "^1.0.2",
+    "karma-webpack": "^1.7.0",
     "raw-loader": "^0.5.1",
     "ts-loader": "^0.8.2",
     "typescript": "^1.8.10",

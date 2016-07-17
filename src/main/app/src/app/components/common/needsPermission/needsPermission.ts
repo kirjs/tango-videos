@@ -8,8 +8,7 @@ import {CurrentUserService} from "../../../services/ProfileService";
 export class NeedsPermission {
     isShown = false;
 
-    @HostBinding('hidden') get shown(){
-        console.log(this.isShown);
+    @HostBinding('hidden') get hidden(){
         return !this.isShown;
     }
 
