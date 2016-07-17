@@ -1,8 +1,8 @@
 <div class = "menu">
-    <a [routerLink]="['/videos']">Videos</a>
-    <a [routerLink]="['/dancers']">Dancers</a>
-    <a [routerLink]="['/new/video']">Add Video</a>
-    <a [routerLink]="['/music']">Music</a>
-    <a [routerLink]="['/needs-review']">Needs review</a>
-    <a needsPermission="video:write" [routerLink]="['/admin-tools']">Tools</a>
+    <button md-button  [routerLink]="['/videos']">Videos</button>
+    <button md-button  [routerLink]="['/dancers']">Dancers</button>
+    <button md-button  [routerLink]="['/new/video']">Add Video</button>
+    <button md-button  [routerLink]="['/music']">Music</button>
+    <button md-button  [routerLink]="['/needs-review']">Needs review</button>
+    <button md-button  needsPermission="video:write" [routerLink]="['/buttondmin-tools']">Tools</button>
 </div>

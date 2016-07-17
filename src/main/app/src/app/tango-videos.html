@@ -1,7 +1,11 @@
 <video-player video-player-global-controller></video-player>
 <request-status></request-status>
-<header></header>
-<menu></menu>
+<md-toolbar color="primary">
+    <span>{{title}}</span>
+    Tango videos
+    <menu></menu>
+    <user-profile></user-profile>
+</md-toolbar>
 <div class = "content">
     <router-outlet></router-outlet>
 </div>
