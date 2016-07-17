@@ -1,5 +1,6 @@
 <div class="dancers">
-    <div *ngFor="let dancer of dancers">
-        <h2 ><a [routerLink]="[dancer.name]">{{dancer.name}}</a> On {{dancer.videos.length}} videos</h2>
-    </div>
+    <md-card *ngFor="let dancer of dancers">
+        <md-card-title><a [routerLink]="[dancer.name]">{{dancer.name}}</a></md-card-title>
+        <md-card-content>Has {{dancer.videos.length}} videos</md-card-content>
+    </md-card>
 </div>
