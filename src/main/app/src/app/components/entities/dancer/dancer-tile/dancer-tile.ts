@@ -32,7 +32,7 @@ export class DancerTile {
     }
 
     selectDancer(dancer) {
-        this.router.navigate(['Dancer', {id: dancer}])
+        this.router.navigate(['dancers', dancer])
     }
 
     addDancer(dancer:String) {

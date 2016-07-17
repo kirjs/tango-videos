@@ -14,7 +14,6 @@ export class NeedsPermission {
 
     @Input() set needsPermission(permission: string){
         this.userService.permissionObservable.subscribe((permissions) => {
-            console.log(permission, permissions,  permission in permissions);
             this.isShown = permission in permissions;
         });
     };
