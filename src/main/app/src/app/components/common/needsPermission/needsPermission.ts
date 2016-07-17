@@ -1,0 +1,24 @@
+import {Directive, Attribute, HostBinding, Input} from '@angular/core';
+import {CurrentUserService} from "../../../services/ProfileService";
+
+
+@Directive({
+    selector: '[needsPermission]'
+})
+export class NeedsPermission {
+    isShown = false;
+
+    @HostBinding('hidden') get shown(){
+        console.log(this.isShown);
+        return !this.isShown;
+    }
+
+    @Input() set needsPermission(permission: string){
+        this.userService.permissionObservable.subscribe((permissions) => {
+            console.log(permission, permissions,  permission in permissions);
+            this.isShown = permission in permissions;
+        });
+    };
+
+    constructor(private userService: CurrentUserService) {}
+}

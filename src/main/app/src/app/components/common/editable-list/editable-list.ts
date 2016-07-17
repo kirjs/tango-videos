@@ -10,9 +10,7 @@ import {NgAutocompleteContainer} from "../autocomplete/ng2-autocomplete";
     selector: 'editable-list',
     template: require('./editable-list.html'),
     styles: [require('./editable-list.css'), require('../list.css')],
-    providers: [],
     directives: [NgAutocompleteContainer, NgAutocompleteInput, AddableField, Icon],
-    pipes: []
 })
 export class EditableList {
     @Output() addItem:EventEmitter<any>;

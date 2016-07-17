@@ -2,7 +2,7 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {VideoInfo} from "../video-info/video-info";
 
 import {PlayerService} from "../../../../services/PlayerService";
-import {NeedsPermission} from "../../../common/needs-permission/needs-permission";
+import {NeedsPermission} from "../../../common/needsPermission/needsPermission";
 import {Video} from "../../../../interfaces/video";
 
 @Component({

@@ -3,7 +3,7 @@ import {DancerTile} from "../../dancer/dancer-tile/dancer-tile";
 import {SongList} from "../../song/song-list/song-list";
 import {EditableField} from "../../../common/editable-field/editable-field";
 import {Icon} from "../../../common/icon/icon";
-import {NeedsPermission} from "../../../common/needs-permission/needs-permission";
+import {NeedsPermission} from "../../../common/needsPermission/needsPermission";
 import {VideoService} from "../../../../services/VideoService";
 import {ClickableSuggestion} from "../../../common/clickable-suggestion/clickable-suggestion";
 import {SongService} from "../../../../services/SongService";

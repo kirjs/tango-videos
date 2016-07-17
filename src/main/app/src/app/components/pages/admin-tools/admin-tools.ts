@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Observable} from 'rxjs';
 import {AdminToolsService} from "../../../services/AdminToolsService";
-import {NeedsPermission} from "../../common/needs-permission/needs-permission";
+import {NeedsPermission} from "../../common/needsPermission/needsPermission";
 import {ChannelManager} from "./channel-manager/channel-manager";
 import {DancerService} from "../../../services/DancerService";
 import {NgAutocompleteContainer} from "../../common/autocomplete/ng2-autocomplete";
@@ -17,8 +17,7 @@ export interface Stat {
     template: require('./admin-tools.html'),
     styles: [require('./admin-tools.css')],
     providers: [AdminToolsService],
-    directives: [NeedsPermission, ChannelManager, NgAutocompleteContainer, NgAutocompleteInput],
-    pipes: []
+    directives: [NeedsPermission, ChannelManager, NgAutocompleteContainer, NgAutocompleteInput]
 })
 export class AdminTools {
 

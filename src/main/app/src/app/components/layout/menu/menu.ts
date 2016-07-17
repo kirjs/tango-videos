@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
-import {NeedsPermission} from "../../common/needs-permission/needs-permission";
+import {NeedsPermission} from "../../common/needsPermission/needsPermission";
 
 
 @Component({
