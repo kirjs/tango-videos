@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
-import {Observable} from "rxjs";
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Videos} from "../../video/videos/videos";
 import {DancerService} from "../../../../services/DancerService";
 import {EditableList} from "../../../common/editable-list/editable-list";
@@ -35,11 +34,15 @@ export class Dancer {
             this.dancer.pseudonyms = pseudonyms;
         });
     }
-    // TODO: Uncomment
-    constructor(private dancerService:DancerService, private router:Router) {
-    //    this.dancerService.get(params.get('id')).subscribe((data) => {
-    //        this.dancer = data;
-    //        this.dancer.videos = this.dancer.videos.slice(0, 20);
-    //    });
+
+    ngOnInit(){
+        this.route.params.subscribe((params: {id: string}) => {
+            this.dancerService.get(params.id).subscribe((data) => {
+                this.dancer = data;
+                this.dancer.videos = this.dancer.videos.slice(0, 20);
+            });
+        });
     }
+
+    constructor(private dancerService:DancerService, private route: ActivatedRoute, private router: Router) {}
 }

@@ -1,17 +1,9 @@
-import {
-    it,
-    inject,
-    describe,
-    beforeEachProviders
-    expect
-} from '@angular/core/testing';
 import {NeedsPermission} from "./needsPermission";
 import {CurrentUserService} from "../../../services/ProfileService";
 
 // TODO: Test properly with dependency injection.
 describe('needsPermission', ()=> {
     it('Can be instantiated', ()=> {
-
         var currentUserService = ({
             permissionObservable: {
                 subscribe: (callback)=> {

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Router, Route, Routes, ROUTER_DIRECTIVES} from '@angular/router';
+import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {Home} from './components/pages/home/home';
 import {Videos} from './components/entities/video/videos/videos';
@@ -23,17 +23,6 @@ import {Music} from "./components/pages/music/music";
     directives: [ROUTER_DIRECTIVES, Header, VideoPlayer, RequestStatus],
     pipes: []
 })
-@Routes([
-    new Route({path: '/videos', component: Explore}),
-    new Route({path: '/dancers', component: Dancers}),
-    new Route({path: '/dancers/:id', component: Dancer}),
-    new Route({path: '/music', component: Music}),
-    new Route({path: '/tag', component: TagSongs}),
-    new Route({path: '/home', component: Home}),
-    new Route({path: '/new/video', component: VideoForm}),
-    new Route({path: '/needs-review', component: NeedsReview}),
-    new Route({path: '/admin-tools', component: AdminTools}),
-])
 export class TangoVideos {
     constructor() {
 
