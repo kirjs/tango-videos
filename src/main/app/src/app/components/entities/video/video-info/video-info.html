@@ -35,7 +35,7 @@
         <icon name="date"></icon>
         <editable-field (update)="handleUpdate('recordedAt', $event)"
                         emptyValue="Unknown date"
-                        [value]="toDate(video.publishedAt, video.recordedAt)|date">
+                        [value]="video.publishedAt || video.recordedAt">
         </editable-field>
         at
         <editable-field (update)="updateEventName($event)"
