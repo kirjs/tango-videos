@@ -152,7 +152,10 @@ public class Neo4jDancerServiceTest {
 
 
             assertEquals(3, list.size());
-            assertEquals(4, list.get(0).getVideos().size());
+
+            // We only send 3 videos per dancer for the preview.
+            assertEquals(3, list.get(0).getVideos().size());
+            assertEquals(4, list.get(0).getVideoCount());
 
 
             tx.success();

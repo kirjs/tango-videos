@@ -15,6 +15,7 @@ public class Dancer {
     @XmlElement
     private List<Video> videos = Lists.newArrayList();
     private Set<String> pseudonyms;
+    private int videoCount;
 
     public void setName(String name) {
         this.name = name;
@@ -38,5 +39,13 @@ public class Dancer {
 
     public void setPseudonyms(Set<String>  pseudonyms) {
         this.pseudonyms = pseudonyms;
+    }
+
+    public void setVideoCount(int videoCount) {
+        this.videoCount = videoCount;
+    }
+
+    public int getVideoCount() {
+        return videoCount;
     }
 }

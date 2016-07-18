@@ -62,7 +62,7 @@ public class Neo4jDancerService implements DancerService {
 
         try (Transaction tx = this.graphDb.beginTx()) {
             final String query = "MATCH (d:Dancer)-[:DANCES]->(v:Video) " +
-                    "RETURN DISTINCT d as dancer, collect(v.id) as videos, count(v.id) as count " +
+                    "RETURN DISTINCT d as dancer, collect(v) as videos,  count(v.id) as count " +
                     "ORDER BY count DESC";
             of("skip", skip, "limit", limit);
             final Result result = this.graphDb.execute(query);
@@ -71,10 +71,11 @@ public class Neo4jDancerService implements DancerService {
             while (result.hasNext()) {
                 final Map<String, Object> next = result.next();
                 final Dancer dancer = this.mapNode((Node) next.get("dancer"));
-                final List<String> videos = IteratorUtil.asList((Iterable<String>) next.get("videos"));
-                // TODO
-                final List<Video> collect = videos.stream().map(v -> new Video("TODO", "TODO", "TODO")).collect(Collectors.toList());
+                final List<Node> videos = IteratorUtil.asList((Iterable<Node>) next.get("videos"));
+                final List<Video> collect = videos.stream()
+                        .map(Neo4jVideoService::mapNodeToVideo).limit(3).collect(Collectors.toList());
                 dancer.setVideos(collect);
+                dancer.setVideoCount(videos.size());
                 dancers.add(dancer);
             }
 
