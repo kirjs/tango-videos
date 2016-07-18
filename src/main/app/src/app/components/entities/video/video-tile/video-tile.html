@@ -1,7 +1,7 @@
 <div class="video-tile">
     <div class="thumb">
         <span class = "genre {{getGenre()}}">{{getGenre()}}</span>
-        <img [src]="getThumbnail(video.id)" (click)="playVideo(video.id)">
+        <img [youtubeThumb]="video.id"  (click)="playVideo(video.id)">
     </div>
     <video-info [video]=video [readonly]="readonly"></video-info>
 </div>

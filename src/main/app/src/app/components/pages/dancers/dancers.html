@@ -1,6 +1,7 @@
 <div class="dancers">
     <md-card *ngFor="let dancer of dancers">
         <md-card-title><a [routerLink]="[dancer.name]">{{dancer.name}}</a></md-card-title>
-        <md-card-content>Has {{dancer.videos.length}} videos</md-card-content>
+        <md-card-content>Has {{dancer.videoCount}} videos</md-card-content>
+        <img *ngFor="let video of dancer.videos"  [youtubeThumb]="video.id">
     </md-card>
 </div>
