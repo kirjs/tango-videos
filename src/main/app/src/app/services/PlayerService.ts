@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 import {VideoPlayer} from "../components/entities/player/video-player/video-player";
 import {YoutubePlayer} from "../components/entities/player/youtube-player/youtube-player";
 import {Video} from "../interfaces/video";
-declare var Zone;
+
 
 var YouTubePlayer = require('youtube-player');
 
@@ -15,7 +15,7 @@ export class PlayerService {
     private playlist:Array<Video>;
     private currentVideoIndex = 0;
 
-    constructor() {
+    constructor(private zone: NgZone) {
 
     }
 
@@ -65,13 +65,17 @@ export class PlayerService {
             height: 350
 
         });
-        this.player.on('stateChange', Zone.bind( (event) => {
-            if(event.data == 0){
-                if(this.youtubePlayer.getAutoplay()){
-                    this.next();
+
+        this.player.on('stateChange',(event) => {
+            this.zone.run(()=> {
+                if(event.data == 0){
+                    if(this.youtubePlayer.getAutoplay()){
+                        this.next();
+                    }
                 }
-            }
-        }));
+            });
+
+        });
     }
 
     stop():void {
